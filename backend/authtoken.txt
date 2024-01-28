@@ -1,0 +1,7 @@
+Primary UserID
+
+username = jaimin123
+emailId = jamin21@email.com
+password = jaimin300
+
+authtoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjBjYTg0YjI3NjZlZWQxNjkwNzJkIn0sImlhdCI6MTcwNjQzMDI0OH0.vG5HrLymEd0x5zhJpnELo7UC5JvIqks868wY0Fi8_wU

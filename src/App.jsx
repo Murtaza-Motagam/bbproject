@@ -6,7 +6,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route Component={() => <div>Home</div>} path="/" />
+        <Route Component={() => <div>Home jaimin</div>} path="/" />
         <Route Component={Login} path="/login" />
         <Route Component={Register} path="/register" />
         <Route Component={ForgotPassword} path="/forget" />

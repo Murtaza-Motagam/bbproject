@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 
-var indexRouter = require('./routes/users');
-var usersRouter = require('./routes/users');
+// var indexRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
 const connectToMongo = require('./database');
 
 var app = express();
@@ -27,12 +27,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', require('./routes/users'));
-// app.use('/api/blogs', require('./routes/blogs'))
+app.use('/api/blogs', require('./routes/blogs'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// confirming server is running or not
+
+app.get('/', (req, res)=>{
+  res.send("Server is successfully running on port 4000")
+})
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -1,77 +1,106 @@
-import React from "react";
-import LoginImage from "../../assets/login_image.jpg";
-import { NavLink } from "react-router-dom";
-const Login = () => {
+import React, { useState } from "react";
+import blogVector from "../../assets/writing.png";
+import { Link } from "react-router-dom";
+
+const Login = (props) => {
+
+  const [credentials, setCredentials] = useState({ emailId: "", password: "" });
+
+  const handleChange = (e) => {
+    setCredentials(prevCredentials => ({
+      ...prevCredentials,
+      [e.target.name]: e.target.value
+    }));
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const { emailId, password } = credentials
+
+    const response = await fetch("http://localhost:5000/api/auth/signin", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ emailId, password })
+    });
+
+    const json = await response.json();
+
+    console.log(json)
+
+    if (json.success) {
+
+      // Saving the auth token in the local storge of the user
+
+      localStorage.setItem('token', json.authtoken);
+      props.showAlert("green-50", "green-800", "Success", " Welcome back User");
+      setCredentials({ emailId: "", password: "" })
+      // Navigate('/');
+
+    }
+    else {
+      document.getElementById('loginCredentials').style.display = "block";
+      setCredentials({ password: "" });
+    }
+  }
+
+
+
+
   return (
-    <div className={"flex h-screen"}>
-      <div className="w-1/2">
-        <div className="flex justify-center h-full items-center flex-col">
-          <div class="w-full max-w-xs">
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <div className="flex flex-col justify-center items-center mb-5 ">
-                <h3 class="mb-8 text-xl text-center flex flex-col">
-                  <span>Welcome To The</span>
-                  <span className="font-bold">NoteItAll</span>
-                </h3>
+    <div className="flex justify-center items-center bg-set">
+      <div className="div_left lg:w-1/2  w-full md:mx-auto sm:mx-auto">
+        <div className="bg-grey-lighter min-h-screen flex flex-col">
+          <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+            <form className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins" onSubmit={handleLogin}>
+              <h1 className="mb-3 text-3xl text-center font-semibold">Login</h1>
+              <h1 id="loginCredentials" className="hidden mb-4 text-md text-center text-red-500"><strong>Oops! </strong>Please Login with correct credentials</h1>
+              <input
+                type="email"
+                className="block border border-grey-light w-full p-3 rounded mb-4"
+                name="emailId"
+                placeholder="Email"
+                onChange={handleChange}
+                value={credentials.emailId}
+                autoComplete="off"
+                required
+              />
+
+              <input
+                type="password"
+                className="block border border-grey-light w-full p-3 rounded mb-4"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                value={credentials.password}
+                minLength="8"
+                autoComplete="off"
+                required
+              />
+
+              <button
+                type="submit"
+                className="w-full text-center py-3 rounded bg-gray-900 bold-700 text-white hover:bg-gray-800  hover:text-white"
+              >
+                Sign in
+              </button>
+
+              <div className="text-grey-dark mt-6 font-roboto text-lg">
+                Doesnt have an account yet!
+                <Link to="/register" className="ml-2 text-indigo-800 underline hover:font-bold">
+                  Signup
+                </Link>
               </div>
-              <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="username"
-                >
-                  Username
-                </label>
-                <input
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="username"
-                  type="text"
-                  placeholder="Username"
-                />
-              </div>
-              <div class="mb-6">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="password"
-                >
-                  Password
-                </label>
-                <input
-                  class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id="password"
-                  type="password"
-                  placeholder="******************"
-                />
-                <p class="text-red-500 text-xs italic">
-                  Please choose a password.
-                </p>
-              </div>
-              <div class="flex items-center justify-between">
-                <button
-                  class="bg-black hover:bg-white hover:text-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                >
-                  Sign In
-                </button>
-                <NavLink to="/forget">
-                  <a class="inline-block align-baseline font-bold text-sm text-black-500 hover:text-gray-600">
-                    Forgot Password?
-                  </a>
-                </NavLink>
-              </div>
-              <div className="mt-3">
-                Don't Have An Account?{" "}
-                <NavLink to="/register">
-                  <a class="inline-block align-baseline font-bold  text-black-500 hover:text-gray-600">
-                    signUp
-                  </a>
-                </NavLink>
-              </div>
+
             </form>
+
           </div>
         </div>
       </div>
-      <div className="w-1/2">
-        <img src={LoginImage} className={"object-cover h-full"} />
+      <div className="div_right hidden lg:flex xl:flex  pr-20 justify-center items-center">
+        <img src={blogVector} className=" w-[700px] rounded-xl" />
       </div>
     </div>
   );

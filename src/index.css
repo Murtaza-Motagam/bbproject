@@ -30,3 +30,7 @@
 .bold-700{
     font-weight: 700;
 }
+
+.bg-set{
+    background-image: linear-gradient(to right, #9796f0, #fbc7d4);
+}

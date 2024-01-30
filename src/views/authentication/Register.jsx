@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import blogVector from "../../assets/writing.png";
 import { Link } from "react-router-dom";
 
-const Register = (props) => {
+const Register = () => {
 
   const [credentials, setCredentials] = useState({ username: "", emailId: "", password: "", cpassword: "" });
 
   const handleChange = (e) => {
-    setCredentials(prevCredentials => ({
-      ...prevCredentials,
-      [e.target.name]: e.target.value
-    }));
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
   }
 
   const handleSignup = async (e) => {
@@ -32,16 +29,13 @@ const Register = (props) => {
       const json = await response.json();
       
       if (json.success) {
-
-        // alert("Account created successfully");
-
         // Saving the auth token in the local storge of the user
 
         localStorage.setItem('token', json.authtoken);
-        props.showAlert("green-50", "green-800", "Success", " Account Created Successfully");
+        alert("Account created successfully");
         setCredentials({ username: "", emailId: "", password: "", cpassword: "" })
-        // Navigate('/');
-        // window.location.reload(false);
+        Navigate('/');
+        window.location.reload(false);
         
       }
       else {

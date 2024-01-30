@@ -1,37 +1,21 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./views/authentication/Register";
 import Login from "./views/authentication/Login";
 import Footer from "./components/Footer";
-import Alert from "./components/Alert";
+import ForgotPassword from "./views/authentication/ForgotPassword";
 
 const App = () => {
 
-  const [alert, setAlert] = useState("");
-
-  const showAlert = (mode, textType, type, message) => {
-    setAlert({
-      mode: mode,
-      textType: textType,
-      type: type,
-      msg: message
-    });
-
-    setTimeout((showAlert) => {
-      setAlert(null);
-    }, 6000);
-  };
-
-
   return (
-    <BrowserRouter>
-      <Alert alert={alert} />
+    <Router>
       <Routes>
         <Route Component={() => <div>Home jaimin</div>} path="/" />
-        <Route path="/login" element={<Login showAlert={showAlert}/>} />
-        <Route path="/register" element={<Register showAlert={showAlert}/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 

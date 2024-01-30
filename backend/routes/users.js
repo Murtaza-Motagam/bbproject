@@ -99,7 +99,7 @@ router.post('/signin', [
 
     if (!passwordCompare) {
       return res.status(404).json({ Message: "Please try to login with proper credentials" });
-    } 
+    }
     else {
       const data = {
         user: {
@@ -132,6 +132,69 @@ router.post('/getuser', fetchUser, async (req, res) => {
   catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
+  }
+
+})
+
+//Route-4: Recover forgotten password
+
+router.post('/forgotpassword/verifyemail', async (req, res) => {
+
+  let success = false;
+
+  try {
+
+    const { emailId } = req.body;
+
+    const email = await Users.findOne({ emailId });
+
+    if (!email) {
+      success = false;
+      res.status(404).json({ success, error: "Credentials Does not match " })
+    }
+    else{
+      success = true;
+      res.status(200).json({ success, email })
+    }
+
+  }
+  catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+})
+
+// Route-5: Change password of user
+
+router.post('/changepassword', async (req, res) => {
+
+  let success = false;
+
+  try {
+
+      const { emailId, password } = req.body;
+
+      const updatePassword = await Users.findOne({ emailId });
+
+      // Hashing the password
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(password, salt)
+
+      // Update the password
+      updatePassword.password = secPass;
+
+      // Save the updated user
+      await updatePassword.save();
+
+
+      success = true;
+
+      res.status(200).json({ success, message: "Password Changed Successfully" })
+  }
+
+  catch (error) {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
   }
 
 })

@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import blogVector from "../../assets/writing.png";
 import { Link } from "react-router-dom";
 
-const Login = (props) => {
+const Login = () => {
 
   const [credentials, setCredentials] = useState({ emailId: "", password: "" });
 
   const handleChange = (e) => {
-    setCredentials(prevCredentials => ({
-      ...prevCredentials,
-      [e.target.name]: e.target.value
-    }));
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
   }
 
   const handleLogin = async (e) => {
@@ -28,14 +25,12 @@ const Login = (props) => {
 
     const json = await response.json();
 
-    console.log(json)
-
     if (json.success) {
 
       // Saving the auth token in the local storge of the user
 
       localStorage.setItem('token', json.authtoken);
-      props.showAlert("green-50", "green-800", "Success", " Welcome back User");
+      alert("Welcome back user");
       setCredentials({ emailId: "", password: "" })
       // Navigate('/');
 
@@ -80,15 +75,22 @@ const Login = (props) => {
                 required
               />
 
+              <Link 
+                to="/forgotpassword"
+                className="text-center text-purple-800 w-full ml-24 hover:underline font-roboto"
+              >
+                Forgot Password?
+              </Link>
+
               <button
                 type="submit"
-                className="w-full text-center py-3 rounded bg-gray-900 bold-700 text-white hover:bg-gray-800  hover:text-white"
+                className="w-full text-center py-3 mt-5 rounded bg-gray-900 bold-700 text-white hover:bg-gray-800  hover:text-white"
               >
                 Sign in
               </button>
 
               <div className="text-grey-dark mt-6 font-roboto text-lg">
-                Doesnt have an account yet!
+                Doesn't have an account yet!
                 <Link to="/register" className="ml-2 text-indigo-800 underline hover:font-bold">
                   Signup
                 </Link>

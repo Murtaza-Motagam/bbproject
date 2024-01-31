@@ -117,7 +117,7 @@ const Register = () => {
                 <span>By signing up, you agree to the </span>
                 <Link
                   className="no-underline text-blue-800 hover:underline"
-                  to="/"
+                  to="/terms-and-conditions"
                 >
                   Terms & Service with Privacy Policy
                 </Link>

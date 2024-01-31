@@ -27,7 +27,7 @@ const Register = () => {
       });
 
       const json = await response.json();
-      
+
       if (json.success) {
         // Saving the auth token in the local storge of the user
 
@@ -36,7 +36,7 @@ const Register = () => {
         setCredentials({ username: "", emailId: "", password: "", cpassword: "" })
         Navigate('/');
         window.location.reload(false);
-        
+
       }
       else {
         document.getElementById('errorHandle').style.display = "block";
@@ -45,7 +45,7 @@ const Register = () => {
     else {
       document.getElementById('passwordMatch').style.display = "block";
       setCredentials({ password: "", cpassword: "" })
-      
+
     }
   }
 
@@ -57,7 +57,7 @@ const Register = () => {
       <div className="div_left lg:w-1/2  w-full md:mx-auto sm:mx-auto">
         <div className="bg-grey-lighter min-h-screen flex flex-col">
           <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-            <form className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins" onSubmit={handleSignup}>
+            <form className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins " onSubmit={handleSignup}>
               <h1 className="mb-3 text-3xl text-center font-semibold">Signup</h1>
               <h1 id="passwordMatch" className="hidden mb-4 text-md text-center text-red-500"><strong>Oops! </strong>Please Login with correct credentials</h1>
               <h1 id="errorHandle" className="hidden mb-4 text-md text-center text-red-500"><strong>Oops! </strong>Something went wrong try again.</h1>
@@ -122,14 +122,14 @@ const Register = () => {
                   Terms & Service with Privacy Policy
                 </Link>
               </div>
-            </form>
 
-            <div className="text-grey-dark mt-6 font-roboto text-lg">
-              Already have an account?
-              <Link to="/login" className="ml-2 text-indigo-800 underline hover:font-bold">
-                Log in
-              </Link>
-            </div>
+              <div className="text-grey-dark mt-3 ml-8 font-roboto text-md">
+                Already have an account?
+                <Link to="/login" className="ml-1 text-indigo-800 underline hover:text-indigo-900">
+                  Login
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>

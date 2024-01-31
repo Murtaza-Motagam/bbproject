@@ -46,7 +46,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center bg-set">
-      <div className="div_left lg:w-1/2  w-full md:mx-auto sm:mx-auto">
+      <div className="div_left lg:w-1/2 w-full md:mx-auto sm:mx-auto">
         <div className="bg-grey-lighter min-h-screen flex flex-col">
           <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
             <form className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins" onSubmit={handleLogin}>
@@ -89,10 +89,10 @@ const Login = () => {
                 Sign in
               </button>
 
-              <div className="text-grey-dark mt-6 font-roboto text-lg">
-                Doesn't have an account yet!
-                <Link to="/register" className="ml-2 text-indigo-800 underline hover:font-bold">
-                  Signup
+              <div className="text-grey-dark flex items-center mt-6 font-roboto text-sm w-full">
+                Doesn't have an account yet? &nbsp;
+                <Link to="/register" className=" text-indigo-800 hover:underline">
+                  create an account
                 </Link>
               </div>
 

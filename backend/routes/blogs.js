@@ -6,6 +6,30 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = "AuthenticateUser";
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' })
+
+
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        return cb(null, './uploads');
+    },
+    filename: function(req, file, cb) {
+        return cb(null, `${Date.now()}-${file.originalname}`)
+    },
+});
+
+//const upload = multer({ storage: storage })
+
+//multer function for storing image in database
+router.post('/upload', upload.single ('profileImage'), (req, res) =>{
+    console.log(req.body);
+    console.log(req.file);
+    
+    return res.redirect('/');
+});
+
 
 
 // Route-1: Creating a user's blog

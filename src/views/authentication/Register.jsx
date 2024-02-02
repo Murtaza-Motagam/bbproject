@@ -7,7 +7,10 @@ const Register = () => {
   const [credentials, setCredentials] = useState({ username: "", emailId: "", password: "", cpassword: "" });
 
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setCredentials(prevCredentials => ({
+      ...prevCredentials,
+      [e.target.name]: e.target.value
+    }));
   }
 
   const handleSignup = async (e) => {

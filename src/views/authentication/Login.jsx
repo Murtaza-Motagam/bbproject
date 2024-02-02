@@ -7,7 +7,10 @@ const Login = () => {
   const [credentials, setCredentials] = useState({ emailId: "", password: "" });
 
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setCredentials(prevCredentials => ({
+      ...prevCredentials,
+      [e.target.name]: e.target.value
+    }));
   }
 
   const handleLogin = async (e) => {

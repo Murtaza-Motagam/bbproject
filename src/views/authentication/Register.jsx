@@ -3,30 +3,37 @@ import blogVector from "../../assets/writing.png";
 import { Link } from "react-router-dom";
 
 const Register = () => {
-
-  const [credentials, setCredentials] = useState({ username: "", emailId: "", password: "", cpassword: "" });
+  const [credentials, setCredentials] = useState({
+    username: "",
+    emailId: "",
+    password: "",
+    cpassword: "",
+  });
 
   const handleChange = (e) => {
+<<<<<<< Updated upstream
     setCredentials(prevCredentials => ({
       ...prevCredentials,
       [e.target.name]: e.target.value
     }));
   }
+=======
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+>>>>>>> Stashed changes
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    const { username, emailId, password, cpassword } = credentials
+    const { username, emailId, password, cpassword } = credentials;
 
     if (password === cpassword) {
-
-
       const response = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, emailId, password, cpassword })
+        body: JSON.stringify({ username, emailId, password, cpassword }),
       });
 
       const json = await response.json();
@@ -34,36 +41,49 @@ const Register = () => {
       if (json.success) {
         // Saving the auth token in the local storge of the user
 
-        localStorage.setItem('token', json.authtoken);
+        localStorage.setItem("token", json.authtoken);
         alert("Account created successfully");
-        setCredentials({ username: "", emailId: "", password: "", cpassword: "" })
-        Navigate('/');
+        setCredentials({
+          username: "",
+          emailId: "",
+          password: "",
+          cpassword: "",
+        });
+        Navigate("/");
         window.location.reload(false);
-
+      } else {
+        document.getElementById("errorHandle").style.display = "block";
       }
-      else {
-        document.getElementById('errorHandle').style.display = "block";
-      }
+    } else {
+      document.getElementById("passwordMatch").style.display = "block";
+      setCredentials({ password: "", cpassword: "" });
     }
-    else {
-      document.getElementById('passwordMatch').style.display = "block";
-      setCredentials({ password: "", cpassword: "" })
-
-    }
-  }
-
-
-
+  };
 
   return (
     <div className="flex justify-center items-center bg-set">
       <div className="div_left lg:w-1/2  w-full md:mx-auto sm:mx-auto">
         <div className="bg-grey-lighter min-h-screen flex flex-col">
           <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-            <form className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins " onSubmit={handleSignup}>
-              <h1 className="mb-3 text-3xl text-center font-semibold">Signup</h1>
-              <h1 id="passwordMatch" className="hidden mb-4 text-md text-center text-red-500"><strong>Oops! </strong>Please Login with correct credentials</h1>
-              <h1 id="errorHandle" className="hidden mb-4 text-md text-center text-red-500"><strong>Oops! </strong>Something went wrong try again.</h1>
+            <form
+              className="bg-gray-50 px-6 py-8 rounded-xl shadow-md shadow-gray-500 text-black w-full font-poppins "
+              onSubmit={handleSignup}
+            >
+              <h1 className="mb-3 text-3xl text-center font-semibold">
+                Signup
+              </h1>
+              <h1
+                id="passwordMatch"
+                className="hidden mb-4 text-md text-center text-red-500"
+              >
+                <strong>Oops! </strong>Please Login with correct credentials
+              </h1>
+              <h1
+                id="errorHandle"
+                className="hidden mb-4 text-md text-center text-red-500"
+              >
+                <strong>Oops! </strong>Something went wrong try again.
+              </h1>
               <input
                 type="text"
                 className="block border border-grey-light w-full p-3 rounded mb-4"
@@ -128,7 +148,10 @@ const Register = () => {
 
               <div className="text-grey-dark mt-3 ml-8 font-roboto text-md">
                 Already have an account?
-                <Link to="/login" className="ml-1 text-indigo-800 underline hover:text-indigo-900">
+                <Link
+                  to="/login"
+                  className="ml-1 text-indigo-800 underline hover:text-indigo-900"
+                >
                   Login
                 </Link>
               </div>

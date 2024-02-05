@@ -44,8 +44,6 @@ const ForgotPassword = () => {
 
       document.getElementById("updatePassword").style.display = "block";
 
-      document.getElementById("emailInput").readOnly = true;
-
       // invisibling verify button and displaying change password button
 
       document.getElementById("authorisedButton").style.display = "none";
@@ -185,10 +183,9 @@ const ForgotPassword = () => {
 
           <input
             type="email"
-            id="emailInput"
             className="block border border-grey-light w-full p-3 rounded mb-4"
             name="emailId"
-            placeholder="Enter Your Email"
+            placeholder="Email"
             value={credentials.emailId}
             onChange={handleChange}
             required

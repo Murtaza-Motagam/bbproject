@@ -6,6 +6,9 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = "AuthenticateUser";
+const multer = require('multer');
+const path = require('path');
+
 
 // Route-1: Signup the user using post request
 
@@ -152,7 +155,7 @@ router.post('/forgotpassword/verifyemail', async (req, res) => {
       success = false;
       res.status(404).json({ success, error: "Credentials Does not match " })
     }
-    else{
+    else {
       success = true;
       res.status(200).json({ success, email })
     }
@@ -172,31 +175,51 @@ router.post('/changepassword', async (req, res) => {
 
   try {
 
-      const { emailId, password } = req.body;
+    const { emailId, password } = req.body;
 
-      const updatePassword = await Users.findOne({ emailId });
+    const updatePassword = await Users.findOne({ emailId });
 
-      // Hashing the password
-      const salt = await bcrypt.genSalt(10);
-      const secPass = await bcrypt.hash(password, salt)
+    // Hashing the password
+    const salt = await bcrypt.genSalt(10);
+    const secPass = await bcrypt.hash(password, salt)
 
-      // Update the password
-      updatePassword.password = secPass;
+    // Update the password
+    updatePassword.password = secPass;
 
-      // Save the updated user
-      await updatePassword.save();
+    // Save the updated user
+    await updatePassword.save();
 
 
-      success = true;
+    success = true;
 
-      res.status(200).json({ success, message: "Password Changed Successfully" })
+    res.status(200).json({ success, message: "Password Changed Successfully" })
   }
 
   catch (error) {
-      console.error(error.message);
-      res.status(500).send("Internal Server Error");
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
   }
 
 })
+
+// Multer Object declaration 
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/uploads')); // Specify absolute path to the public folder
+  },
+  filename: function (req, file, cb) {
+    return cb(null, `${Date.now()}-${file.originalname}`)
+  },
+});
+
+const upload = multer({ storage })
+
+//multer function for storing image in database
+router.post('/upload', upload.single('file'), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+  res.json({ "success": "image is inserted" });
+});
 
 module.exports = router;

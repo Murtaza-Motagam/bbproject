@@ -6,9 +6,7 @@ import Content from "./Content";
 const Home = () => {
   return (
     <div>
-      <Header />
-      <Content />
-      <Footer />
+      Home
     </div>
   );
 };

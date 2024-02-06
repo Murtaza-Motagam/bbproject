@@ -11,16 +11,12 @@ const Register = () => {
   });
 
   const handleChange = (e) => {
-<<<<<<< Updated upstream
-    setCredentials(prevCredentials => ({
-      ...prevCredentials,
-      [e.target.name]: e.target.value
-    }));
+    // setCredentials(prevCredentials => ({
+    //   ...prevCredentials,
+    //   [e.target.name]: e.target.value
+    // }));
+    setCredentials({ ...credentials, [e.target.name]: e.target.value});
   }
-=======
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
->>>>>>> Stashed changes
 
   const handleSignup = async (e) => {
     e.preventDefault();

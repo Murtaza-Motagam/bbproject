@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react'
 
 const BlogsCategory = () => {
-  return <div>Blogs category category, on the basis of List,</div>;
-};
+  return (
+    <div>BlogsCategory</div>
+  )
+}
 
-export default BlogsCategory;
+export default BlogsCategory

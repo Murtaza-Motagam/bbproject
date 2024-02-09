@@ -26,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/admin', require('./routes/adminUser'));
 app.use('/api/auth', require('./routes/users'));
 app.use('/api/blogs', require('./routes/blogs'))
 

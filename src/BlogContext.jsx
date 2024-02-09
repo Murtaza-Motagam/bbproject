@@ -4,10 +4,17 @@ import axios from 'axios';
 // Create a new context
 const BlogContext = createContext();
 
+// port defined
+
+const portAdmin = "http://localhost:5000/api/admin";
+const portUser = "http://localhost:5000/api/auth";
+const portBlogs = "http://localhost:5000/api/blogs";
+
 // Create a provider component
 const BlogProvider = ({ children }) => {
     // Define your state or any other data here
     const [blogs, setBlogs] = useState([]);
+    const [admin, setAdmin] = useState([]);
 
     // Route-1: Add a profile picture
 
@@ -26,8 +33,11 @@ const BlogProvider = ({ children }) => {
         }
     };
 
+
+   
+
     return (
-        <BlogContext.Provider value={{ blogs, uploadProfilePic }}>
+        <BlogContext.Provider value={{ admin, blogs, uploadProfilePic}}>
             {children}
         </BlogContext.Provider>
     );

@@ -37,7 +37,7 @@ const Register = () => {
       if (json.success) {
         // Saving the auth token in the local storge of the user
 
-        localStorage.setItem("token", json.authtoken);
+        localStorage.setItem("user-token", json.authtoken);
         alert("Account created successfully");
         setCredentials({
           username: "",

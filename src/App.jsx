@@ -23,8 +23,8 @@ import { BlogProvider } from "./BlogContext.jsx";
 import AdminNavbar from "./Admin/components/Navbar/Navbar.tsx";
 import AdminMenu from "./Admin/components/Menu/Menu.tsx";
 import AdminHome from "./Admin/pages/home/Home.tsx";
-import AdminUser from "./Admin/pages/user/User.tsx";
-import AdminUsers from "./Admin/pages/users/Users.tsx";
+import AdminUser from "./Admin/pages/user/User.jsx";
+import AdminUsers from "./Admin/pages/users/Users.jsx";
 import "./Admin/styles/global.scss"
 import {
   QueryClient,

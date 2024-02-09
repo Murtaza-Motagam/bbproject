@@ -31,7 +31,7 @@ const Login = () => {
     if (json.success) {
       // Saving the auth token in the local storge of the user
 
-      localStorage.setItem("token", json.authtoken);
+      localStorage.setItem("user-token", json.authtoken);
       alert("Welcome back user");
       setCredentials({ emailId: "", password: "" });
       // Navigate('/');

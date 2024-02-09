@@ -1,0 +1,5 @@
+--- Routes to create ---
+
+1. fetch single admin user all details - username, Full name, email, dob, phone number, status - done
+2. Fetch all Admin Users - done
+3.  Fetch all Client users details - done

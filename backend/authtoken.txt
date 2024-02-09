@@ -5,3 +5,16 @@ emailId = jamin21@email.com
 password = jaimin300
 
 authtoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjBjYTg0YjI3NjZlZWQxNjkwNzJkIn0sImlhdCI6MTcwNjQzMDI0OH0.vG5HrLymEd0x5zhJpnELo7UC5JvIqks868wY0Fi8_wU
+
+"Admin-Details": {
+    "adminId": 23341,
+    "username": "admin-10",
+    "name": "kinjal Mehra",
+    "emailId": "kinjal90@gmail.com",
+    "phoneNumber": 9104809812,
+    "adminPriority": "Low-Level",
+    "password": "$2a$10$YvQZYdCT8Q2nj9IY5PEmeeRksCxYTJS0GsMPu5EztveM5.Tj6hKm6",
+    "_id": "65c4a418a741929d9a65f356",
+    "datacreated": "2024-02-08T09:51:20.390Z",
+    "__v": 0
+  }

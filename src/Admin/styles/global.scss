@@ -1,5 +1,6 @@
 @import "./variables.scss";
 @import "./responsive.scss";
+@import "../../index.css";
 
 * {
   margin: 0;
@@ -27,7 +28,7 @@ a {
   padding: 5px 20px;
   border-right: 2px solid $soft-bg;
 
-  @include lg{
+  @include lg {
     width: max-content;
   }
 }
@@ -36,3 +37,5 @@ a {
   padding: 5px 20px;
   width: 100%;
 }
+
+

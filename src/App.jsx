@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createBrowserRouter, RouterProvider, Outlet, BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 // client panel routes
 
@@ -23,8 +23,9 @@ import { BlogProvider } from "./BlogContext.jsx";
 import AdminNavbar from "./Admin/components/Navbar/Navbar.tsx";
 import AdminMenu from "./Admin/components/Menu/Menu.tsx";
 import AdminHome from "./Admin/pages/home/Home.tsx";
-import AdminUser from "./Admin/pages/user/User.jsx";
 import AdminUsers from "./Admin/pages/users/Users.jsx";
+import AdminUser from "./Admin/pages/user/User.jsx";
+import AdminProfile from "./Admin/pages/user/AdminProfile.jsx";
 import "./Admin/styles/global.scss"
 import {
   QueryClient,
@@ -36,6 +37,10 @@ const queryClient = new QueryClient();
 
 
 const MainApplication = () => {
+
+  const adminLoggedIn = localStorage.getItem('admin-token')
+  const userLoggedIn = localStorage.getItem('user-token')
+
   return (
 
     <BlogProvider>
@@ -47,8 +52,8 @@ const MainApplication = () => {
             {/* Client Panel Routes */}
 
             <Route exact path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login /> : <Navigate to="/" />} />
+            <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register /> : <Navigate to="/" />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/services" element={<Services />} />
             <Route path="/joinwithus" element={<Join />} />
@@ -108,12 +113,12 @@ const AdminPanel = () => {
           path: "/users/:id",
           element: <AdminUser />,
         },
+        {
+          path: "/profile",
+          element: <AdminProfile />,
+        },
       ],
     }
-    // {
-    //   path: "/login",
-    //   element: <Login />,
-    // },
   ]);
 
   return <RouterProvider router={router} />;

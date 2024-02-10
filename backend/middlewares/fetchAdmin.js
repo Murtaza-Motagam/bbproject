@@ -6,7 +6,7 @@ const fetchAdmin = (req, res, next) => {
 
     // Get the user from the jwt token and add it to the req object
 
-    const token = req.header('authtoken');
+    const token = req.header('admin-token');
 
     if(!token){
         res.status(401).send({error: "Please authenticate using valid token"});

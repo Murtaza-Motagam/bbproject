@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const Admin = require('../model/Admin')
-const fetchAdmin =  require("../middlewares/fetchAdmin.js");
+const Users = require('../model/Users')
+const fetchAdmin = require("../middlewares/fetchAdmin.js");
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -94,7 +95,7 @@ router.post('/signup', [
 // Route-2: Login the user by checking its profile within the database using post request
 
 router.post('/signin', [
-    body('username', 'Please enter valid username').isLength({ min: 7 }),
+    body('emailId', 'Please enter valid email-address'),
     body('password', 'Please enter long password').isLength({ min: 8 }),
 ], async (req, res) => {
     let success = false;
@@ -106,9 +107,9 @@ router.post('/signin', [
     }
 
     try {
-        const { username, password } = req.body;
+        const { emailId, password } = req.body;
 
-        let user = await Admin.findOne({ username });
+        let user = await Admin.findOne({ emailId });
 
         if (!user) {
             return res.status(400).json({ success, Message: "Sorry, try to login using proper credentials." });
@@ -159,9 +160,9 @@ router.post('/getadmin', fetchAdmin, async (req, res) => {
 router.get('/fetchalladmins', async (req, res) => {
 
     let success = false;
-    
+
     try {
-        const admins = await Admin.find({ });
+        const admins = await Admin.find({});
         success = true;
         res.json(admins);
     }
@@ -169,6 +170,62 @@ router.get('/fetchalladmins', async (req, res) => {
         console.error(error.message);
         res.status(500).send(success, "Some error occurred");
     }
+})
+
+
+// Route-5: Fetch admin entire info from his id for edit section 
+
+router.post('/getadmin/:id', async (req, res) => {
+
+    try {
+
+        let userId = req.params.id;
+        const userInfo = await Admin.findById(userId).select("-password");
+        res.json([userInfo]);
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+
+})
+
+//Route-6: Fetch entire users information
+
+router.get('/fetchallusers', fetchAdmin, async (req, res) => {
+
+    let success = false;
+
+    try {
+
+        const fetchAllUsers = await Users.find({})
+
+        success = true;
+        res.status(200).json({ success, fetchAllUsers })
+
+
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+// Route-7: Fetch User entire info in database except blogs 
+
+router.post('/fetchuser/:id', fetchAdmin, async (req, res) => {
+
+    try {
+
+        let userId = req.params.id;
+        const userInfo = await Users.findById(userId).select("-password");
+        res.json([userInfo]);
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+
 })
 
 

@@ -18,3 +18,5 @@ authtoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjBjYTg
     "datacreated": "2024-02-08T09:51:20.390Z",
     "__v": 0
   }
+
+admin-token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjNGE0MThhNzQxOTI5ZDlhNjVmMzU2In0sImlhdCI6MTcwNzU3NTE2N30.IdCZt5bKGZwzLO3ufj60NwRH9vqbibVc5X6DMV_oD08

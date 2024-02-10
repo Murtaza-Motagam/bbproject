@@ -5,45 +5,27 @@ export const menu = [
     listItems: [
       {
         id: 1,
-        title: "Homepage",
+        title: "Dashboard",
         url: "/",
-        icon: "home.svg",
+        icon: "app.svg",
       },
       {
         id: 2,
         title: "Profile",
-        url: "/users/1",
+        url: "/profile",
         icon: "user.svg",
       },
     ],
   },
   {
     id: 2,
-    title: "lists",
+    title: "Department",
     listItems: [
       {
         id: 1,
         title: "Users",
         url: "/users",
         icon: "user.svg",
-      },
-      {
-        id: 2,
-        title: "Products",
-        url: "/",
-        icon: "product.svg",
-      },
-      {
-        id: 3,
-        title: "Orders",
-        url: "/",
-        icon: "order.svg",
-      },
-      {
-        id: 4,
-        title: "Posts",
-        url: "/",
-        icon: "post2.svg",
       },
     ],
   },
@@ -72,47 +54,25 @@ export const menu = [
       {
         id: 4,
         title: "Calendar",
-        url: "/",
+        url: "/calendar",
         icon: "calendar.svg",
       },
     ],
   },
   {
     id: 4,
-    title: "Maintenance",
+    title: "Session",
     listItems: [
       {
         id: 1,
-        title: "Settings",
+        title: "Elements",
         url: "/",
-        icon: "setting.svg",
-      },
-      {
-        id: 2,
-        title: "Backups",
-        url: "/",
-        icon: "backup.svg",
+        icon: "logout.svg",
       },
     ],
   },
-  {
-    id: 5,
-    title: "analytics",
-    listItems: [
-      {
-        id: 1,
-        title: "Charts",
-        url: "/",
-        icon: "chart.svg",
-      },
-      {
-        id: 2,
-        title: "Logs",
-        url: "/",
-        icon: "log.svg",
-      },
-    ],
-  },
+ 
+  
 ];
 
 export const topDealUsers = [
@@ -309,260 +269,36 @@ export const barChartBoxVisit = {
   ],
 };
 
-export const userRows = [
-  {
-    "id": 1,
-    "avatar": "https://i.pravatar.cc/150?img=1",
-    "username": "user1",
-    "email": "user1@example.com",
-    "password": "password1"
-  },
-  {
-    "id": 2,
-    "avatar": "https://i.pravatar.cc/150?img=2",
-    "username": "user2",
-    "email": "user2@example.com",
-    "password": "password2"
-  },
-  {
-    "id": 3,
-    "avatar": "https://i.pravatar.cc/150?img=3",
-    "username": "user3",
-    "email": "user3@example.com",
-    "password": "password3"
-  },
-  {
-    "id": 4,
-    "avatar": "https://i.pravatar.cc/150?img=4",
-    "username": "user4",
-    "email": "user4@example.com",
-    "password": "password4"
-  },
-  {
-    "id": 5,
-    "avatar": "https://i.pravatar.cc/150?img=5",
-    "username": "user5",
-    "email": "user5@example.com",
-    "password": "password5"
-  },
-  {
-    "id": 6,
-    "avatar": "https://i.pravatar.cc/150?img=6",
-    "username": "user6",
-    "email": "user6@example.com",
-    "password": "password6"
-  },
-  {
-    "id": 7,
-    "avatar": "https://i.pravatar.cc/150?img=7",
-    "username": "user7",
-    "email": "user7@example.com",
-    "password": "password7"
-  },
-  {
-    "id": 8,
-    "avatar": "https://i.pravatar.cc/150?img=8",
-    "username": "user8",
-    "email": "user8@example.com",
-    "password": "password8"
-  },
-  {
-    "id": 9,
-    "avatar": "https://i.pravatar.cc/150?img=9",
-    "username": "user9",
-    "email": "user9@example.com",
-    "password": "password9"
-  },
-  {
-    "id": 10,
-    "avatar": "https://i.pravatar.cc/150?img=10",
-    "username": "user10",
-    "email": "user10@example.com",
-    "password": "password10"
-  }
-
-];
-
-export const products = [
+export const checkBox  = [
   {
     id: 1,
-    img: "https://store.sony.com.au/on/demandware.static/-/Sites-sony-master-catalog/default/dw1b537bbb/images/PLAYSTATION5W/PLAYSTATION5W.png",
-    title: "Playstation 5 Digital Edition",
-    color: "white",
-    producer: "Sony",
-    price: "$250.99",
-    createdAt: "01.02.2023",
-    inStock: true,
+    cbxId: "cbx-1",
+    title: "Allow Notification to send message",
   },
   {
     id: 2,
-    img: "https://www.pngmart.com/files/6/Dell-Laptop-PNG-Image.png",
-    title: "Dell Laptop KR211822",
-    color: "black",
-    producer: "Dell",
-    price: "$499.99",
-    createdAt: "01.02.2023",
-    inStock: true,
+    cbxId: "cbx-2",
+    title: "Allow Notification to send message",
   },
   {
     id: 3,
-    img: "http://images.samsung.com/is/image/samsung/uk-led-tv-hg40ed670ck-hg40ed670ckxxu-001-front",
-    title: "Samsung TV 4K SmartTV",
-    color: "gray",
-    producer: "Samsung",
-    price: "$999.49",
-    createdAt: "01.02.2023",
-    inStock: true,
+    cbxId: "cbx-3",
+    title: "Allow Notification to send message",
   },
   {
     id: 4,
-    img: "https://raylo.imgix.net/iphone-14-blue.png",
-    title: "Apple Iphone 14 Pro Max",
-    color: "white",
-    producer: "Apple",
-    price: "$799.49",
-    createdAt: "01.02.2023",
-    inStock: true,
+    cbxId: "cbx-4",
+    title: "Allow Notification to send message",
   },
   {
     id: 5,
-    img: "https://www.signify.com/b-dam/signify/en-aa/about/news/2020/20200903-movie-night-essentials-popcorn-ice-cream-and-the-new-philips-hue-play-gradient-lightstrip/packaging-lighstrip.png",
-    title: "Philips Hue Play Gradient",
-    color: "rainbow",
-    producer: "Philips",
-    price: "$39.99",
-    createdAt: "01.02.2023",
+    cbxId: "cbx-5",
+    title: "Allow Notification to send message",
   },
   {
     id: 6,
-    img: "https://www.smartworld.it/wp-content/uploads/2019/09/High_Resolution_PNG-MX-Master-3-LEFT-GRAPHITE.png",
-    title: "Logitech MX Master 3",
-    color: "black",
-    producer: "Logitech",
-    price: "$59.49",
-    createdAt: "01.02.2023",
-    inStock: true,
+    cbxId: "cbx-6",
+    title: "Allow Notification to send message",
   },
-  {
-    id: 7,
-    img: "https://www.pngarts.com/files/7/Podcast-Mic-PNG-Picture.png",
-    title: "Rode Podcast Microphone",
-    color: "gray",
-    producer: "Rode",
-    price: "$119.49",
-    createdAt: "01.02.2023",
-  },
-  {
-    id: 8,
-    img: "https://5.imimg.com/data5/SW/VM/MY-5774620/toshiba-split-ac-2-ton-3-star-rated-ras-24s3ks-500x500.png",
-    title: "Toshiba Split AC 2",
-    color: "white",
-    producer: "Toshiba",
-    price: "$899.99",
-    createdAt: "01.02.2023",
-    inStock: true,
-  },
-  {
-    id: 9,
-    img: "https://img.productz.com/review_image/102489/preview_sony-kdl-50w800b-50-inch-hdtv-review-superb-picture-102489.png",
-    title: "Sony Bravia KDL-47W805A",
-    color: "black",
-    producer: "Sony",
-    price: "$970.49",
-    createdAt: "01.02.2023",
-  },
-  {
-    id: 10,
-    img: "https://venturebeat.com/wp-content/uploads/2015/07/As_AO1-131_gray_nonglare_win10_03.png?fit=1338%2C1055&strip=all",
-    title: "Acer Laptop 16 KL-4804",
-    color: "black",
-    producer: "Acer",
-    price: "$599.99",
-    createdAt: "01.02.2023",
-    inStock: true,
-  },
-];
+]
 
-
-
-export const singleUser = {
-  id: 1,
-  title: "John Doe",
-  img: "https://images.pexels.com/photos/17397364/pexels-photo-17397364.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
-  info: {
-    username: "Johndoe99",
-    fullname: "John Doe",
-    email: "johndoe@gmail.com",
-    phone: "123 456 789",
-    status: "verified",
-  },
-  chart: {
-    dataKeys: [
-      { name: "visits", color: "#82ca9d" },
-      { name: "clicks", color: "#8884d8" },
-    ],
-    data: [
-      {
-        name: "Sun",
-        visits: 4000,
-        clicks: 2400,
-      },
-      {
-        name: "Mon",
-        visits: 3000,
-        clicks: 1398,
-      },
-      {
-        name: "Tue",
-        visits: 2000,
-        clicks: 3800,
-      },
-      {
-        name: "Wed",
-        visits: 2780,
-        clicks: 3908,
-      },
-      {
-        name: "Thu",
-        visits: 1890,
-        clicks: 4800,
-      },
-      {
-        name: "Fri",
-        visits: 2390,
-        clicks: 3800,
-      },
-      {
-        name: "Sat",
-        visits: 3490,
-        clicks: 4300,
-      },
-    ],
-  },
-  activities: [
-    {
-      text: "John Doe purchased Playstation 5 Digital Edition",
-      time: "3 day ago",
-    },
-    {
-      text: "John Doe added 3 items into their wishlist",
-      time: "1 week ago",
-    },
-    {
-      text: "John Doe purchased Sony Bravia KD-32w800",
-      time: "2 weeks ago",
-    },
-    {
-      text: "John Doe reviewed a product",
-      time: "1 month ago",
-    },
-    {
-      text: "John Doe added 1 items into their wishlist",
-      time: "1 month ago",
-    },
-    {
-      text: "John Doe reviewed a product",
-      time: "2 months ago",
-    },
-  ],
-};

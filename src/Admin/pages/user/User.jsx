@@ -1,34 +1,49 @@
-import React, { useContext, useEffect, useState } from 'react';
-import admin from "../../../../public/admin-person.png";
+import React, { useEffect, useState } from 'react';
+import admin from "../../../assets/admin-person.png"  
 import './user.scss';
 import "../../styles/global.scss";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const User = () => {
 
-  const [adminInfo, setAdminInfo] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = () => {
+    
+    closeModal();
+  };
+
+  const { id } = useParams();
 
   const handleChange = () => {
     setIsChecked(prevState => !prevState);
   };
 
   useEffect(() => {
-    fetchAdminInfo();
+    fetchSingleUserInfo(id);
   }, []);
 
-  const fetchAdminInfo = async () => {
+  const fetchSingleUserInfo = async (id) => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/getadmin', {
+      const response = await fetch(`http://localhost:5000/api/admin/fetchuser/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'authtoken': localStorage.getItem('admin-token') || '', // Ensure adminToken is present, provide default value if not found
+          'admin-token': localStorage.getItem('admin-token')
         },
       });
 
       const json = await response.json();
-      setAdminInfo(json)
+      setUserInfo(json)
 
 
     } catch (error) {
@@ -37,186 +52,83 @@ const User = () => {
     }
   };
 
- 
+
 
 
   return (
-    <div className="min-h-screen w-full font-poppins">
+    <div className="w-full font-roboto min-h-screen relative">
       <div className=" mx-5 py-3 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ">
         <div className="image p-2 rounded-xl mx-4 bg-gray-300 h-[150px] w-[150px] object-contain">
           <img src={admin} alt="" />
         </div>
-        {adminInfo.map((e, index) => {
+        {userInfo.map((e, index) => {
           return (
             <div className=" ml-3 info flex flex-col gap-y-2 items-start justify-start" key={index}>
-              <h1 className="text-2xl uppercase bold-700">{e.name}</h1>
-              <h1 className="text-lg text-gray-700">{e.emailId}</h1>
+              <h1 className="text-2xl uppercase bold-700">{e.username}</h1>
+              <h1 className="text-lg text-gray-700 ">{e.emailId}</h1>
             </div>
           )
         })}
       </div>
 
 
-      <div className="flex justify-center gap-x-3 items-center">
-
-
-        <div className="mt-10 ml-5 flex flex-col w-[50vw] rounded-lg gap-y-4 bg-white items-start  text-gray-800 p-5">
-          <div className="flex items-center mb-2 justify-between w-full">
-            <h1 className="text-lg bold-600 font-roboto">Profile Information</h1>
-            <Link to="/">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-              </svg>
-            </Link>
-          </div>
-
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum, explicabo earum sapiente illum assumenda voluptas, mollitia officiis autem blanditiis pariatur natus ducimus sunt ipsam beatae vero facilis neque nobis! Voluptatibus doloremque quibusdam quisquam atque.</p>
-
-          <hr style={{
-            background: 'gray',
-            height: "2px",
-            width: "100%"
-          }} />
-
-          {
-            adminInfo.map((e) => {
-              return (
-                <table className="table-auto w-full mb-20" key={e._id}>
-                  <tbody>
+      <div className="overflow-x-auto flex justify-center gap-x-2 items-start">
+        <table className="mt-5 min-w-full divide-y divide-gray-100">
+          <thead className="bg-gray-900">
+            <tr>
+              <th scope="col" className="px-7 pr-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Sno.</th>
+              <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Username</th>
+              <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Email-ID</th>
+              <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">User Created</th>
+              <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 text-gray-900 font-roboto">
+            {
+              userInfo.map((user, index) => {
+                return (
+                  <React.Fragment key={user._id}>
                     <tr>
-                      <td className=" text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Admin ID:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.adminId}</div>
+                      <td className="px-7 py-4 text-center whitespace-nowrap">{index + 1}</td>
+                      <td className="px-3 py-4 text-center whitespace-nowrap">{user.username}</td>
+                      <td className="px-3 py-4 text-center whitespace-nowrap">{user.emailId}</td>
+                      <td className="px-3 py-4 text-center whitespace-nowrap">{user.datacreated.substring(0, 10)}</td>
+                      <td className="px-3 py-4 text-center whitespace-nowrap flex gap-x-3 justify-center">
+                        <button  onClick={openModal} className="py-2 px-3 text-white bg-red-600 hover:bg-red-500 rounded font-medium ">Delete user</button>
                       </td>
                     </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Username:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.username}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Full Name:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.name}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Email ID:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.emailId}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Phone Number:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>+91 - {e.phoneNumber}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Admin Priority:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.adminPriority}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-gray-800 font-bold">
-                        <div style={{ marginBottom: '8px' }}>Data Created:</div>
-                      </td>
-                      <td className="font-semibold text-black">
-                        <div style={{ marginBottom: '8px' }}>{e.datacreated}</div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              )
-            })
-          }
-        </div>
-
-        <div className="mt-10 ml-5 flex flex-col w-[50vw] rounded-lg gap-y-4 bg-white items-start  text-gray-800 p-5">
-          <div className="flex items-center mb-2 justify-between w-full">
-            <h1 className="text-lg bold-600 font-roboto">Platform Settings</h1>
-          </div>
-
-          <div className="flex flex-col items-start justify-start">
-
-            <h1 className="mb-4 text-md font-roboto font-semibold text-gray-500 uppercase">Account</h1>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" checked={isChecked} onChange={handleChange} className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" checked={isChecked} onChange={handleChange} className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <h1 className="mb-4 text-md font-roboto font-semibold text-gray-500 uppercase">Application</h1>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <div className="mb-4">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" checked={isChecked} onChange={handleChange} className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-            <div className="mb-10">
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked={isChecked} onChange={handleChange}:after:translate-x-full rtl:peer-checked={isChecked} onChange={handleChange}:after:-translate-x-full peer-checked={isChecked} onChange={handleChange}:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked={isChecked} onChange={handleChange}:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Allow notifications when someone sends me message</span>
-              </label>
-            </div>
-
-          </div>
-
-        </div>
+                  </React.Fragment>
+                )
+              })
+            }
+          </tbody>
+        </table>
       </div>
+
+      {isModalOpen && (
+        <div id="popup-modal" tabIndex="-1" className="overflow-y-auto overflow-x-hidden setModal z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div className="relative p-4 w-full max-w-md max-h-full">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button type="button" onClick={closeModal} className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <div className="p-4 md:p-5 text-center">
+                <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete profile of this user?</h3>
+                <button onClick={handleDelete} type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">  
+                  Yes, I'm sure
+                </button>
+                <button onClick={closeModal} type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

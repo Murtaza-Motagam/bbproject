@@ -222,4 +222,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
   res.json({ "success": "image is inserted" });
 });
 
+
+
+
 module.exports = router;

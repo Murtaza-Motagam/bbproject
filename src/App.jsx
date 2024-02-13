@@ -16,21 +16,23 @@ import Explore from "./views/Explore";
 import Profile from "./views/Profile";
 import Blogs from "./views/Blogs.jsx"
 import BlogsCategory from "./views/BlogsCategory.jsx"
+import ErrorPage from "./views/ErrorPage.jsx"
 import { BlogProvider } from "./BlogContext.jsx";
 
 // Admin Panel imports
 
 import AdminNavbar from "./Admin/components/Navbar/Navbar.tsx";
 import AdminMenu from "./Admin/components/Menu/Menu.tsx";
-import AdminHome from "./Admin/pages/home/Home.tsx";
-import AdminUsers from "./Admin/pages/users/Users.jsx";
-import AdminUser from "./Admin/pages/user/User.jsx";
-import AdminProfile from "./Admin/pages/user/AdminProfile.jsx";
+import AdminHome from "./Admin/pages/Home.tsx";
+import AdminUsers from "./Admin/pages/AdminUsers.jsx";
+import AdminUser from "./Admin/pages/AdminUser.jsx";
+import AdminProfile from "./Admin/pages/AdminProfile.jsx";
 import "./Admin/styles/global.scss"
 import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import AdminAlert from "./Admin/components/alert/AdminAlert.jsx";
 
 
 const queryClient = new QueryClient();
@@ -67,6 +69,8 @@ const MainApplication = () => {
             <Route path="/myprofile" element={<Profile />} />
 
 
+            {/* Error Page  */}
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
         <Footer />
@@ -77,10 +81,26 @@ const MainApplication = () => {
 
 const AdminPanel = () => {
 
+  const [alert, setAlert] = useState(null);
+
+
+  const showAlert = (heading, message, textColor) => {
+    setAlert({
+      heading: heading,
+      msg: message,
+      text: textColor
+    });
+
+    setTimeout((showAlert) => {
+      setAlert(null);
+    }, 3000);
+  };
+
   const Layout = () => {
     return (
-      <div className="main">
+      <div className="main relative">
         <AdminNavbar />
+        <AdminAlert alert={alert} />
         <div className="container">
           <div className="menuContainer">
             <AdminMenu />
@@ -107,11 +127,11 @@ const AdminPanel = () => {
         },
         {
           path: "/users",
-          element: <AdminUsers />,
+          element: <AdminUsers showAlert={showAlert}/>,
         },
         {
           path: "/users/:id",
-          element: <AdminUser />,
+          element: <AdminUser showAlert={showAlert} />,
         },
         {
           path: "/profile",

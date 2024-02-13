@@ -27,47 +27,11 @@ export const menu = [
         url: "/users",
         icon: "user.svg",
       },
-    ],
-  },
-  {
-    id: 3,
-    title: "general",
-    listItems: [
-      {
-        id: 1,
-        title: "Elements",
-        url: "/",
-        icon: "element.svg",
-      },
       {
         id: 2,
-        title: "Notes",
-        url: "/",
-        icon: "note.svg",
-      },
-      {
-        id: 3,
-        title: "Forms",
-        url: "/",
-        icon: "form.svg",
-      },
-      {
-        id: 4,
-        title: "Calendar",
-        url: "/calendar",
-        icon: "calendar.svg",
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: "Session",
-    listItems: [
-      {
-        id: 1,
-        title: "Elements",
-        url: "/",
-        icon: "logout.svg",
+        title: "Admin Users",
+        url: "/admin/users",
+        icon: "user.svg",
       },
     ],
   },

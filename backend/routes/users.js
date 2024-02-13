@@ -222,6 +222,34 @@ router.post('/upload', upload.single('file'), (req, res) => {
   res.json({ "success": "image is inserted" });
 });
 
+// ROUTE 6: Delete a user Login Required...
+
+router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
+
+  let success = false;
+
+  try {
+
+    // Find note to be updated and update it
+
+    let mainUser = await Users.findById(req.params.id);
+    if (!mainUser) {
+      return res.status(404).send("User Not Found");
+    }
+
+    mainUser = await Users.findByIdAndDelete(req.params.id);
+
+    success = true;
+
+    res.json({ success, "Success": "The User is deleted Successfully", mainUser: mainUser });
+  }
+
+  catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occurred");
+  }
+
+})
 
 
 

@@ -229,4 +229,35 @@ router.post('/fetchuser/:id', fetchAdmin, async (req, res) => {
 })
 
 
+// ROUTE 8: Delete a user by admin admin Required...
+
+router.delete('/deleteuser/:id', fetchAdmin, async (req, res) => {
+
+    let success = false;
+
+    try {
+
+        // Find note to be updated and update it
+
+        let mainUser = await Users.findById(req.params.id);
+        if (!mainUser) {
+            return res.status(404).send("User Not Found");
+        }
+
+        mainUser = await Users.findByIdAndDelete(req.params.id);
+
+        success = true;
+
+        res.json({ success, "Message": "The User is deleted Successfully" });
+    }
+
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occurred");
+    }
+
+})
+
+
+
 module.exports = router;

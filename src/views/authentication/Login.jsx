@@ -112,7 +112,7 @@ const Login = () => {
 
   return (
     <>
-      <section className="bg-set min-h-screen flex items-center justify-center font-roboto">
+      <section className="bg-set mt-10 min-h-screen flex items-center justify-center font-roboto">
         {/* <!-- login container --> */}
         <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
           {/* <!-- form --> */}

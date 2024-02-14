@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -118,4 +118,16 @@
     stroke: #52d66b;
     stroke-dasharray: 25;
     stroke-dashoffset: 25;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    /* Adjust z-index as needed */
+    width: 100%;
+    background-color: #ffffff;
+    /* Change background color as needed */
 }

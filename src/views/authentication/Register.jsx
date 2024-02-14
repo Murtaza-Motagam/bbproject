@@ -56,7 +56,7 @@ const Register = () => {
           cpassword: "",
         });
         Navigate("/");
-        window.location.reload(true);
+        window.location.reload(false);
       } else {
         // document.getElementById("passwordMatch").style.display = "hidden";
         document.getElementById("passwordMatch").style.display = "none";

@@ -53,7 +53,7 @@ const Login = () => {
           password: "",
         }));
         Navigate("/");
-        window.location.reload(true);
+        window.location.reload(false);
       }
     } else {
       const { emailId, password } = credentials;

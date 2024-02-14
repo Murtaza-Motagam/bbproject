@@ -119,15 +119,3 @@
     stroke-dasharray: 25;
     stroke-dashoffset: 25;
 }
-
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    /* Adjust z-index as needed */
-    width: 100%;
-    background-color: #ffffff;
-    /* Change background color as needed */
-}

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet, BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 // client panel routes
 
 import Home from "./views/Home.jsx";
@@ -22,17 +23,18 @@ import { BlogProvider } from "./BlogContext.jsx";
 // Admin Panel imports
 
 import AdminNavbar from "./Admin/components/Navbar/Navbar.tsx";
-import AdminMenu from "./Admin/components/Menu/Menu.tsx";
+import AdminMenu from "./Admin/components/Menu/Menu.jsx";
 import AdminHome from "./Admin/pages/Home.tsx";
 import AdminUsers from "./Admin/pages/AdminUsers.jsx";
 import AdminUser from "./Admin/pages/AdminUser.jsx";
 import AdminProfile from "./Admin/pages/AdminProfile.jsx";
+import Error404 from "./Admin/components/ErrorPage/Error404.jsx";
 import "./Admin/styles/global.scss"
+import AdminAlert from "./Admin/components/alert/AdminAlert.jsx";
 import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import AdminAlert from "./Admin/components/alert/AdminAlert.jsx";
 
 
 const queryClient = new QueryClient();
@@ -40,29 +42,63 @@ const queryClient = new QueryClient();
 
 const MainApplication = () => {
 
+
+
+  AOS.init();
+
   const adminLoggedIn = localStorage.getItem('admin-token')
   const userLoggedIn = localStorage.getItem('user-token')
+
+  const initialTheme = localStorage.getItem('theme') || 'light';
+  const [theme, setTheme] = useState(initialTheme);
+  const [light, setLight] = useState(false);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+      setLight(false);
+      setDark(true);
+    }
+    else {
+      document.documentElement.classList.remove("dark");
+      setDark(false);
+      setLight(true);
+    }
+  }, [theme])
+
+  const handleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    // setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(newTheme);
+    // Store theme preference in localStorage
+    localStorage.setItem('theme', newTheme);
+  }
+
 
   return (
 
     <BlogProvider>
       <Router>
-        <Header />
+        <Header handleTheme={handleTheme} theme={theme} />
         <div className="min-h-screen">
           <Routes>
 
             {/* Client Panel Routes */}
 
-            <Route exact path="/" element={<Home />} />
-            <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login /> : <Navigate to="/" />} />
-            <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register /> : <Navigate to="/" />} />
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/joinwithus" element={<Join />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs-category" element={<BlogsCategory />} />
-            <Route path="/terms-and-conditions" element={<Terms />} />
+            <Route exact path="/" element={<Home theme={theme} />} />
+            <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Navigate to="/" />} />
+            <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register theme={theme} /> : <Navigate to="/" />} />
+            <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>} />
+            <Route path="/services" element={<Services theme={theme}/>} />
+            <Route path="/joinwithus" element={<Join theme={theme}/>} />
+            <Route path="/explore" element={<Explore theme={theme}/>} />
+            <Route path="/blogs" element={<Blogs theme={theme}/>} />
+            <Route path="/blogs-category" element={<BlogsCategory theme={theme}/>} />
+            <Route path="/terms-and-conditions" element={<Terms theme={theme}/>} />
 
 
             {/* User Personal Space Routes */}
@@ -127,7 +163,7 @@ const AdminPanel = () => {
         },
         {
           path: "/users",
-          element: <AdminUsers showAlert={showAlert}/>,
+          element: <AdminUsers showAlert={showAlert} />,
         },
         {
           path: "/users/:id",
@@ -136,6 +172,10 @@ const AdminPanel = () => {
         {
           path: "/profile",
           element: <AdminProfile />,
+        },
+        {
+          path: "*",
+          element: <Error404 />,
         },
       ],
     }

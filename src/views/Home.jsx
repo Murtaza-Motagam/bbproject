@@ -1,7 +1,13 @@
 import React from "react";
 
-const Home = () => {
-  return <div className="mt-50">Homepage</div>;
+const Home = ({ theme }) => {
+
+  return (
+    <div className={`${theme === 'dark' ? 'dark' : 'light'}`}>
+      Homepage
+    </div>
+  )
+
 };
 
 export default Home;

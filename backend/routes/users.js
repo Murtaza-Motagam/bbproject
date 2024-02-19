@@ -124,13 +124,15 @@ router.post('/signin', [
 
 // Route-3: Fetch User entire info in database except blogs 
 
-router.post('/getuser', fetchUser, async (req, res) => {
-
+router.get('/getuser', fetchUser, async (req, res) => {
+  
+  let success = false;
   try {
-
+    
     let userId = req.user.id;
     const userInfo = await Users.findById(userId).select("-password");
-    res.json([userInfo]);
+    success = true;
+    res.json({ success, userInfo: userInfo});
   }
   catch (error) {
     console.error(error.message);

@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import Services from "./views/Services";
 import Join from "./views/Join";
 import Explore from "./views/Explore";
+import Contact from "./views/Contact";
 import Profile from "./views/Profile";
 import Blogs from "./views/Blogs.jsx"
 import BlogsCategory from "./views/BlogsCategory.jsx"
@@ -60,11 +61,13 @@ const MainApplication = () => {
 
     if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
+      document.body.style.backgroundColor = "#15202B";
       setLight(false);
       setDark(true);
     }
     else {
       document.documentElement.classList.remove("dark");
+      document.body.style.backgroundColor = "#fff";
       setDark(false);
       setLight(true);
     }
@@ -92,13 +95,14 @@ const MainApplication = () => {
             <Route exact path="/" element={<Home theme={theme} />} />
             <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Navigate to="/" />} />
             <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register theme={theme} /> : <Navigate to="/" />} />
-            <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>} />
-            <Route path="/services" element={<Services theme={theme}/>} />
-            <Route path="/joinwithus" element={<Join theme={theme}/>} />
-            <Route path="/explore" element={<Explore theme={theme}/>} />
-            <Route path="/blogs" element={<Blogs theme={theme}/>} />
-            <Route path="/blogs-category" element={<BlogsCategory theme={theme}/>} />
-            <Route path="/terms-and-conditions" element={<Terms theme={theme}/>} />
+            <Route path="/forgotpassword" element={<ForgotPassword theme={theme} />} />
+            <Route path="/services" element={<Services theme={theme} />} />
+            <Route path="/joinwithus" element={<Join theme={theme} />} />
+            <Route path="/explore" element={<Explore theme={theme} />} />
+            <Route path="/blogs" element={<Blogs theme={theme} />} />
+            <Route path="/category" element={<BlogsCategory theme={theme} />} />
+            <Route path="/contact" element={<Contact theme={theme} />} />
+            <Route path="/terms-and-conditions" element={<Terms theme={theme} />} />
 
 
             {/* User Personal Space Routes */}
@@ -109,7 +113,7 @@ const MainApplication = () => {
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
-        <Footer />
+        <Footer theme={theme} />
       </Router>
     </BlogProvider>
   )

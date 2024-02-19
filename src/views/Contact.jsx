@@ -1,11 +1,11 @@
 import React from 'react'
 
-const BlogsCategory = ({ theme }) => {
+const Contact = ({ theme }) => {
   return (
     <div className={`${theme === 'dark' ? 'dark' : 'light'}`}>
-      BlogsCategory
+        Contact
     </div>
   )
 }
 
-export default BlogsCategory
+export default Contact

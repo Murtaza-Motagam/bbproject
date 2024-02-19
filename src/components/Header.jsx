@@ -5,15 +5,14 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 
-const Header = (props) => {
+const Header = ({ theme, handleTheme }) => {
 
   const Navigate = useNavigate();
   const location = useLocation();
 
-  const { theme, handleTheme } = props;
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [profile, setProfile] = useState([]);
   const [defaultLang, setDefaultLang] = useState("ENG - USA");
 
 
@@ -38,19 +37,42 @@ const Header = (props) => {
     }
   };
 
+
+  const fetchUser = async () => {
+    const response = await fetch("http://localhost:5000/api/auth/getuser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "user-token": localStorage.getItem('user-token')
+      }
+    });
+
+    const json = await response.json();
+    setProfile([json.userInfo]);
+  }
+
+
   useEffect(() => {
     AOS.init();
+    fetchUser();
+    if (theme === "light") {
+      document.getElementById("logo").classList.remove("color-set");
+    }
+    else {
+      document.getElementById("logo").classList.add("color-set");
+    }
   }, [theme])
-  
+
+
 
   return (
-    <nav className=" font-poppins w-full relative">
+    <nav className={`font-poppins w-full relative  ${theme === 'dark' ? 'dark' : 'light'}`}>
       <div className=" mx-auto bg-gray-100 shadow-md shadow-gray-400 flex flex-wrap items-center justify-between p-4 dark:bg-gray-800 dark:shadow-sm dark:shadow-gray-500">
         <Link
           to="/"
-          className="px-3 pb-2 flex items-center space-x-3 rtl:space-x-reverse hover:scale-105 dark:bg-white rounded-full"
+          className="px-3 pb-2 flex items-center space-x-3 rtl:space-x-reverse hover:scale-105  rounded-full"
         >
-          <img src={Logo} className="h-12" alt="Flowbite Logo" />
+          <img src={Logo} id="logo" className="h-12 " alt="Flowbite Logo" />
         </Link>
 
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -139,12 +161,12 @@ const Header = (props) => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
                 </svg>)
 
-              : (
+                : (
 
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 transition duration-400 ease-in">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                </svg>
-              )
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 transition duration-400 ease-in">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                  </svg>
+                )
               }
             </div>
 
@@ -167,7 +189,16 @@ const Header = (props) => {
                   <div id="authentication-modal" className="md:flex lg:flex xl:flex hidden absolute top-[4rem] w-[20vw] right-[1rem] z-50 items-center justify-center">
                     <div className="bg-white rounded-lg shadow-md dark:bg-gray-700 w-[15vw]">
                       <div className="flex items-center space-x-2 justify-start m-4 rounded-t dark:border-gray-600">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">User Profile</h3>
+                        {profile.map((e) => {
+                          return (
+                            <div key={e._id}>
+                              <h3 className="flex justify-between w-full items-center text-xl font-semibold text-gray-900 dark:text-white">
+                                <i className="fa-solid fa-user-plus text-center mr-3"></i>
+                                <span>{e.username}</span>
+                              </h3>
+                            </div>
+                          )
+                        })}
                       </div>
                       <hr />
                       <div className=" md:p-2 lg:p-2 w-full mt-2 ">
@@ -185,7 +216,7 @@ const Header = (props) => {
                               <span>My Account</span>
                             </div>
                           </Link>
-                          <Link to="/" className="w-full hover:bg-gray-100 hover:rounded bold-500 font-roboto py-3 pl-4 
+                          <Link to="/myprofile" className="w-full hover:bg-gray-100 hover:rounded bold-500 font-roboto py-3 pl-4 
                           dark:text-white dark:hover:bg-darkTerritiary
                           ">
                             <div className="flex items-center justify-start space-x-4 ">

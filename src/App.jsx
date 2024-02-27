@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet, BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
 // client panel routes
 
 import Home from "./views/Home.jsx";

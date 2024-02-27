@@ -27,6 +27,7 @@ const AdminUsers = (props) => {
     const [initialLoad, setInitialLoad] = useState(true); // State to track initial load
 
     useEffect(() => {
+      document.title = " Blogin Users | Check and edit the details of every user";
       if (initialLoad) {
         // Fetch data only on initial load
         fetchAllUsersInfo();

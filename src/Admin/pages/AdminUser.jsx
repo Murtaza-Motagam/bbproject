@@ -84,6 +84,7 @@ const AdminUser = (props) => {
     };
 
     useEffect(() => {
+      document.title = " Blogin User | Check and edit the details of a single user";
       fetchSingleUserInfo(id);
     }, []);
 

@@ -125,14 +125,14 @@ router.post('/signin', [
 // Route-3: Fetch User entire info in database except blogs 
 
 router.get('/getuser', fetchUser, async (req, res) => {
-  
+
   let success = false;
   try {
-    
+
     let userId = req.user.id;
     const userInfo = await Users.findById(userId).select("-password");
     success = true;
-    res.json({ success, userInfo: userInfo});
+    res.json({ success, userInfo: userInfo });
   }
   catch (error) {
     console.error(error.message);
@@ -244,6 +244,30 @@ router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
     success = true;
 
     res.json({ success, "Success": "The User is deleted Successfully", mainUser: mainUser });
+  }
+
+  catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occurred");
+  }
+
+})
+
+
+// ROUTE 7: Add other information such as location, website link or personal description
+
+router.post('/addfellowdetails', [
+  body('location', 'Please Enter your location.').isLength({ min: 3 }),
+  body('webLink', 'Please enter your link.').isLength({ min: 13 }),
+  body('userDesc', 'Please enter long password').isLength({ min: 8 }),
+], fetchUser, async (req, res) => {
+
+  let success = false;
+
+  try {
+
+    const { location, webLink, userDesc } = req.body;
+
   }
 
   catch (error) {

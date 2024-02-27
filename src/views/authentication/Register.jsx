@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RegisterNlogin from "../../assets/loginNregister2.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = ({ theme }) => {
+
+  useEffect(()=>{
+    document.title = 'Signup in Blogin | Get access to all features.';
+  },[])
+
   const Navigate = useNavigate();
 
   // State Rendering

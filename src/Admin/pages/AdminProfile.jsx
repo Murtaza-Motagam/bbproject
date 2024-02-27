@@ -10,6 +10,7 @@ const AdminProfile = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        document.title = "Admin Profile | Checkout your details and information within the system.";
         fetchAdminInfo();
     }, []);
 

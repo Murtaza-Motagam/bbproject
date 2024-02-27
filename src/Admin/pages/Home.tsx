@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BarChartBox from "../components/barChartBox/BarChartBox.js";
 import BigChartBox from "../components/bigChartBox/BigChartBox.js";
 import ChartBox from "../components/chartBox/ChartBox.js";
@@ -28,6 +28,10 @@ const Home = () => {
   setTimeout(() => {
     setLoading(false)
   }, 1200);
+
+  useEffect(()=>{
+    document.title = "Dashboard Blogin | Access to all client information and details";
+  },[])
 
   const MainFunction = () => {
 

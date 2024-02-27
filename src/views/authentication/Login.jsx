@@ -5,6 +5,10 @@ import { adminDetails } from "../../AdminData";
 
 const Login = ({ theme }) => {
 
+  useEffect(()=>{
+    document.title = 'Get Loggedin into Blogin | Get access to all features.';
+  },[])
+
   const Navigate = useNavigate();
   const [credentials, setCredentials] = useState({ emailId: "", password: "" });
   const [rpass, setRPass] = useState(false);

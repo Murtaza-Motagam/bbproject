@@ -77,11 +77,7 @@ const Header = ({ theme, handleTheme }) => {
               <button
                 id="multiLevelDropdownButton"
                 onClick={openDropDown}
-                className={`text-gray-900 space-x-3 focus:none outline-none focus:outline-none font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center ${
-                  theme === "dark"
-                    ? "dark:hover:bg-gray-700 dark:text-white"
-                    : "hover:bg-gray-200"
-                } `}
+                className={`text-gray-900 space-x-3 focus:none outline-none focus:outline-none font-medium rounded-lg text-sm px-2 py-2.5 text-center hidden lg:inline-flex xl:inline-flex items-center ${theme === "dark" ? "dark:hover:bg-gray-700 dark:text-white" : "hover:bg-gray-200"} `}
                 type="button"
               >
                 <svg
@@ -307,45 +303,41 @@ const Header = ({ theme, handleTheme }) => {
               )}
             </div>
           </div>
-          {!localStorage.getItem("user-token") ? (
-            <Link
-              to="/register"
-              className="text-white mr-2 bg-gray-900 hover:scale-105 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-sm px-4 py-2 text-center dark:bg-gray-50 dark:text-gray-900"
-            >
-              Signup
-            </Link>
-          ) : (
-            <div>
-              <div
-                onClick={openModal}
-                className="md:block xl:block lg:block hidden relative py-3 px-3 rounded-full bg-gray-600 text-white hover:bg-black cursor-pointer"
+          {
+            !localStorage.getItem('user-token')
+              ?
+              <Link
+                to="/register"
+                className="text-white mr-2 bg-gray-900 hover:scale-105 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-sm px-4 py-2 text-center dark:bg-gray-50 dark:text-gray-900"
               >
-                <i className="fa-solid fa-user-plus fa-lg text-center"></i>
-              </div>
-              {isModalOpen && (
-                <div
-                  id="authentication-modal"
-                  className="md:flex lg:flex xl:flex hidden absolute top-[4rem] w-[20vw] right-[1rem] z-50 items-center justify-center"
-                >
-                  <div className="bg-white rounded-lg shadow-md dark:bg-gray-700 w-[15vw]">
-                    <div className="flex items-center space-x-2 justify-start m-4 rounded-t dark:border-gray-600">
-                      {profile.map((e) => {
-                        return (
-                          <div key={e._id}>
-                            <h3 className="flex justify-between w-full items-center text-xl font-semibold text-gray-900 dark:text-white">
-                              <i className="fa-solid fa-user-plus text-center mr-3"></i>
-                              <span>{e.username}</span>
-                            </h3>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <hr />
-                    <div className=" md:p-2 lg:p-2 w-full mt-2 ">
-                      <div className="flex w-full flex-col items-start justify-between space-y-3">
-                        <Link
-                          to="/"
-                          className="w-full hover:bg-gray-100 hover:rounded bold-500 font-roboto py-3 pl-4 
+                Signup
+              </Link>
+              :
+              <div onClick={openModal}>
+                <div className="md:block xl:block lg:block hidden relative py-3 px-3 rounded-full bg-gray-600 text-white hover:bg-black cursor-pointer">
+                  <i className="fa-solid fa-user-plus fa-lg text-center"></i>
+                </div>
+                {isModalOpen && (
+                  <div id="authentication-modal" className="md:flex lg:flex xl:flex hidden absolute top-[4rem] w-[20vw] right-[1rem] z-50 items-center justify-center">
+                    <div className="bg-white rounded-lg shadow-md dark:bg-gray-700 w-[15vw]">
+                      <div className="flex items-center space-x-2 justify-start m-4 rounded-t dark:border-gray-600">
+                        {profile.map((e) => {
+                          return (
+                            <div key={e._id}>
+                              <h3 className="flex justify-between w-full items-center text-xl font-semibold text-gray-900 dark:text-white">
+                                <i className="fa-solid fa-user-plus text-center mr-3"></i>
+                                <span>{e.username}</span>
+                              </h3>
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <hr />
+                      <div className=" md:p-2 lg:p-2 w-full mt-2 ">
+                        <div className="flex w-full flex-col items-start justify-between space-y-3">
+                          <Link
+                            to="/"
+                            className="w-full hover:bg-gray-100 hover:rounded bold-500 font-roboto py-3 pl-4 
                             dark:text-white dark:hover:bg-darkTerritiary
                             "
                         >
@@ -446,7 +438,7 @@ const Header = ({ theme, handleTheme }) => {
                 </div>
               )}
             </div>
-          )}
+          }
 
           <button
             data-collapse-toggle="navbar-sticky"

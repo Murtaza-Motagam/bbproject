@@ -19,6 +19,18 @@ const UserSchema = new Schema({
     profilePic: {
         type: String
     },
+    location: {
+        type: String,
+        required: false,
+    },
+    webLink: {
+        type: String,
+        required: false,
+    },
+    userDesc: {
+        type: String,
+        required: false,
+    },
     datacreated: {
         type: Date,
         default: Date.now

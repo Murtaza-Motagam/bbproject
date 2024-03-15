@@ -44,7 +44,7 @@ const AdminProfile = () => {
 
         return (
             <div className="min-h-screen w-full font-poppins">
-                <div className=" ml-5 py-3 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ">
+                <div className=" py-3 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ml-5 ">
                     <div className="image p-2 rounded-xl mx-4 bg-gray-300 h-[150px] w-[150px] object-contain">
                         <img src={admin} alt="" />
                     </div>
@@ -59,10 +59,10 @@ const AdminProfile = () => {
                 </div>
 
 
-                <div className="flex justify-center gap-x-3 items-center">
+                <div className="flex justify-center lg:flex-row xl:flex-row md:flex-col sm:flex-col w-full gap-x-3 items-center">
 
 
-                    <div className="mt-10 ml-5 flex flex-col w-[50vw] rounded-lg gap-y-4 bg-white items-start  text-gray-800 p-5">
+                    <div className="mt-10 ml-5 flex flex-col w-full rounded-lg gap-y-4 bg-white items-start  text-gray-800 p-5">
                         <div className="flex items-center justify-between w-full">
                             <h1 className="text-2xl bold-600 text-gray-800 font-roboto">Profile Information</h1>
                             {adminInfo.map((admin, index) => {
@@ -154,39 +154,6 @@ const AdminProfile = () => {
                                 )
                             })
                         }
-                    </div>
-
-                    <div className="mt-10 ml-5 flex flex-col w-[30vw] rounded-lg gap-y-4 bg-white items-start  text-gray-800 p-5">
-                        <div className="flex items-center mb-2 justify-between w-full">
-                            <h1 className="text-2xl text-gray-800 bold-600 font-roboto">Platform Settings</h1>
-                        </div>
-
-                        <div className="mb-16 gap-y-2 flex flex-col items-start justify-start">
-
-                            <h1 className="mb-4 text-md font-roboto font-semibold text-gray-500 uppercase">Account</h1>
-
-                            {
-                                checkBox.map((e) => {
-                                    return (
-                                        <div className="checkbox-wrapper-51 mb-4 flex items-center gap-x-2" key={e.id}>
-                                            <div>
-                                                <input type="checkbox" id={e.cbxId} />
-                                                <label htmlFor={e.cbxId} className="toggle">
-                                                    <span>
-                                                        <svg width="10px" height="10px" viewBox="0 0 10 10">
-                                                            <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
-                                                        </svg>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            <h1 className="text-lg  text-gray-900">{e.title}</h1>
-                                        </div>
-                                    )
-                                })
-                            }
-
-                        </div>
-
                     </div>
                 </div>
             </div>

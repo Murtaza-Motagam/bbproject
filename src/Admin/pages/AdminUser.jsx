@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import admin from "../../assets/admin-person.png";
 import "../styles/global.scss";
+import blog from "../../assets/random2.jpeg"
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../components/Loader/Loader';
 
@@ -9,6 +10,25 @@ const AdminUser = (props) => {
   const Navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
+  const [trending, setTrending] = useState(false);
+  const [blogs, setBlogs] = useState(true);
+  const [images, setImages] = useState(false);
+
+  const onClickTr = () => {
+    setBlogs(false);
+    setImages(false);
+    setTrending(true);
+  }
+  const onClickBl = () => {
+    setTrending(false);
+    setImages(false);
+    setBlogs(true);
+  }
+  const onClickIm = () => {
+    setImages(true);
+    setTrending(false);
+    setBlogs(false);
+  }
 
 
   // Loading implementation
@@ -201,6 +221,39 @@ const AdminUser = (props) => {
               </div>
             </div>
           )}
+
+
+
+          <div class="text-sm font-medium text-center  mt-10  font-poppins  overflow-hidden  text-gray-50">
+            <ul class="flex flex-wrap -mb-px pb-2 gap-x-4">
+              <li class="me-2" onClick={onClickTr}>
+                <Link to="#" class={`${trending ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Trending</Link>
+              </li>
+              <li class="me-2" onClick={onClickBl}>
+                <Link to="#" class={`${blogs ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Blogs</Link>
+              </li>
+              <li class="me-2" onClick={onClickIm}>
+                <Link to="#" class={`${images ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Images</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="w-full mt-6">
+            <Link to="/" className="blog bg-gray-800 mr-10 ml-5 200 py-5 flex justify-between items-center px-5 overflow-hidden  border-b-4 rounded-xl  mb-5">
+              <div className="left hidden md:block lg:block xl:block md:w-1/4 lg:w-1/4 xl:w-1/4">
+                <img src={blog} className="w-[64] h-full object-contain" alt="" />
+              </div>
+              <div className="right w-full md:w-3/4 lg:w-3/4 xl:w-3/4 ml-5 flex items-start flex-col space-y-5">
+                <div className="space-y-2">
+                  <h1 className="shortInfo p-0 text-lg lg:text-xl xl:text-xl font-semibold text-blue-500">Information War</h1>
+                  <h1 className="Mainheading p-0 text-xl lg:text-2xl xl:text-2xl font-bold text-white">A man is innocent enough for eating <br /> chicken wings.</h1>
+                </div>
+                <p className="desc text-sm lg:text-md xl:text-md font-medium text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus aperiam optio suscipit minima cupiditate id expedita quod quam minus libero.</p>
+                <p className="author text-sm font-medium text-gray-300">Dispatch: Davidbek90</p>
+              </div>
+            </Link>
+          </div>
+
         </div>
       </div>
     );

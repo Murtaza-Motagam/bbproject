@@ -9,73 +9,44 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
+import { carouselData, compoData } from "../data.ts";
+
 const Home = ({ theme }) => {
+  
   useEffect(() => {
     document.title = "BLOGIN - Exclusive Blog Content Service Media Platform.";
   }, []);
+
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
-    speed: 500,
-    slidesToShow: 5,
+    speed: 200,
+    slidesToShow: 3,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // Medium devices (tablets, small desktops)
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768, // Small devices (landscape phones)
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
-  const compoData = [
-    {
-      heading:
-        "Users can create a personal brand, allowing them to articulate their unique perspectives, skills, and experiences.",
-      subheading: "Personal Expression and Storytelling:",
-    },
-    {
-      heading:
-        "Community engagement enhances a sense of belonging and collaboration.",
-      subheading: "Community Building:",
-    },
-    {
-      heading:
-        "This global reach opens up new opportunities for exposure, collaboration, and cross-cultural exchange.",
-      subheading: "Global Reach:",
-    },
-    {
-      heading:
-        "Consistent and quality content on blogs and social media can establish individuals as thought leaders in their respective fields.",
-      subheading: "Influence and Thought Leadership:",
-    },
-  ];
-  const TestData = [
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-    {
-      Name: "Jaimin Nay",
-      Message: "dasdasdvfd dfsfddvs gfd ",
-    },
-  ];
+
   return (
     <div
-      className={`${
-        theme === "dark" ? "dark" : "light"
-      } max-w-[1500px] mx-auto font-poppins`}
+      className={`${theme === "dark" ? "dark" : "light"
+        } max-w-[1500px] mx-auto font-poppins`}
     >
-      <div className=" flex lg:flex-row bg-gray-100 dark:bg-transparent  xl:flex-row flex-col-reverse items-center rounded-lg xl:mx-auto lg:mx-auto mb-20 mx-5 mt-20 shadow-md shadow-gray-400">
+      <div className=" flex lg:flex-row bg-gray-100 dark:bg-darkSecondary  xl:flex-row flex-col-reverse items-center rounded-lg xl:mx-auto lg:mx-auto mb-20 mx-5 mt-20 shadow-md shadow-gray-400 dark:shadow-gray-700">
         <div className="left w-full lg:w-1/2 xl:w-1/2  flex items-center py-20 overflow-hidden">
           <div className="flex flex-col space-y-10 px-10 py-5  dark:text-white dark:bg-transparent">
             <h1 className="lg:text-xl xl:text-5xl md:text-2xl text-2xl">
@@ -188,32 +159,30 @@ const Home = ({ theme }) => {
         </div>
       </div>
 
-      <div className=" flex lg:flex-row bg-gray-100 dark:bg-transparent  xl:flex-row flex-col-reverse items-center rounded-lg  lg:mx-auto mb-20 mx-5 mt-20 shadow-md shadow-gray-400">
-        <div className="   flex items-center py-20 overflow-hidden">
-          <div className="flex flex-col space-y-10 px-10 py-5  dark:text-white dark:bg-transparent">
+      <div className="w-full mb-48">
             <div>
-              {" "}
-              <h1 className="lg:text-4xl xl:text-4xl md:text-2xl text-md dark:text-gray-300 flex justify-center ">
-                Testimonials
-              </h1>
+                <Slider {...settings}>
+                    {carouselData.map((d, index) => {
+                        return (
+                            <div className="bg-white pb-10 text-black dark:bg-darkPrimary dark:text-gray-200" key={index}>
+                                <div className="h-56 rounded-t-xl bg-white flex justify-center items-center dark:bg-darkPrimary">
+                                    <img src={d.img} className="border-4 border-white lg:h-36 lg:w-36 xl:h-36 xl:w-36 h-28 w-28  object-cover rounded-full" alt="" />
+                                </div>
+
+                                <div className="flex flex-col text-center w-full justify-center items-center gap-4 p-4">
+                                    <p className="lg:tex-xl xl:text-xl md:text-lg text-lg font-semibold text-center">{d.name}</p>
+                                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">{d.review}</p>
+                                    <button className="bg-indigo-500 text-white text-center py-1 px-2 lg:py-2 lg:px-3 xl:py-2 xl:px-3 xl:text-lg lg:text-lg text-md rounded-lg hover:bg-indigo-400">Read more</button>
+                                </div>
+
+                            </div>
+                        )
+                    })}
+                </Slider>
             </div>
-            <Slider {...settings}>
-              {TestData.map((d, index) => {
-                return (
-                  <>
-                    <h1 className="lg:text-l xl:text-4xl md:text-xl text-xl ">
-                      {d.Name}
-                    </h1>
-                    <p className="lg:text-xl xl:text-xl md:text-lg text-md dark:text-gray-300">
-                      {d.Message}
-                    </p>
-                  </>
-                );
-              })}
-            </Slider>
-          </div>
         </div>
-      </div>
+
+
     </div>
   );
 };

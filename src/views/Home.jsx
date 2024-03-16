@@ -8,12 +8,13 @@ import f4 from "../assets/f4.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FaQuoteLeft } from "react-icons/fa";
 
 
 import { carouselData, compoData } from "../data.ts";
 
 const Home = ({ theme }) => {
-  
+
   useEffect(() => {
     document.title = "BLOGIN - Exclusive Blog Content Service Media Platform.";
   }, []);
@@ -90,8 +91,8 @@ const Home = ({ theme }) => {
         </div>
         <div className="left w-full lg:w-1/2 xl:w-1/2  flex items-center py-20 overflow-hidden">
           <div className="flex flex-col space-y-10 px-10 py-5  dark:text-white dark:bg-transparent">
-            <h1 className="lg:text-l xl:text-4xl md:text-xl text-xl font-bold">
-              BEST EXPERINCED Blogs HERE{" "}
+            <h1 className="lg:text-l xl:text-4xl md:text-xl text-xl font-bold uppercase">
+              Best Experienced blogs here{" "}
             </h1>
             <p className="lg:text-xl xl:text-xl md:text-lg text-md dark:text-gray-300">
               It is a long established fact that a reader will be distracted by
@@ -131,7 +132,7 @@ const Home = ({ theme }) => {
           <div className="left xl:w-1/2 lg:w-1/2 w-full space-y-10 mb-10 px-10">
             {compoData.map((e, index) => {
               return (
-                <div className="flex flex-col lg:flex-row xl:flex-row items-center justify-start gap-x-10 px-5 w-full">
+                <div className="flex flex-col lg:flex-row xl:flex-row items-center justify-start gap-x-10 px-5 w-full" key={index}>
                   <img
                     src={f4}
                     className={`${theme === "dark" ? "" : "invert"}`}
@@ -160,29 +161,33 @@ const Home = ({ theme }) => {
       </div>
 
       <div className="w-full mb-48">
-            <div>
-                <Slider {...settings}>
-                    {carouselData.map((d, index) => {
-                        return (
-                            <div className="bg-white pb-10 text-black dark:bg-darkPrimary dark:text-gray-200" key={index}>
-                                <div className="h-56 rounded-t-xl bg-white flex justify-center items-center dark:bg-darkPrimary">
-                                    <img src={d.img} className="border-4 border-white lg:h-36 lg:w-36 xl:h-36 xl:w-36 h-28 w-28  object-cover rounded-full" alt="" />
-                                </div>
+        <div>
+          <Slider {...settings}>
+            {carouselData.map((d, index) => {
+              return (
+                <div className="bg-white pb-10 text-black dark:bg-darkPrimary dark:text-gray-200" key={index}>
+                  <div className=" text-4xl rounded-t-xl text-gray-800 bg-white flex justify-center items-center dark:bg-darkPrimary dark:text-white">
+                    <FaQuoteLeft />
+                  </div>
 
-                                <div className="flex flex-col text-center w-full justify-center items-center gap-4 p-4">
-                                    <p className="lg:tex-xl xl:text-xl md:text-lg text-lg font-semibold text-center">{d.name}</p>
-                                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">{d.review}</p>
-                                    <button className="bg-indigo-500 text-white text-center py-1 px-2 lg:py-2 lg:px-3 xl:py-2 xl:px-3 xl:text-lg lg:text-lg text-md rounded-lg hover:bg-indigo-400">Read more</button>
-                                </div>
+                  <div className="flex flex-col text-center w-full justify-center items-center gap-4 p-4">
+                    <p className="lg:tex-xl xl:text-xl md:text-lg text-lg font-semibold text-center dark:text-white">{d.name}</p>
+                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium pariatur eligendi neque distinctio dolorum accusamus soluta hic voluptates quo quam, corporis voluptatem, placeat iusto veritatis veniam sit ea repellat fuga?.</p>
+                    <div className="flex items-center w-full justify-start gap-x-7 bg-gray-100 py-3 px-5 rounded-md dark:bg-darkSecondary">
+                      <img src={d.img} className="w-12 h-12 object-cover rounded-full border-2 border-gray-600" alt="" />
+                      <div className="flex flex-col items-start justify-start">
+                        <h1 className="text-md font-semibold text-indigo-500">{d.name}</h1>
+                        <h1 className="text-md font-semibold text-gray-600 dark:text-gray-100">Trending Author</h1>
+                      </div>
+                    </div>
+                  </div>
 
-                            </div>
-                        )
-                    })}
-                </Slider>
-            </div>
+                </div>
+              )
+            })}
+          </Slider>
         </div>
-
-
+      </div>
     </div>
   );
 };

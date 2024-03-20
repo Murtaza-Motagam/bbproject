@@ -10,10 +10,6 @@ const CollectionSchema = new Schema({
         type: String,
         required: true
     },
-    blogUser: {
-        type: String,
-        required: true
-    },
     category: {
         type: String,
         required: true

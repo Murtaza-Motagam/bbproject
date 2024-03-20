@@ -12,7 +12,6 @@ const JWT_SECRET = "AuthenticateUser";
 router.post('/create', fetchUser, [
     body('title', 'Enter a valid title').isLength({ min: 5 }),
     body('category').isLength({ min: 5 }),
-    body('blogUser', 'Enter a valid username').isLength({ min: 5 }),
     body('description', 'Enter a valid description').isLength({ min: 10 }),
 ], async (req, res) => {
 
@@ -26,7 +25,7 @@ router.post('/create', fetchUser, [
 
     try {
 
-        const { title, category, blogUser, description } = req.body;
+        const { title, category, description } = req.body;
 
         // Check if title already exist or not
 
@@ -42,7 +41,6 @@ router.post('/create', fetchUser, [
                 user: req.user.id,
                 title,
                 category,
-                blogUser,
                 description
             })
 

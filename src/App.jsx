@@ -18,9 +18,11 @@ import Explore from "./views/Explore";
 import Contact from "./views/Contact";
 import Profile from "./views/Profile";
 import Blogs from "./views/Blogs.jsx"
+import Blog from "./views/Blog.jsx"
 import BlogsCategory from "./views/BlogsCategory.jsx"
 import ErrorPage from "./views/ErrorPage.jsx"
 import { BlogProvider } from "./BlogContext.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 // Admin Panel imports
 
@@ -43,8 +45,6 @@ const queryClient = new QueryClient();
 
 
 const MainApplication = () => {
-
-
 
   AOS.init();
 
@@ -89,6 +89,7 @@ const MainApplication = () => {
       <Router>
         <Header handleTheme={handleTheme} theme={theme} />
         <div className="min-h-screen">
+         
           <Routes>
 
             {/* Client Panel Routes */}
@@ -100,7 +101,8 @@ const MainApplication = () => {
             <Route path="/services" element={<Services theme={theme} />} />
             <Route path="/joinwithus" element={<Join theme={theme} />} />
             <Route path="/explore" element={<Explore theme={theme} />} />
-            <Route path="/blogs" element={<Blogs theme={theme} />} />
+            <Route path="/blogs" element={userLoggedIn ? <Blogs theme={theme} /> : <Navigate to="/login" />} />
+            <Route path="/blogs/:id" element={<Blog theme={theme} />} />
             <Route path="/category" element={<BlogsCategory theme={theme} />} />
             <Route path="/contact" element={<Contact theme={theme} />} />
             <Route path="/terms-and-conditions" element={<Terms theme={theme} />} />

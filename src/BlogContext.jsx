@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios';
+import { authUrl, blogUrl } from "./utils/constant";
 
 // Create a new context
 const BlogContext = createContext();
@@ -14,6 +15,7 @@ const portBlogs = "http://localhost:5000/api/blogs";
 const BlogProvider = ({ children }) => {
     // Define your state or any other data here
     const [blogs, setBlogs] = useState([]);
+    const [data, setData] = useState([]);
     const [admin, setAdmin] = useState([]);
 
     // Route-1: Add a profile picture
@@ -33,11 +35,40 @@ const BlogProvider = ({ children }) => {
         }
     };
 
+    const getUser = async () => {
+        const response = await fetch(`${authUrl}/getuser`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
 
-   
+        const json = await response.json();
+        setData([json.userInfo])
+        // console.log([json.userInfo])
+    }
+
+    const getUserBlogs = async () => {
+        const response = await fetch(`${blogUrl}/fetchuserblogs`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
+
+        const json = await response.json();
+        setBlogs(json)
+        // console.log(json)
+    }
+
+
+
+
 
     return (
-        <BlogContext.Provider value={{ admin, blogs, uploadProfilePic}}>
+        <BlogContext.Provider value={{ admin, data, blogs, uploadProfilePic, getUser, getUserBlogs }}>
             {children}
         </BlogContext.Provider>
     );

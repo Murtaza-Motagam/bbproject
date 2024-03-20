@@ -1,3 +1,4 @@
+
 export const carouselData = [
     {
         name: `John Morgan`,
@@ -49,3 +50,5 @@ export const compoData = [
       subheading: "Influence and Thought Leadership:",
     },
   ];
+
+

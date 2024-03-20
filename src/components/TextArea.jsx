@@ -2,8 +2,8 @@ import React from 'react'
 
 const TextArea = ({ name, placeholder, value, type, onChange, errors, touched}) => {
     return (
-        <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-900 dark:bg-gray-700 dark:border-gray-600">
-            <div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
+        <div className="w-full mb-4 border-2 border-gray-200 rounded-lg bg-gray-900 dark:bg-gray-700 dark:border-gray-600 overflow-hidden">
+            {/* <div className="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
                 <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse dark:divide-gray-600">
                     <div className="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
                         <button type="button" className="p-2 text-gray-200 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -78,12 +78,12 @@ const TextArea = ({ name, placeholder, value, type, onChange, errors, touched}) 
                     Show full screen
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>
-            </div>
-            <div className="px-4 py-2 bg-white  rounded-b-lg dark:bg-gray-800">
+            </div> */}
+            <div className="px-4 py-2 bg-white  overflow-hidden dark:bg-gray-800">
                 <label htmlFor="editor" className="sr-only">Publish post</label>
-                <textarea name={name} placeholder={placeholder} value={value[name]} onChange={onChange} rows="8" className="block w-full h-96 px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" />
+                <textarea name={name} placeholder={placeholder} value={value[name]} onChange={onChange} rows="8" className="block w-full h-96 px-0 text-lg text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" />
             </div>
-            {errors[name] ? <p className="text-sm text-white px-5 bg-red-500  rounded-b-lg py-4">{errors[name].message}</p> : null}
+            {errors[name] && touched[name] ? <p className="text-md text-white px-5 bg-red-500  rounded-b-lg py-4">{errors[name]}</p> : null}
         </div>
     )
 }

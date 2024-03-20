@@ -31,7 +31,7 @@ const Home = ({ theme }) => {
         breakpoint: 1024, // Medium devices (tablets, small desktops)
         settings: {
           slidesToShow: 2,
-          
+
         },
       },
       {
@@ -60,22 +60,16 @@ const Home = ({ theme }) => {
               the readable content of a page
             </p>
             <div className="flex items-center justify-start gap-x-3 w-full">
-              <Link to="/blogs">
-                <button
-                  type="button"
-                  className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:focus:ring-yellow-900"
-                >
-                  Blogs
-                </button>
+              <Link to="/blogs" className="text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none  font-medium rounded-full text-sm px-10 py-3 text-center me-2 mb-2 ">
+                Blogs
               </Link>
-              <Link to="/register">
-                <button
-                  type="button"
-                  className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-                >
-                  SignUp
-                </button>
-              </Link>
+              {!localStorage.getItem('user-token') ? (
+                <Link to="/register"
+                    className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none  font-medium rounded-full text-sm px-10 py-3 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700"
+                  >
+                    SignUp
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>

@@ -113,5 +113,4 @@ router.get('/fetchbycategory/:category',  async (req, res) => {
 })
 
 
-
 module.exports = router;

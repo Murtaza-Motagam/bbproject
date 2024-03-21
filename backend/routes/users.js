@@ -50,7 +50,9 @@ router.post('/signup', [
       user = await Users.create({
         username: username,
         emailId: emailId,
-        password: secPass
+        password: secPass,
+        followers: [],
+        following: [],
       });
 
       let data = {
@@ -277,6 +279,58 @@ router.post('/addfellowdetails', [
 
 })
 
+// ROUTER 5: FOLLOWER AND FOLLOWING
+router.put('/following',  (req, res) => {
+  Users.findByIdAndUpdate(req.body.followId, {
+      $push: { followers: req.user._id }
+  }, {
+      new: true
+  }, (err, result) => {
+      if (err || !result) {
+          return res.status(401).json({ error: "Error occurred while following user." });
+      }
+      Users.findByIdAndUpdate(req.user._id, {
+          $push: { following: req.body.followId }
+      }, { new: true })
+      .then(result => {
+          if (!result) {
+              return res.status(401).json({ error: "Error occurred while updating your following list." });
+          }
+          res.json(result);
+      })
+      .catch(err => {
+          return res.status(401).json({ error: err });
+      });
+  });
+});
 
+// LIKE POST 
+router.put('/like/:postId', async (req, res) => {
+  try{
+    const newLike = new Like({
+      user: req.User._id,
+      post: req.params.postId
+    });
+
+    const savedLike = await newLike.save();
+    res.json(savedLike);
+  }catch (err){
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//UNLIKE POST
+router.put('unlike/:postId', async (req, res) =>{
+  try{
+    const deletedUnlike = await Unlike.deleteOne({
+      user: req.user._id,
+      post: req.params.postId
+    });
+
+    res.json(deletedUnlike);
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

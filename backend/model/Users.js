@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { date } = require('yup');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -34,7 +35,16 @@ const UserSchema = new Schema({
     datacreated: {
         type: Date,
         default: Date.now
-    }
+    },
+    followers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+   
 });
 
 const Users = mongoose.model("users", UserSchema);

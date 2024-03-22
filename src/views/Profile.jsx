@@ -6,13 +6,14 @@ import banner from "../assets/banner.jpeg";
 import profile from "../assets/admin-person.png";
 import BlogDetails from "../components/BlogDetails.jsx"
 import { Link } from 'react-router-dom';
+import { authUrl } from '../utils/constant.js';
 
 const Profile = ({ theme }) => {
+
     const [file, setFile] = useState(null);
     const [post, setPost] = useState(false);
     const [followers, setFollowers] = useState(false);
     const [following, setFollowing] = useState(false);
-    const [likes, setLikes] = useState(false);
 
     const context = useContext(BlogContext);
     const { data, getUser, getUserBlogs, blogs } = context;
@@ -29,31 +30,6 @@ const Profile = ({ theme }) => {
 
 
     };
-
-    const onClickPost = () => {
-        setFollowers(false);
-        setFollowing(false);
-        setLikes(false);
-        setPost(true);
-    }
-    const onClickfollowers = () => {
-        setFollowing(false);
-        setLikes(false);
-        setPost(false);
-        setFollowers(true);
-    }
-    const onClickFollowing = () => {
-        setFollowers(false);
-        setLikes(false);
-        setPost(false);
-        setFollowing(true);
-    }
-    const onClickLikes = () => {
-        setFollowers(false);
-        setFollowing(false);
-        setPost(false);
-        setLikes(true);
-    }
 
 
     useEffect(() => {
@@ -74,41 +50,23 @@ const Profile = ({ theme }) => {
                             <h1 className="text-md font-semibold">Total Posts</h1>
                             <h2 className="text-xl font-bold text-blue-500">0</h2>
                         </div>
-                        {post && (
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        )}
                     </div>
                     <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer" onClick={onClickfollowers}>
                         <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
                             <h1 className="text-md font-semibold">Followers</h1>
                             <h2 className="text-xl font-bold text-blue-500">0</h2>
                         </div>
-                        {followers && (
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        )}
                     </div>
                     <div className="flex flex-col items-start justify-between  h-[100px] ml- cursor-pointer" onClick={onClickFollowing}>
                         <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
                             <h1 className="text-md font-semibold">Following</h1>
                             <h2 className="text-xl font-bold text-blue-500">0</h2>
                         </div>
-                        {following && (
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        )}
-                    </div>
-                    <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer" onClick={onClickLikes}>
-                        <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                            <h1 className="text-md font-semibold">Total Likes</h1>
-                            <h2 className="text-xl font-bold text-blue-500">0</h2>
-                        </div>
-                        {likes && (
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        )}
                     </div>
                 </div>
 
                 <div className="flex flex-2 ml-10 md:mr-48 lg:mr-48 xl:mr-48 items-center justify-center">
-                    <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Follow</button>
+                    <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Follow</button>
                 </div>
             </div>
 

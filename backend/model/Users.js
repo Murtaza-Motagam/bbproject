@@ -24,13 +24,11 @@ const UserSchema = new Schema({
         type: String,
         required: false,
     },
-    webLink: {
-        type: String,
-        required: false,
+    desc: {
+        type: String
     },
-    userDesc: {
-        type: String,
-        required: false,
+    link: {
+        type: String
     },
     datacreated: {
         type: Date,

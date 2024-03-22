@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Blogs = require('../model/Blogs')
+const Users = require('../model/Users')
 const fetchUser = require('../middlewares/fetchUser')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -111,6 +112,38 @@ router.get('/fetchbycategory/:category',  async (req, res) => {
         res.status(500).send(success, "Some error occurred");
     }
 })
+
+
+// Route-5: LIKE POST 
+router.put('/like/:postId', fetchUser, async (req, res) => {
+    try {
+
+        const user = await Users.findById(req.user.id);
+      const newLike = new Like({
+        user: req.User._id,
+        post: req.params.postId
+      });
+  
+      const savedLike = await newLike.save();
+      res.json(savedLike);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+  
+  // Route-6: UNLIKE POST
+  router.put('unlike/:postId', async (req, res) => {
+    try {
+      const deletedUnlike = await Unlike.deleteOne({
+        user: req.user._id,
+        post: req.params.postId
+      });
+  
+      res.json(deletedUnlike);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 
 
 module.exports = router;

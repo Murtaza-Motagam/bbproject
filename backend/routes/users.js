@@ -53,6 +53,9 @@ router.post('/signup', [
         password: secPass,
         followers: [],
         following: [],
+        link: "",
+        location: "",
+        desc: ""
       });
 
       let data = {
@@ -258,79 +261,65 @@ router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
 
 // ROUTE 7: Add other information such as location, website link or personal description
 
-router.post('/addfellowdetails', [
-  body('location', 'Please Enter your location.').isLength({ min: 3 }),
-  body('webLink', 'Please enter your link.').isLength({ min: 13 }),
-  body('userDesc', 'Please enter long password').isLength({ min: 8 }),
-], fetchUser, async (req, res) => {
-
-  let success = false;
-
+router.post('/addfellowdetails', fetchUser, async (req, res) => {
   try {
 
-    const { location, webLink, userDesc } = req.body;
+    let success = false;
 
-  }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  catch (error) {
+  
+
+      const { location, link, desc } = req.body;
+      const user = req.user.id;
+
+
+      await Users.findByIdAndUpdate(user, { location, link, desc });
+      success = true;
+
+      res.status(200).json({ success, user });
+
+  
+
+  } catch (error) {
     console.error(error.message);
     res.status(500).send("Some error occurred");
   }
-
-})
-
-// ROUTER 5: FOLLOWER AND FOLLOWING
-router.put('/following',  (req, res) => {
-  Users.findByIdAndUpdate(req.body.followId, {
-      $push: { followers: req.user._id }
-  }, {
-      new: true
-  }, (err, result) => {
-      if (err || !result) {
-          return res.status(401).json({ error: "Error occurred while following user." });
-      }
-      Users.findByIdAndUpdate(req.user._id, {
-          $push: { following: req.body.followId }
-      }, { new: true })
-      .then(result => {
-          if (!result) {
-              return res.status(401).json({ error: "Error occurred while updating your following list." });
-          }
-          res.json(result);
-      })
-      .catch(err => {
-          return res.status(401).json({ error: err });
-      });
-  });
 });
 
-// LIKE POST 
-router.put('/like/:postId', async (req, res) => {
-  try{
-    const newLike = new Like({
-      user: req.User._id,
-      post: req.params.postId
-    });
+// ROUTE-8: FOLLOWERS AND FOLLOWING route
 
-    const savedLike = await newLike.save();
-    res.json(savedLike);
-  }catch (err){
-    res.status(500).json({ error: err.message });
+router.post('/user/following', fetchUser, async (req, res) => {
+  const { followedUserId } = req.body;
+
+  try {
+    // Check if both users exist
+    const user = await Users.findById(req.user.id);
+    const followedUser = await Users.findById(followedUserId);
+
+    if (!user || !followedUser) {
+      return res.status(404).json({ message: 'User or followed user not found' });
+    }
+
+    // Update following array of the user
+    if (!user.following.includes(followedUserId)) {
+      user.following.push(followedUserId);
+      followedUser.followers.push(req.user.id);
+      await user.save();
+      await followedUser.save();
+    }
+
+    res.json({ message: 'User followed successfully' });
+  } catch (error) {
+    console.error('Error following user:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-//UNLIKE POST
-router.put('unlike/:postId', async (req, res) =>{
-  try{
-    const deletedUnlike = await Unlike.deleteOne({
-      user: req.user._id,
-      post: req.params.postId
-    });
 
-    res.json(deletedUnlike);
-  }catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+
 
 module.exports = router;

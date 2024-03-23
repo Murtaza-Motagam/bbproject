@@ -21,13 +21,16 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173' // or an array of allowed origins
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/admin', require('./routes/adminUser'));
 app.use('/api/auth', require('./routes/users'));
+app.use('/api/user', require('./routes/user'));
 app.use('/api/blogs', require('./routes/blogs'))
 
 // catch 404 and forward to error handler

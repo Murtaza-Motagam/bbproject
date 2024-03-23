@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Users = require('../model/Users')
+const Blogs = require('../model/Blogs')
 const fetchUser = require('../middlewares/fetchUser')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -263,62 +264,27 @@ router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
 
 router.post('/addfellowdetails', fetchUser, async (req, res) => {
   try {
-
-    let success = false;
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-  
+    const { location, link, desc } = req.body;
+    const userId = req.user.id;
 
-      const { location, link, desc } = req.body;
-      const user = req.user.id;
+    const updateFields = {};
+    if (location !== undefined) updateFields.location = location;
+    if (link !== undefined) updateFields.link = link;
+    if (desc !== undefined) updateFields.desc = desc;
 
+    const updatedUser = await Users.findByIdAndUpdate(userId, updateFields, { new: true });
 
-      await Users.findByIdAndUpdate(user, { location, link, desc });
-      success = true;
-
-      res.status(200).json({ success, user });
-
-  
-
+    res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Some error occurred");
   }
 });
-
-// ROUTE-8: FOLLOWERS AND FOLLOWING route
-
-router.post('/user/following', fetchUser, async (req, res) => {
-  const { followedUserId } = req.body;
-
-  try {
-    // Check if both users exist
-    const user = await Users.findById(req.user.id);
-    const followedUser = await Users.findById(followedUserId);
-
-    if (!user || !followedUser) {
-      return res.status(404).json({ message: 'User or followed user not found' });
-    }
-
-    // Update following array of the user
-    if (!user.following.includes(followedUserId)) {
-      user.following.push(followedUserId);
-      followedUser.followers.push(req.user.id);
-      await user.save();
-      await followedUser.save();
-    }
-
-    res.json({ message: 'User followed successfully' });
-  } catch (error) {
-    console.error('Error following user:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
 
 
 

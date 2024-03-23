@@ -16,7 +16,7 @@ const Header = ({ theme, handleTheme }) => {
   const dropdownRef = useRef(null);
 
   const openModal = () => {
-    setIsModalOpen((prevState) => !prevState);
+    setIsModalOpen(!isModalOpen);
   };
   const openDropDown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -55,7 +55,7 @@ const Header = ({ theme, handleTheme }) => {
     } else {
       document.getElementById("logo").classList.add("color-set");
     }
-  }, [theme]);
+  }, [isModalOpen]);
 
   return (
     <nav

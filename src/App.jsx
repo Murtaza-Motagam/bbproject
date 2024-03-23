@@ -20,6 +20,7 @@ import Profile from "./views/Profile";
 import Blogs from "./views/Blogs.jsx"
 import Blog from "./views/Blog.jsx"
 import BlogsCategory from "./views/BlogsCategory.jsx"
+import OtherProfile from "./views/otherprofiles/otherProfiles.jsx"
 import ErrorPage from "./views/ErrorPage.jsx"
 import { BlogProvider } from "./BlogContext.jsx";
 import toast, { Toaster } from "react-hot-toast";
@@ -110,6 +111,8 @@ const MainApplication = () => {
 
             {/* User Personal Space Routes */}
             <Route path="/myprofile" element={<Profile />} />
+            {/* Other User Profile */}
+            <Route path="/profile/:id" element={<OtherProfile />} />
 
 
             {/* Error Page  */}

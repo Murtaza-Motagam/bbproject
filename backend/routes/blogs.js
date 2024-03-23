@@ -42,7 +42,8 @@ router.post('/create', fetchUser, [
                 user: req.user.id,
                 title,
                 category,
-                description
+                description,
+                likes: []
             })
 
             const UserBlog = await blogs.save();
@@ -113,8 +114,30 @@ router.get('/fetchbycategory/:category',  async (req, res) => {
     }
 })
 
+// ROUTE 5: Fetch single blog by id.
 
-// Route-5: LIKE POST 
+router.get('/getblog/:id',  async (req, res) => {
+
+    let success = false;
+    
+    try {
+        const blogs = await Blogs.findById(req.params.id);
+        if(!blogs){
+            res.status(404).json({ success, message: "Blog Not Found!"})
+        }
+        else{
+            success = true;
+            res.status(200).json({success, blogs});
+        }
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send(success, "Some error occurred");
+    }
+})
+
+
+// Route-6: LIKE POST 
 router.put('/like/:postId', fetchUser, async (req, res) => {
     try {
 
@@ -131,7 +154,7 @@ router.put('/like/:postId', fetchUser, async (req, res) => {
     }
   });
   
-  // Route-6: UNLIKE POST
+  // Route-7: UNLIKE POST
   router.put('unlike/:postId', async (req, res) => {
     try {
       const deletedUnlike = await Unlike.deleteOne({

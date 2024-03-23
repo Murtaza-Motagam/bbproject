@@ -59,7 +59,6 @@ const Login = ({ theme }) => {
           password: "",
         }));
         Navigate("/");
-        window.location.reload(false);
       }
     } else {
       const { emailId, password } = credentials;
@@ -90,7 +89,7 @@ const Login = ({ theme }) => {
           password: "",
         }));
         Navigate("/");
-        windows.location.reload(true);
+        window.location.reload();
       } else {
         document.getElementById("loginCredentials").style.display = "block";
         setCredentials((prevCredentials) => ({

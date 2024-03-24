@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BlogContext } from "../../BlogContext.jsx";
 import banner from "../../assets/banner.jpeg";
 import profile from "../../assets/admin-person.png";
-import BlogDetails from "../../components/BlogDetails.jsx"
+import { TiTickOutline } from "react-icons/ti";
 import { Link, useParams } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import Modal from '../../components/Modal.jsx';
@@ -10,6 +10,7 @@ import Modal from '../../components/Modal.jsx';
 const otherProfile = ({ theme }) => {
 
     const context = useContext(BlogContext);
+
 
     const [followerModal, setFollowerModal] = useState(false);
     const [followingModal, setFollowingModal] = useState(false);
@@ -34,14 +35,44 @@ const otherProfile = ({ theme }) => {
         userBlogData,
         getSearchedUserDetails,
         getSearchedUserNavdetails,
-        checkIfUserAlreadyFollowing
+        checkIfUserAlreadyFollowing,
+        followUser,
+        unFollowUser
     } = context;
 
+    const [checked, setChecked] = useState(check);
+
+    const handleUserFollowing = async (profileId) => {
+
+        await followUser(profileId);
+
+        await checkIfUserAlreadyFollowing(profileId);
+
+        if (check === true) {
+            await getSearchedUserNavdetails(profileId);
+        }
+
+
+    }
+
+    const handleUnfollowUser = async (profileId) => {
+        await unFollowUser(profileId);
+
+        await checkIfUserAlreadyFollowing(profileId);
+
+        if (check === false) {
+            await getSearchedUserNavdetails(profileId)
+        }
+    }
+
+
+
     useEffect(() => {
-        getSearchedUserDetails(id);
-        getSearchedUserNavdetails(id);
+        getSearchedUserDetails(id)
+        getSearchedUserNavdetails(id)
         checkIfUserAlreadyFollowing(id)
-    }, [])
+    }, [check]);
+
 
 
     return (
@@ -76,17 +107,23 @@ const otherProfile = ({ theme }) => {
                                 </div>
                             </div>
                         </div>
-                        {check === true ? (
-                            <div className="flex flex-2 ml-10 md:mr-48 lg:mr-48 xl:mr-48 items-center justify-center">
-                                <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Following</button>
-                            </div>
-                        ) : (
 
-                            <div className="flex flex-2 ml-10 md:mr-48 lg:mr-48 xl:mr-48 items-center justify-center">
-                                <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Follow</button>
-                            </div>
 
-                        )}
+                        <div className="flex flex-2 ml-10 md:mr-48 lg:mr-48 xl:mr-48 items-center justify-center">
+                            {check === true ? (
+                                <button onClick={() => handleUnfollowUser(id)} type="button" className="flex items-center gap-x-3 text-white bg-indigo-500 hover:bg-indigo-600  focus:outline-none  font-medium transition duration-300 ease-out rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:text-gray-900 dark:bg-white dark:hover:bg-gray-200">
+                                    <TiTickOutline size={20} />
+                                    <span>Following</span>
+                                </button>
+                            ) : (
+                                <button onClick={() => handleUserFollowing(id)} type="button" className=" text-white bg-indigo-500 hover:bg-indigo-600  focus:outline-none  font-medium transition duration-300 ease-out rounded-full text-sm px-10 py-2.5 text-center me-2 mb-2 dark:text-gray-900 dark:bg-white dark:hover:bg-gray-200">
+                                    <span>Follow</span>
+                                </button>
+
+                            )}
+                        </div>
+
+
                     </div>
                 )
             })}

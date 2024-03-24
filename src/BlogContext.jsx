@@ -20,8 +20,8 @@ const BlogProvider = ({ children }) => {
     // other user states
     const [userBlogData, setUserBlogData] = useState([]);
     const [navDetails, setNavDetails] = useState([]);
-    // const [store, setStore] = useState([]);
-    let check;
+    const [check, setCheck] = useState(false);
+    const [following, setFollowing] = useState(false);
 
 
     const [secData, setSecData] = useState([]);
@@ -181,7 +181,7 @@ const BlogProvider = ({ children }) => {
         });
 
         const json = await response.json();
-        check = json.isFollowing;
+        setCheck(json.isFollowing);
     }
 
     const getOtherUserFollowersList = async (id) => {
@@ -212,10 +212,52 @@ const BlogProvider = ({ children }) => {
 
     }
 
+    const followUser = async (id) => {
+        const response = await fetch(`${userUrl}/following/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
+
+        const json = await response.json();
+        setFollowing(json.message);
+
+    }
+
+    const unFollowUser = async (id) => {
+        const response = await fetch(`${userUrl}/unfollow/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
+
+        const json = await response.json();
+        setFollowing(json.message);
+
+    }
+
+    const fetchAllUsers = async () => {
+        const response = await fetch(`${authUrl}/fetchallusers`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
+
+        const json = await response.json();
+        setData(json.fetchAllUsers);
+
+    }
+
 
 
     return (
-        <BlogContext.Provider value={{ data, userBlogData, secData, navDetails, blogs, terryData, check, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList }}>
+        <BlogContext.Provider value={{ data, userBlogData, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser }}>
             {children}
         </BlogContext.Provider>
     );

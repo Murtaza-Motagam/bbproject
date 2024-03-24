@@ -147,7 +147,28 @@ router.get('/getuser', fetchUser, async (req, res) => {
 
 })
 
-//Route-4: Recover forgotten password
+// Route-4 - Fetch all user information
+
+router.get('/fetchallusers', fetchUser, async (req, res) => {
+
+  let success = false;
+
+  try {
+
+      const fetchAllUsers = await Users.find({})
+
+      success = true;
+      res.status(200).json({ success, fetchAllUsers })
+
+
+  }
+  catch (error) {
+      console.error(error.message);
+      res.status(500).send("Internal Server Error");
+  }
+})
+
+//Route-6: Recover forgotten password
 
 router.post('/forgotpassword/verifyemail', async (req, res) => {
 
@@ -175,7 +196,7 @@ router.post('/forgotpassword/verifyemail', async (req, res) => {
   }
 })
 
-// Route-5: Change password of user
+// Route-7: Change password of user
 
 router.post('/changepassword', async (req, res) => {
 
@@ -230,7 +251,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
   res.json({ "success": "image is inserted" });
 });
 
-// ROUTE 6: Delete a user Login Required...
+// ROUTE 8: Delete a user Login Required...
 
 router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
 
@@ -260,7 +281,7 @@ router.delete('/deleteuser/:id', fetchUser, async (req, res) => {
 })
 
 
-// ROUTE 7: Add other information such as location, website link or personal description
+// ROUTE 9: Add other information such as location, website link or personal description
 
 router.post('/addfellowdetails', fetchUser, async (req, res) => {
   try {

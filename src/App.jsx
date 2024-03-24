@@ -40,6 +40,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import Authors from "./views/Authors.jsx";
 
 
 const queryClient = new QueryClient();
@@ -102,6 +103,7 @@ const MainApplication = () => {
             <Route path="/services" element={<Services theme={theme} />} />
             <Route path="/joinwithus" element={<Join theme={theme} />} />
             <Route path="/explore" element={<Explore theme={theme} />} />
+            <Route path="/authors" element={<Authors theme={theme} />} />
             <Route path="/blogs" element={userLoggedIn ? <Blogs theme={theme} /> : <Navigate to="/login" />} />
             <Route path="/blogs/:id" element={<Blog theme={theme} />} />
             <Route path="/category" element={<BlogsCategory theme={theme} />} />

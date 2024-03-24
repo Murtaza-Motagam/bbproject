@@ -27,6 +27,42 @@ router.post('/following/:id', fetchUser, async (req, res) => {
             await user.save();
             await followedUser.save();
         }
+        else{
+            res.status(200).json({ message: "You are already following this user."});
+        }
+
+        res.json({ message: 'User followed successfully' });
+    } catch (error) {
+        console.error('Error following user:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// ROUTE-1: Unfollow user route
+
+router.post('/unfollow/:id', fetchUser, async (req, res) => {
+
+    const followedUserId = req.params.id;
+
+    try {
+        // Check if both users exist
+        const user = await Users.findById(req.user.id);
+        const followedUser = await Users.findById(followedUserId);
+
+        if (!user || !followedUser) {
+            return res.status(404).json({ message: 'User or followed user not found' });
+        }
+
+        // Update following array of the user
+        if (user.following.includes(followedUserId)) {
+            user.following.pull(followedUserId);
+            followedUser.followers.pull(req.user.id);
+            await user.save();
+            await followedUser.save();
+        }
+        else{
+            res.status(200).json({ message: "You are Not following this user."});
+        }
 
         res.json({ message: 'User followed successfully' });
     } catch (error) {

@@ -17,13 +17,13 @@ const Modal = ({ title, isOpen, isClose }) => {
         if (title === "Your Followings") {
             getUserFollowingList();
         }
-        else if (title === "Your Followers") {
+        if (title === "Your Followers") {
             getUserFollowersList();
         }
-        else if (title === "Followers") {
+        if (title === "Followers") {
             getOtherUserFollowersList(id);
         }
-        else if (title === "Following") {
+        if (title === "Following") {
             getOtherUserFollowingList(id);
         }
 

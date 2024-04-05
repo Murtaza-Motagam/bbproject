@@ -15,26 +15,17 @@ const Modal = ({ title, isOpen, isClose }) => {
     console.log(getUserId)
 
     useEffect(() => {
-        switch (title) {
-            case "Your Followings":
-
-                getUserFollowingList();
-                break;
-            case "Your Followers":
-
-                getUserFollowersList();
-                break;
-            case "Followers":
-
-                getOtherUserFollowersList(id);
-                break;
-            case "Followings":
-
-                getOtherUserFollowingList(id);
-                break;
-            default:
-                // Handle default case if needed
-                break;
+        if (title === "Your Followings") {
+            getUserFollowingList();
+        }
+        if (title === "Your Followers") {
+            getUserFollowersList();
+        }
+        if (title === "Followers") {
+            getOtherUserFollowersList(id);
+        }
+        if (title === "Following") {
+            getOtherUserFollowingList(id);
         }
 
     }, [isOpen]);

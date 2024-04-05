@@ -1,37 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import admin from "../../assets/admin-person.png";
 import "../styles/global.scss";
-import blog from "../../assets/random2.jpeg"
+import { blogUrl } from "../../utils/constant"
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../components/Loader/Loader';
+import { MdDelete } from "react-icons/md";
+import toast, { Toaster } from "react-hot-toast"
 
 const AdminUser = (props) => {
+
+
+  const { id } = useParams();
 
   const Navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const [trending, setTrending] = useState(false);
-  const [blogs, setBlogs] = useState(true);
-  const [images, setImages] = useState(false);
-
-  const onClickTr = () => {
-    setBlogs(false);
-    setImages(false);
-    setTrending(true);
-  }
-  const onClickBl = () => {
-    setTrending(false);
-    setImages(false);
-    setBlogs(true);
-  }
-  const onClickIm = () => {
-    setImages(true);
-    setTrending(false);
-    setBlogs(false);
-  }
-
-
-  // Loading implementation
 
   setTimeout(() => {
     setLoading(false)
@@ -42,25 +25,45 @@ const AdminUser = (props) => {
 
     const [userInfo, setUserInfo] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [sentData, setSentData] = useState("");
+    const [isDBOpen, setIsDBOpen] = useState(false);
+    const [blogId, setBlogId] = useState("");
+    const [blogs, setBlogs] = useState([]);
 
-    const openModal = (id) => {
+    const openModal = (id, blogTitle) => {
       setIsModalOpen(true);
-      setSentData(id)
     };
 
     const closeModal = () => {
       setIsModalOpen(false);
     };
 
-    const handleDelete = async () => {
+    const openDBModal = (id) => {
+      setIsDBOpen(true);
+      setBlogId(id);
+    };
+
+    const closeDBModal = () => {
+      setIsDBOpen(false);
+    };
+
+    const fetchUserBlogs = async () => {
+      const response = await fetch(`${blogUrl}/fetchbyid/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'admin-token': localStorage.getItem('admin-token')
+        },
+      });
+
+      const json = await response.json();
+
+      setBlogs(json)
+    }
+
+
+    const handleDeleteUser = async () => {
 
       try {
-
-        document.getElementById("deleteText").style.display = "none";
-        document.getElementById("deleteSpinner").style.display = "flex";
-
-        const id = sentData;
 
         const response = await fetch(`http://localhost:5000/api/admin/deleteuser/${id}`, {
           method: 'DELETE',
@@ -72,22 +75,13 @@ const AdminUser = (props) => {
 
         const json = await response.json();
 
-
-        setTimeout(() => {
-
-          if (json.success) {
-
-            document.getElementById("deleteSpinner").style.display = "none";
-            document.getElementById("deleteText").style.display = "flex";
-
-            Navigate('/users', { state: { userDeleted: true } });
-
-          }
-          else {
-            props.showAlert("Oops!", "Something went wrong", "danger")
-          }
-
-        }, 2500);
+        if (json.success) {
+          toast.success("User deleted successfully");
+          Navigate('/users');
+        }
+        else {
+          toast.error("Something went wrong.");
+        }
 
       } catch (error) {
         // Handle network errors
@@ -97,15 +91,11 @@ const AdminUser = (props) => {
       closeModal();
     };
 
-    const { id } = useParams();
-
-    const handleChange = () => {
-      setIsChecked(prevState => !prevState);
-    };
 
     useEffect(() => {
       document.title = " Blogin User | Check and edit the details of a single user";
       fetchSingleUserInfo(id);
+      fetchUserBlogs();
     }, []);
 
     const fetchSingleUserInfo = async (id) => {
@@ -128,8 +118,41 @@ const AdminUser = (props) => {
       }
     };
 
+
+    const handleDeleteBlog = async (id) => {
+      id = blogId;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/blogs/delete/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'admin-token': localStorage.getItem('admin-token')
+          },
+        });
+
+        const json = await response.json();
+        if (json) {
+          toast.success(json.message);
+          setIsDBOpen(false)
+          fetchUserBlogs();
+        }
+        else {
+          toast.error("Something went wrong!")
+        }
+
+
+      } catch (error) {
+        console.error('Error fetching admin info:', error.message);
+      }
+    }
+
     return (
       <div className="min-h-screen">
+        <Toaster
+          position="top-right"
+          reverseOrder="false"
+        />
         <div className="w-full block font-roboto min-h-screen relative" id="displayInfo">
           <div className=" mx-5 py-3 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ">
             <div className="image p-2 rounded-xl mx-4 bg-gray-300 h-[150px] w-[150px] object-contain">
@@ -168,23 +191,13 @@ const AdminUser = (props) => {
                           <td className="px-3 py-4 text-center whitespace-nowrap">{user.emailId}</td>
                           <td className="px-3 py-4 text-center whitespace-nowrap">{user.datacreated.substring(0, 10)}</td>
                           <td className="px-3 py-4 text-center whitespace-nowrap flex gap-x-3 justify-center">
-                            <button onClick={() => { openModal(user._id) }} className="py-2 px-3 text-white bg-red-600 hover:bg-red-500 rounded font-medium ">
+                            <button onClick={() => { openModal() }} className="py-2 px-3 text-white bg-red-600 hover:bg-red-500 rounded font-medium ">
 
                               <div id="deleteText" className="text flex gap-x-2 items-center ">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                 </svg>
                                 <span>Delete user</span>
-                              </div>
-
-                              {/* Loader while deleting */}
-
-                              <div role="status" id="deleteSpinner" className="hidden items-center gap-x-3">
-                                <svg aria-hidden="true" className="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                </svg>
-                                <h1 className="font-semibold text-sm font-poppins">Removing...</h1>
                               </div>
                             </button>
                           </td>
@@ -198,7 +211,7 @@ const AdminUser = (props) => {
           </div>
 
           {isModalOpen && (
-            <div id="popup-modal" tabIndex="-1" className="overflow-y-auto overflow-x-hidden setModal z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
               <div className="relative p-4 w-full max-w-md max-h-full">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                   <button type="button" onClick={closeModal} className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -211,8 +224,8 @@ const AdminUser = (props) => {
                     <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
-                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete profile of this user?</h3>
-                    <button onClick={handleDelete} type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this user?</h3>
+                    <button onClick={() => handleDeleteUser(id)} type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
                       Confirm Delete
                     </button>
                     <button onClick={closeModal} type="button" className="text-gray-500 bg-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
@@ -221,37 +234,61 @@ const AdminUser = (props) => {
               </div>
             </div>
           )}
+          {isDBOpen && (
+            <div id="authentication-modal" tabIndex="-1" aria-hidden="true" className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+              <div className="relative p-4 w-full max-w-md max-h-full">
+                <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <button type="button" onClick={closeDBModal} className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span className="sr-only">Close modal</span>
+                  </button>
+                  <div className="p-4 md:p-5 text-center">
+                    <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete blog of this user?</h3>
+                    <button onClick={() => handleDeleteBlog()} type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                      Confirm Delete
+                    </button>
+                    <button onClick={closeDBModal} type="button" className="text-gray-500 bg-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
 
 
-          <div class="text-sm font-medium text-center  mt-10  font-poppins  overflow-hidden  text-gray-50">
-            <ul class="flex flex-wrap -mb-px pb-2 gap-x-4">
-              <li class="me-2" onClick={onClickTr}>
-                <Link to="#" class={`${trending ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Trending</Link>
-              </li>
-              <li class="me-2" onClick={onClickBl}>
-                <Link to="#" class={`${blogs ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Blogs</Link>
-              </li>
-              <li class="me-2" onClick={onClickIm}>
-                <Link to="#" class={`${images ? "border-b-4 border-gray-50": ""} inline-block p-4 rounded-t-lg`} aria-current="page">Images</Link>
+          <div className="text-sm font-medium text-center  mt-10  font-poppins  overflow-hidden  text-gray-50">
+            <ul className="flex flex-wrap -mb-px pb-2 gap-x-4">
+              <li className="me-2">
+                <Link to="#" className="border-b-4 border-gray-50 inline-block p-4 rounded-t-lg" aria-current="page">Blogs</Link>
               </li>
             </ul>
           </div>
 
           <div className="w-full mt-6">
-            <Link to="/" className="blog bg-gray-800 mr-10 ml-5 200 py-5 flex justify-between items-center px-5 overflow-hidden  border-b-4 rounded-xl  mb-5">
-              <div className="left hidden md:block lg:block xl:block md:w-1/4 lg:w-1/4 xl:w-1/4">
-                <img src={blog} className="w-[64] h-full object-contain" alt="" />
-              </div>
-              <div className="right w-full md:w-3/4 lg:w-3/4 xl:w-3/4 ml-5 flex items-start flex-col space-y-5">
-                <div className="space-y-2">
-                  <h1 className="shortInfo p-0 text-lg lg:text-xl xl:text-xl font-semibold text-blue-500">Information War</h1>
-                  <h1 className="Mainheading p-0 text-xl lg:text-2xl xl:text-2xl font-bold text-white">A man is innocent enough for eating <br /> chicken wings.</h1>
+            {blogs.map((b) => {
+              return (
+                <div className="blog bg-gray-900 mr-10 ml-5 200 py-5 flex justify-between items-center px-5 overflow-hidden  border-b-4 rounded-xl  mb-5 hover:bg-gray-800" key={b._id}>
+                  <div className="w-full ml-5 flex items-start flex-col space-y-5">
+                    <div className="space-y-2">
+                      <h1 className="shortInfo p-0 text-lg lg:text-xl xl:text-xl font-semibold text-blue-500">{b.category}</h1>
+                      <h1 className="Mainheading p-0 text-xl lg:text-2xl xl:text-2xl font-bold text-white">{b.title}</h1>
+                    </div>
+                    <p className="desc text-sm lg:text-md xl:text-md font-medium text-gray-300">{b.description}</p>
+                    <div className="w-full flex items-center justify-end">
+                      <div className="p-2 hover:bg-red-500 text-white rounded-full cursor-pointer" onClick={() => { openDBModal(b._id) }}>
+                        <MdDelete size={20} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="desc text-sm lg:text-md xl:text-md font-medium text-gray-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus aperiam optio suscipit minima cupiditate id expedita quod quam minus libero.</p>
-                <p className="author text-sm font-medium text-gray-300">Dispatch: Davidbek90</p>
-              </div>
-            </Link>
+              )
+            })}
+
           </div>
 
         </div>

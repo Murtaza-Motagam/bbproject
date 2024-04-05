@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useParams } from 'react-router-dom';
 import { BlogContext } from '../BlogContext';
@@ -11,23 +11,34 @@ const Modal = ({ title, isOpen, isClose }) => {
 
     const { id } = useParams();
 
-    const { terryData, getUserFollowingList, getUserFollowersList, getOtherUserFollowersList, getOtherUserFollowingList } = context;
+    const { terryData, getUser, getUserId, getUserFollowingList, getUserFollowersList, getOtherUserFollowersList, getOtherUserFollowingList } = context;
+    console.log(getUserId)
 
     useEffect(() => {
-        if (title === "Your Followings") {
-            getUserFollowingList();
-        }
-        else if (title === "Your Followers") {
-            getUserFollowersList();
-        }
-        else if (title === "Followers") {
-            getOtherUserFollowersList(id);
-        }
-        else if (title === "Following") {
-            getOtherUserFollowingList(id);
+        switch (title) {
+            case "Your Followings":
+
+                getUserFollowingList();
+                break;
+            case "Your Followers":
+
+                getUserFollowersList();
+                break;
+            case "Followers":
+
+                getOtherUserFollowersList(id);
+                break;
+            case "Followings":
+
+                getOtherUserFollowingList(id);
+                break;
+            default:
+                // Handle default case if needed
+                break;
         }
 
-    }, [isOpen, isClose])
+    }, [isOpen]);
+
 
 
     if (!isOpen) return null;
@@ -54,15 +65,27 @@ const Modal = ({ title, isOpen, isClose }) => {
                         {/* Content */}
                         {terryData && terryData.length > 0 ? terryData.map(main => (
 
-                            <Link to={`/profile/${main._id}`} className="flex py-4 px-3 rounded-md items-start justify-between gap-x-3 hover:bg-gray-100 dark:hover:bg-darkTerritiary" key={main._id}>
-                                <div className="flex items-center justify-center gap-x-4">
-                                    <div className="xl:text-3xl lg:text-3xl text-2xl">
-                                        <FaUserCircle />
+                            main._id == getUserId ? (
+                                <Link to="/myprofile" onClick={isClose} className="flex py-4 px-3 rounded-md items-start justify-between gap-x-3 hover:bg-gray-100 dark:hover:bg-darkTerritiary" key={main._id}>
+                                    <div className="flex items-center justify-center gap-x-4">
+                                        <div className="xl:text-3xl lg:text-3xl text-2xl">
+                                            <FaUserCircle />
+                                        </div>
+                                        <h1 className="xl:text-lg lg:text-lg font-roboto font-medium">{main.username}</h1>
                                     </div>
-                                    <h1 className="xl:text-lg lg:text-lg font-roboto font-medium">{main.username}</h1>
-                                </div>
-                                <button className="hover:font-semibold text-danger dark:text-white">remove</button>
-                            </Link>
+                                    <button className="hover:font-semibold text-danger dark:text-white">remove</button>
+                                </Link>
+                            ) : (
+                                <Link to={`/profile/${main._id}`} onClick={isClose} className="flex py-4 px-3 rounded-md items-start justify-between gap-x-3 hover:bg-gray-100 dark:hover:bg-darkTerritiary" key={main._id}>
+                                    <div className="flex items-center justify-center gap-x-4">
+                                        <div className="xl:text-3xl lg:text-3xl text-2xl">
+                                            <FaUserCircle />
+                                        </div>
+                                        <h1 className="xl:text-lg lg:text-lg font-roboto font-medium">{main.username}</h1>
+                                    </div>
+                                    <button className="hover:font-semibold text-danger dark:text-white">remove</button>
+                                </Link>
+                            )
 
                         )) : (
                             <h1 className="w-full">No Followers</h1>

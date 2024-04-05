@@ -11,6 +11,7 @@ const Authors = ({ theme }) => {
     useEffect(() => {
       fetchAllUsers();
     }, [])
+
     
     return (
         <div className={`${theme === 'dark' ? 'dark' : 'light'} font-poppins`}>
@@ -18,7 +19,7 @@ const Authors = ({ theme }) => {
             <hr className="w-full h-3 rounded-full bg-indigo-500 max-w-[1600px] mx-auto my-8 dark:bg-gray-200" />
             <div className="text-gray-900 my-20  max-w-[1600px] mx-auto grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 dark:text-white">
                 {data.map(user => (
-                    <ProfileCard key={user._id} user={user}/>
+                    <ProfileCard key={user.username} user={user}/>
                 ))}
             </div>
         </div>

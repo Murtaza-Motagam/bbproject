@@ -149,7 +149,7 @@ router.get('/getuser', fetchUser, async (req, res) => {
 
 // Route-4 - Fetch all user information
 
-router.get('/fetchallusers', fetchUser, async (req, res) => {
+router.get('/fetchallusers', async (req, res) => {
 
   let success = false;
 

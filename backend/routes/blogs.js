@@ -3,6 +3,7 @@ var router = express.Router();
 const Blogs = require('../model/Blogs')
 const Users = require('../model/Users')
 const fetchUser = require('../middlewares/fetchUser')
+const fetchAdmin = require('../middlewares/fetchAdmin')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -167,6 +168,48 @@ router.put('/like/:postId', fetchUser, async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
+
+  // Route-8: Fetch user blog by id
+
+  router.get('/fetchbyid/:id', fetchAdmin, async (req, res)=>{
+
+    let success = false;
+
+    try {
+        const blogs = await Blogs.find({ user: req.params.id });
+
+        success = true;
+
+        res.json(blogs)
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send(success, "Some error occurred");
+    }
+});
+
+  // Route-9: Delete a blog by id
+
+  router.delete('/delete/:id', fetchAdmin, async (req, res)=>{
+
+    let success = false;
+
+    try {
+        const blogs = await Blogs.findByIdAndDelete({ _id: req.params.id });
+
+        if(blogs){
+            success = true;   
+            res.status(200).json({ message: "Blog Deleted Successfully"});
+        }
+        else{
+            res.status(404).json({ message: "Could not find the blog!"});
+        }
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send(success, "Some error occurred");
+    }
+});
 
 
 module.exports = router;

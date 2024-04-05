@@ -27,6 +27,8 @@ const BlogProvider = ({ children }) => {
     const [secData, setSecData] = useState([]);
     const [terryData, setTerryData] = useState([])
 
+    const [getUserId, setGetUserId ] = useState(null);
+
     // Route-1: Add a profile picture
 
     const uploadProfilePic = async (file) => {
@@ -55,6 +57,7 @@ const BlogProvider = ({ children }) => {
 
         const json = await response.json();
         setData([json.userInfo])
+        setGetUserId(json.userInfo._id);
     }
 
     const getUserBlogs = async () => {
@@ -115,6 +118,18 @@ const BlogProvider = ({ children }) => {
         const json = await response.json();
         setBlogs([json.blogs])
         // console.log(json.blogs)
+    }
+
+    const fetchAllBlog = async () => {
+        const response = await fetch(`${blogUrl}/fetchallblogs`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const json = await response.json();
+        setBlogs(json)
     }
 
     const getUserFollowersList = async () => {
@@ -245,7 +260,6 @@ const BlogProvider = ({ children }) => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
             }
         });
 
@@ -257,7 +271,7 @@ const BlogProvider = ({ children }) => {
 
 
     return (
-        <BlogContext.Provider value={{ data, userBlogData, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser }}>
+        <BlogContext.Provider value={{ data, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser }}>
             {children}
         </BlogContext.Provider>
     );

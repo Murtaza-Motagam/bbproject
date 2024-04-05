@@ -96,25 +96,25 @@ const MainApplication = () => {
 
             {/* Client Panel Routes */}
 
-            <Route exact path="/" element={<Home theme={theme} />} />
+            <Route exact path="/" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Home theme={theme} />} />
             <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Navigate to="/" />} />
             <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register theme={theme} /> : <Navigate to="/" />} />
-            <Route path="/forgotpassword" element={<ForgotPassword theme={theme} />} />
-            <Route path="/services" element={<Services theme={theme} />} />
-            <Route path="/joinwithus" element={<Join theme={theme} />} />
-            <Route path="/explore" element={<Explore theme={theme} />} />
-            <Route path="/authors" element={<Authors theme={theme} />} />
-            <Route path="/blogs" element={userLoggedIn ? <Blogs theme={theme} /> : <Navigate to="/login" />} />
-            <Route path="/blogs/:id" element={<Blog theme={theme} />} />
-            <Route path="/category" element={<BlogsCategory theme={theme} />} />
-            <Route path="/contact" element={<Contact theme={theme} />} />
+            <Route path="/forgotpassword" element={!userLoggedIn ? <Login theme={theme} /> : <ForgotPassword theme={theme} />} />
+            <Route path="/services" element={!userLoggedIn ? <Login theme={theme} /> : <Services theme={theme} />} />
+            <Route path="/joinwithus" element={!userLoggedIn ? <Login theme={theme} /> : <Join theme={theme} />} />
+            <Route path="/explore" element={!userLoggedIn ? <Login theme={theme} /> : <Explore theme={theme} />} />
+            <Route path="/authors" element={!userLoggedIn ? <Login theme={theme} /> : <Authors theme={theme} />} />
+            <Route path="/blogs" element={!userLoggedIn ? <Login theme={theme} /> : <Blogs theme={theme} /> } />
+            <Route path="/blogs/:id" element={!userLoggedIn ? <Login theme={theme} /> : <Blog theme={theme} />} />
+            <Route path="/category" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory theme={theme} />} />
+            <Route path="/contact" element={!userLoggedIn ? <Login theme={theme} /> : <Contact theme={theme} />} />
             <Route path="/terms-and-conditions" element={<Terms theme={theme} />} />
 
 
             {/* User Personal Space Routes */}
-            <Route path="/myprofile" element={<Profile />} />
+            <Route path="/myprofile" element={!userLoggedIn ? <Login theme={theme} /> : <Profile />} />
             {/* Other User Profile */}
-            <Route path="/profile/:id" element={<OtherProfile />} />
+            <Route path="/profile/:id" element={!userLoggedIn ? <Login theme={theme} /> : <OtherProfile />} />
 
 
             {/* Error Page  */}

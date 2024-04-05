@@ -168,7 +168,7 @@ const Home = ({ theme }) => {
 
                   <div className="flex flex-col text-center w-full justify-center items-center gap-4 p-4">
                     <p className="lg:tex-xl xl:text-xl md:text-lg text-lg font-semibold text-center dark:text-white">{d.name}</p>
-                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium pariatur eligendi neque distinctio dolorum accusamus soluta hic voluptates quo quam, corporis voluptatem, placeat iusto veritatis veniam sit ea repellat fuga?.</p>
+                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">{d.review}</p>
                     <div className="flex items-center w-full justify-start gap-x-7 bg-gray-100 py-3 px-5 rounded-md dark:bg-darkSecondary">
                       <img src={d.img} className="w-12 h-12 object-cover rounded-full border-2 border-gray-600" alt="" />
                       <div className="flex flex-col items-start justify-start">

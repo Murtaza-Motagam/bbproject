@@ -71,7 +71,7 @@ const otherProfile = ({ theme }) => {
         getSearchedUserDetails(id)
         getSearchedUserNavdetails(id)
         checkIfUserAlreadyFollowing(id)
-    }, [check]);
+    }, [check, id]);
 
 
 
@@ -212,22 +212,22 @@ const otherProfile = ({ theme }) => {
 
                 </div>
 
-                {followingModal && (
+                {followingModal ? (
                     <Modal
                         title="Followings"
                         isOpen={true}
                         isClose={() => setFollowingModal(false)}
 
                     />
-                )}
-                {followerModal && (
+                ) : null}
+                {followerModal ? (
                     <Modal
                         title="Followers"
                         isOpen={true}
                         isClose={() => setFollowerModal(false)}
 
                     />
-                )}
+                ) : null}
 
             </main>
 

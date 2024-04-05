@@ -24,14 +24,11 @@ const Profile = ({ theme }) => {
     const {
         data,
         secData,
-        terryData,
         getUser,
         getUserBlogs,
         blogs,
         setOtherUserDetails,
         getNavDetail,
-        getUserFollowersList,
-        getUserFollowingList
     } = context;
 
     const [otherDetails, setOtherDetails] = useState({ link: "", desc: "", location: "" });

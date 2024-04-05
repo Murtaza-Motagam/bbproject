@@ -22,33 +22,10 @@ const AdminUsers = (props) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [users, setUsers] = useState([]);
 
-    const location = useLocation();
-    const { state } = location;
-    const [initialLoad, setInitialLoad] = useState(true); // State to track initial load
-
     useEffect(() => {
       document.title = " Blogin Users | Check and edit the details of every user";
-      if (initialLoad) {
-        // Fetch data only on initial load
-        fetchAllUsersInfo();
-        setInitialLoad(false); // Set initialLoad to false after initial fetch
-      }
-    }, [initialLoad]); // Add initialLoad to dependency array
-
-
-    useEffect(() => {
-      if (state && state.userDeleted) {
-        props.showAlert("Success", "User has been deleted", "success");
-        // Reset state.userDeleted after showing the alert
-        location.state = { ...location.state, userDeleted: false };
-        // Set a timeout to hide the alert after 4 seconds
-        const timeoutId = setTimeout(() => {
-          props.hideAlert(); // Assuming you have a function to hide the alert
-        }, 4000);
-        // Clear the timeout when the component unmounts or when state changes
-        return () => clearTimeout(timeoutId);
-      }
-    }, [state, props, location]); // Add location to dependency array
+      fetchAllUsersInfo();
+    }, []);
 
 
     const fetchAllUsersInfo = async () => {

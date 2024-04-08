@@ -132,8 +132,8 @@ router.get('/getnavdetails', fetchUser, async (req, res) => {
 
     try {
         const totalBlogs = await Blogs.countDocuments({ user: user });
-        const userFollowers = await Users.find({ following: user });
-        const totalFollowers = userFollowers.length;
+        const userFollowers = await Users.findById(user).select('followers');
+        const totalFollowers = userFollowers.followers.length;
 
         const userFollowing = await Users.findById(user).select('following');
         const totalFollowing = userFollowing.following.length;
@@ -228,8 +228,8 @@ router.get('/finduser/navdetails/:id', fetchUser, async (req, res) => {
         const user = req.params.id;
 
         const totalBlogs = await Blogs.countDocuments({ user: user });
-        const userFollowers = await Users.find({ following: user });
-        const totalFollowers = userFollowers.length;
+        const userFollowers = await Users.findById(user).select('followers');
+        const totalFollowers = userFollowers.followers.length;
 
         const userFollowing = await Users.findById(user).select('following');
         const totalFollowing = userFollowing.following.length;

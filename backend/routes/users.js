@@ -307,6 +307,30 @@ router.post('/addfellowdetails', fetchUser, async (req, res) => {
   }
 });
 
+// ROUTE 10: Get all the users from database
+
+router.get('/getallusers', fetchUser, async (req, res) => {
+  let success = false;
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const getAllUsers = await Users.find({});
+    if(getAllUsers){
+      success = true; 
+      res.status(200).json({ success, getAllUsers });
+    }
+    else{
+      res.status(404).json({ success, message: "Not getting users data." });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Some error occurred");
+  }
+});
+
 
 
 module.exports = router;

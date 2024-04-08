@@ -11,24 +11,32 @@ const Modal = ({ title, isOpen, isClose }) => {
 
     const { id } = useParams();
 
-    const { terryData, getUser, getUserId, getUserFollowingList, getUserFollowersList, getOtherUserFollowersList, getOtherUserFollowingList } = context;
-    console.log(getUserId)
+    const { terryData, getUserId, getUserFollowingList, getUserFollowersList, getOtherUserFollowersList, getOtherUserFollowingList } = context;
 
     useEffect(() => {
-        if (title === "Your Followings") {
-            getUserFollowingList();
+        const fetchListBasedOnTitle = () => {
+            switch (title) {
+                case "Your Followings":
+                    getUserFollowingList();
+                    break;
+                case "Your Followers":
+                    getUserFollowersList();
+                    break;
+                case "Followers":
+                    getOtherUserFollowersList(id);
+                    break;
+                case "Following":
+                    getOtherUserFollowingList(id);
+                    break;
+                default:
+                    break;
+            }
+        };
+        if (isOpen) {
+            fetchListBasedOnTitle();
         }
-        if (title === "Your Followers") {
-            getUserFollowersList();
-        }
-        if (title === "Followers") {
-            getOtherUserFollowersList(id);
-        }
-        if (title === "Following") {
-            getOtherUserFollowingList(id);
-        }
+    }, [isOpen, title, id, getUserFollowingList, getUserFollowersList, getOtherUserFollowersList, getOtherUserFollowingList]);
 
-    }, [isOpen]);
 
 
 

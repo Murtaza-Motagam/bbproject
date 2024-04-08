@@ -256,15 +256,16 @@ const BlogProvider = ({ children }) => {
     }
 
     const fetchAllUsers = async () => {
-        const response = await fetch(`${authUrl}/fetchallusers`, {
+        const response = await fetch(`${authUrl}/getallusers`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
             }
         });
 
         const json = await response.json();
-        setData(json.fetchAllUsers);
+        setData(json.getAllUsers);
 
     }
 

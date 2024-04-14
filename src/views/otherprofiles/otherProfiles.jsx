@@ -1,77 +1,59 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BlogContext } from "../../BlogContext.jsx";
 import banner from "../../assets/banner.jpeg";
-import profile from "../../assets/admin-person.png";
+import person from "../../assets/person.png";
 import { TiTickOutline } from "react-icons/ti";
 import { Link, useParams } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
-import Modal from '../../components/Modal.jsx';
+import { Toaster } from 'react-hot-toast';
+import { FaHeart } from 'react-icons/fa';
+import { FaThumbsUp } from "react-icons/fa";
+import { FaRegThumbsUp } from "react-icons/fa6";
 
 const otherProfile = ({ theme }) => {
 
     const context = useContext(BlogContext);
 
-
-    const [followerModal, setFollowerModal] = useState(false);
-    const [followingModal, setFollowingModal] = useState(false);
-
     const { id } = useParams();
-
-
-    const showFollowersModal = () => {
-        setFollowerModal(true);
-    }
-
-    const showFollowingModal = () => {
-        setFollowingModal(true)
-    }
-
 
 
     const {
         data,
         navDetails,
-        check,
         userBlogData,
+        blogs,
         getSearchedUserDetails,
         getSearchedUserNavdetails,
-        checkIfUserAlreadyFollowing,
-        followUser,
-        unFollowUser
     } = context;
 
-    const [checked, setChecked] = useState(check);
+    const [expandedBlogs, setExpandedBlogs] = useState({});
+    const [likes, setLikes] = useState(false);
 
-    const handleUserFollowing = async (profileId) => {
-
-        await followUser(profileId);
-
-        await checkIfUserAlreadyFollowing(profileId);
-
-        if (check === true) {
-            await getSearchedUserNavdetails(profileId);
-        }
-
-
+    function capitalizeFirstLetter(str) {
+        return str.replace(/\b\w/g, (match) => match.toUpperCase());
     }
 
-    const handleUnfollowUser = async (profileId) => {
-        await unFollowUser(profileId);
-
-        await checkIfUserAlreadyFollowing(profileId);
-
-        if (check === false) {
-            await getSearchedUserNavdetails(profileId)
-        }
+    function dateString(date) {
+        return date.toDateString();
     }
 
+    const toggleView = (blogId) => {
+        setExpandedBlogs(prevState => ({
+            ...prevState,
+            [blogId]: !prevState[blogId]
+        }));
+    };
+
+
+
+    const handleLike = async (blogId) => {
+        console.log("Handlelike")
+    };
 
 
     useEffect(() => {
         getSearchedUserDetails(id)
         getSearchedUserNavdetails(id)
-        checkIfUserAlreadyFollowing(id)
-    }, [check, id]);
+    }, [id]);
 
 
 
@@ -82,62 +64,26 @@ const otherProfile = ({ theme }) => {
             />
             <img src={banner} className="lg:w-[2000px] lg:h-[400px] xl:w-[2000px] xl:h-[400px] lg:block xl:block hidden object-contain " />
 
-            {navDetails.map((d, index) => {
-                return (
-                    <div className="bg-white h-[100px] lg:flex lg:justify-between xl:flex xl:justify-between w-full space-y-6 flex-col xl:flex-row xl:space-y-0 lg:flex-row lg:space-y-0 items-center hidden dark:bg-darkSecondary dark:text-gray-50" key={index}>
-
-
-                        <div className="flex flex-1  md:ml-80 lg:ml-80 xl:ml-80 items-center w-full" key={index}>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer" >
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Total Posts</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{d.totalPostsLength}</h2>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800" onClick={showFollowersModal}>
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Followers</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{d.totalFollowers}</h2>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml- cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800" onClick={showFollowingModal}>
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Following</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{d.totalFollowing}</h2>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div className="flex flex-2 ml-10 md:mr-48 lg:mr-48 xl:mr-48 items-center justify-center">
-                            {check === true ? (
-                                <button onClick={() => handleUnfollowUser(id)} type="button" className="flex items-center gap-x-3 text-white bg-indigo-500 hover:bg-indigo-600  focus:outline-none  font-medium transition duration-300 ease-out rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:text-gray-900 dark:bg-white dark:hover:bg-gray-200">
-                                    <TiTickOutline size={20} />
-                                    <span>Following</span>
-                                </button>
-                            ) : (
-                                <button onClick={() => handleUserFollowing(id)} type="button" className=" text-white bg-indigo-500 hover:bg-indigo-600  focus:outline-none  font-medium transition duration-300 ease-out rounded-full text-sm px-10 py-2.5 text-center me-2 mb-2 dark:text-gray-900 dark:bg-white dark:hover:bg-gray-200">
-                                    <span>Follow</span>
-                                </button>
-
-                            )}
-                        </div>
-
-
-                    </div>
-                )
-            })}
-
-
             {/* Main Profile Section starts here */}
 
-            <main className="flex justify-between flex-col md:flex-col lg:flex-row xl:flex-row  items-start w-full mx-auto mt-0 dark:bg-darkPrimary dark:text-gray-300 mb-32">
+            <main className="flex justify-between flex-col md:flex-col lg:flex-row xl:flex-row  items-start w-full mx-auto mt-10 dark:bg-darkPrimary dark:text-gray-300 mb-32">
 
                 {/*  Left Menu */}
-                <div className="left lg:w-2/6 xl:w-2/6 w-full mt-5 lg:h-[1000px] xl:h-[1000px]  lg:-mt-0 xl:-mt-0">
+                <div className="left lg:w-2/6 xl:w-2/6 w-full mt-5 lg:h-[1000px] xl:h-[5 00px]  lg:-mt-0 xl:-mt-0">
 
-                    <div className="flex items-center ml-10 ">
-                        <img src={profile} className="h-36 w-36 p-2 object-contain bg-gray-100 rounded-full " alt="" />
+                    <div className="flex flex-col space-y-4 items-start justify-center ml-10">
+                        <img src={person} className="h-36 w-36 p-2 object-contain bg-gray-100 rounded-full " alt="" />
+                        <div className="flex gap-x-4 items-center justify-center ml-2">
+                            {navDetails.map((e) => {
+                                return (
+                                    <div className="flex items-center gap-x-3" key={e.totalPostsLength}>
+                                        <h1 className="text-lg font-semibold">Total Posts: </h1>
+                                        <h2 className="text-xl font-bold text-blue-500">{e.totalPostsLength}</h2>
+                                    </div>
+                                )
+                            })}
+
+                        </div>
                     </div>
 
                     {data.map((u => {
@@ -177,57 +123,46 @@ const otherProfile = ({ theme }) => {
                 </div>
 
                 {/*  Right Menu */}
-                <div className="right  max-w-full text-gray-900 lg:w-4/6 xl:w-4/6 mt-[6rem] dark:bg-darkSecondary dark:text-gray-50">
-
-                    <div className="flex items-center h-[70px] justify-start dark:bg-darkSecondary">
-                        <Link to="/" className="flex flex-col items-start justify-between h-[70px] hover:bg-white ml-5 dark:hover:bg-gray-600 ">
-                            <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                <h1 className="text-md font-semibold">Your Blogs</h1>
-                            </div>
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        </Link>
-                    </div>
-
-                    <div className="mt-10 space-y-2 w-full">
-                        {userBlogData && userBlogData.length > 0 ? (
-                            userBlogData.map(blog => {
+                <div className="w-full flex justify-center items-center flex-col space-y-3 font-roboto">
+                    <h1 className="text-center w-full xl:text-2xl lg:text-2xl md:text-lg text-md font-poppins text-blue-700 font-semibold border-b-2 border-gray-500 pb-3 mb-4 overflow-hidden px-2 dark:text-white">Blogs</h1>
+                    <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:px-5 lg:px-5 w-full gap-3 px-5">
+                        {
+                            userBlogData
+                            .filter(b => b.active)
+                            .map((b) => {
+                                const isExpanded = expandedBlogs[b._id];
                                 return (
-                                    <Link to={`/blogs/${blog._id}`} className="blog bg-white hover:bg-gray-100 mr-10 ml-5 200 py-5 flex justify-between items-center px-5 overflow-hidden  dark:bg-transparent dark:border-b-4 dark:rounded-lg dark:hover:bg-gray-700 mb-5" key={blog._id}>
-                                        <div className="right w-full md:w-3/4 lg:w-3/4 xl:w-3/4 ml-5 flex items-start flex-col space-y-5 pb-5">
-                                            <div className="space-y-2">
-                                                <h1 className="shortInfo p-0 text-lg lg:text-xl xl:text-xl font-semibold text-blue-500">{blog.category}</h1>
-                                                <h1 className="Mainheading p-0 text-xl lg:text-2xl xl:text-2xl font-bold text-gray-900 dark:text-white">{blog.title}</h1>
-                                            </div>
-                                            <p className="desc text-sm lg:text-md xl:text-md font-medium text-gray-800 dark:text-gray-300">{blog.description}</p>
-                                        </div>
-                                    </Link>
-                                );
-                            })
-                        ) : (
-                            <div className="h-[520px] w-full flex items-center justify-center">
-                                <h1 className="text-3xl font-semibold text-blue-500">No Blogs Yet!</h1>
-                            </div>
-                        )}
-                    </div>
 
+                                    <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
+                                        <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title)}</h1>
+
+
+                                        <div className="text-md font-semibold my-3 flex items-center">
+                                            <div className="like text-gray-600 cursor-pointer hover:text-black text-2xl mr-3 dark:text-white">
+                                                <FaRegThumbsUp />
+                                            </div>
+                                            <div className="heart flex items-center space-x-2 text-red-500 text-xl">
+                                                <FaHeart />
+                                                <span className="text-gray-800 dark:text-white">{b.likes}</span>
+                                            </div>
+                                        </div>
+
+
+                                        <p className={`w-full xl:text-lg h-[200px] ${b.description.length > 400 ? "overflow-y-scroll" : null} lg:text-lg md:text-sm text-sm text-justify mb-5 `}>
+                                            {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
+                                            <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
+                                        </p>
+                                        <div className="w-full flex justify-between">
+                                            <p className="text-sm text-gray-700 font-semibold dark:text-gray-300">{capitalizeFirstLetter(b.category)}</p>
+                                            <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">Posted - {dateString(new Date(b.createdAt))}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
 
-                {followingModal ? (
-                    <Modal
-                        title="Followings"
-                        isOpen={true}
-                        isClose={() => setFollowingModal(false)}
-
-                    />
-                ) : null}
-                {followerModal ? (
-                    <Modal
-                        title="Followers"
-                        isOpen={true}
-                        isClose={() => setFollowerModal(false)}
-
-                    />
-                ) : null}
 
             </main>
 

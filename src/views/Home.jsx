@@ -4,15 +4,14 @@ import SliderImg from "../assets/slider-img.png";
 import ExpImg from "../assets/experience-img.png";
 import About from "../assets/about.png";
 import freelance from "../assets/freelance.png";
-import f4 from "../assets/f4.png";
+import person from "../assets/person.png";
+import community from "../assets/community.png";
+import influence from "../assets/influence.png";
+import global from "../assets/global.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaQuoteLeft } from "react-icons/fa";
-
-
-
-import { carouselData, compoData } from "../data.ts";
+import { compoData } from "../data.ts";
 
 const Home = ({ theme }) => {
 
@@ -65,9 +64,9 @@ const Home = ({ theme }) => {
               </Link>
               {!localStorage.getItem('user-token') ? (
                 <Link to="/register"
-                    className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none  font-medium rounded-full text-sm px-10 py-3 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700"
-                  >
-                    SignUp
+                  className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none  font-medium rounded-full text-sm px-10 py-3 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700"
+                >
+                  SignUp
                 </Link>
               ) : null}
             </div>
@@ -119,7 +118,7 @@ const Home = ({ theme }) => {
       </div>
 
       <div className="w-full flex flex-col items-start mb-32 rounded-lg overflow-hidden py-10 px-5">
-        <h1 className="mb-10 lg:text-3xl xl:text-2xl md:text-xl text-lg font-semibold text-center mx-auto w-full my-5 dark:text-white">
+        <h1 className="mb-10 lg:text-3xl xl:text-4xl md:text-4xl text-2xl font-semibold text-center mx-auto w-full my-5 dark:text-white">
           Flourish Your Ideas With Blogs:
         </h1>
 
@@ -130,15 +129,15 @@ const Home = ({ theme }) => {
               return (
                 <div className="flex flex-col lg:flex-row xl:flex-row items-center justify-start gap-x-10 px-5 w-full" key={index}>
                   <img
-                    src={f4}
-                    className={`${theme === "dark" ? "" : "invert"}`}
+                    src={e.img === "person" ? person : e.img === "global" ? global : e.img === "community" ? community : influence}
+                    className={`${theme === "dark" ? "" : "invert"} w-12 invert`}
                     alt=""
                   />
                   <div className="flex flex-col items-start space-y-2">
                     <h1 className="lg:text-2xl xl:text-2xl md:text-lg text-md font-extrabold text-orange-500">
                       {e.subheading}
                     </h1>
-                    <p className="font-extrabold lg:text-2xl xl:text-2xl md:text-lg text-md text-gray-900 dark:text-gray-50">
+                    <p className="font-medium lg:text-2xl xl:text-2xl md:text-lg text-md text-gray-900 dark:text-gray-50">
                       {e.heading}
                     </p>
                   </div>
@@ -153,35 +152,6 @@ const Home = ({ theme }) => {
               alt=""
             />
           </div>
-        </div>
-      </div>
-
-      <div className="w-full mb-48">
-        <div>
-          <Slider {...settings}>
-            {carouselData.map((d, index) => {
-              return (
-                <div className="bg-white pb-10 text-black dark:bg-darkPrimary dark:text-gray-200" key={index}>
-                  <div className=" text-4xl rounded-t-xl text-gray-800 bg-white flex justify-center items-center dark:bg-darkPrimary dark:text-white">
-                    <FaQuoteLeft />
-                  </div>
-
-                  <div className="flex flex-col text-center w-full justify-center items-center gap-4 p-4">
-                    <p className="lg:tex-xl xl:text-xl md:text-lg text-lg font-semibold text-center dark:text-white">{d.name}</p>
-                    <p className="lg:tex-lg xl:text-lg md:text-md text-sm">{d.review}</p>
-                    <div className="flex items-center w-full justify-start gap-x-7 bg-gray-100 py-3 px-5 rounded-md dark:bg-darkSecondary">
-                      <img src={d.img} className="w-12 h-12 object-cover rounded-full border-2 border-gray-600" alt="" />
-                      <div className="flex flex-col items-start justify-start">
-                        <h1 className="text-md font-semibold text-indigo-500">{d.name}</h1>
-                        <h1 className="text-md font-semibold text-gray-600 dark:text-gray-100">Trending Author</h1>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              )
-            })}
-          </Slider>
         </div>
       </div>
     </div>

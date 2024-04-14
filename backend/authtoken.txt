@@ -4,19 +4,30 @@ username = jaimin123
 emailId = jamin21@email.com
 password = jaimin300
 
-authtoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViNjBjYTg0YjI3NjZlZWQxNjkwNzJkIn0sImlhdCI6MTcwNjQzMDI0OH0.vG5HrLymEd0x5zhJpnELo7UC5JvIqks868wY0Fi8_wU
+authtoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxYjZjNDhlNTgyNDljNDRkYzk5MjZjIn0sImlhdCI6MTcxMzA3MzIyNH0.d96tHpJJQyHxY1ykacJ6qfo_QcB3N9ixBuNFftz2PDc
 
-"Admin-Details": {
-    "adminId": 23341,
-    "username": "admin-10",
-    "name": "kinjal Mehra",
-    "emailId": "kinjal90@gmail.com",
-    "phoneNumber": 9104809812,
-    "adminPriority": "Low-Level",
-    "password": "$2a$10$YvQZYdCT8Q2nj9IY5PEmeeRksCxYTJS0GsMPu5EztveM5.Tj6hKm6",
-    "_id": "65c4a418a741929d9a65f356",
-    "datacreated": "2024-02-08T09:51:20.390Z",
+
+User details default : 
+{
+  "success": true,
+  "authtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxYjZjNDhlNTgyNDljNDRkYzk5MjZjIn0sImlhdCI6MTcxMzA3MzIyNH0.d96tHpJJQyHxY1ykacJ6qfo_QcB3N9ixBuNFftz2PDc",
+  "User-Details": {
+    "username": "Davidbek90",
+    "emailId": "davidbek90@example.com",
+    "password": "$2a$10$swvB1Q3UyvSewZEzyjoXiuR2uJwfnc49Yv8jut4Qgn7a5jMSnjw7W",
+    "location": "",
+    "desc": "",
+    "link": "",
+    "followers": [],
+    "following": [],
+    "active": true,
+    "_id": "661b6c48e58249c44dc9926c",
+    "datacreated": "2024-04-14T05:40:24.442Z",
     "__v": 0
   }
+}
 
-admin-token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjNGE0MThhNzQxOTI5ZDlhNjVmMzU2In0sImlhdCI6MTcwNzU3NTE2N30.IdCZt5bKGZwzLO3ufj60NwRH9vqbibVc5X6DMV_oD08
+
+Admin: HimanshuSoni
+
+admin-token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYxYjZlYzJlYWM4ZmYwOWY4ZWM0MDY3In0sImlhdCI6MTcxMzA3Mzg1OH0.NvK388xDvlB2MN_E_DUga7ZpvF11HbnnLiCJC2blO4E

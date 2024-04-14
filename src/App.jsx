@@ -29,7 +29,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 import AdminNavbar from "./Admin/components/Navbar/Navbar.tsx";
 import AdminMenu from "./Admin/components/Menu/Menu.jsx";
-import AdminHome from "./Admin/pages/Home.tsx";
 import AdminUsers from "./Admin/pages/AdminUsers.jsx";
 import AdminUser from "./Admin/pages/AdminUser.jsx";
 import AdminProfile from "./Admin/pages/AdminProfile.jsx";
@@ -41,6 +40,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import Authors from "./views/Authors.jsx";
+import MyBlogs from "./views/MyBlogs.jsx";
 
 
 const queryClient = new QueryClient();
@@ -96,19 +96,29 @@ const MainApplication = () => {
 
             {/* Client Panel Routes */}
 
-            <Route exact path="/" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Home theme={theme} />} />
+            <Route exact path="/" element={<Home theme={theme} />} />
             <Route path="/login" element={!adminLoggedIn && !userLoggedIn ? <Login theme={theme} /> : <Navigate to="/" />} />
             <Route path="/register" element={!adminLoggedIn && !userLoggedIn ? <Register theme={theme} /> : <Navigate to="/" />} />
-            <Route path="/forgotpassword" element={!userLoggedIn ? <Login theme={theme} /> : <ForgotPassword theme={theme} />} />
+            <Route path="/forgotpassword" element={<ForgotPassword theme={theme} />} />
             <Route path="/services" element={!userLoggedIn ? <Login theme={theme} /> : <Services theme={theme} />} />
             <Route path="/joinwithus" element={!userLoggedIn ? <Login theme={theme} /> : <Join theme={theme} />} />
             <Route path="/explore" element={!userLoggedIn ? <Login theme={theme} /> : <Explore theme={theme} />} />
             <Route path="/authors" element={!userLoggedIn ? <Login theme={theme} /> : <Authors theme={theme} />} />
             <Route path="/blogs" element={!userLoggedIn ? <Login theme={theme} /> : <Blogs theme={theme} /> } />
+            <Route path="/myblogs" element={!userLoggedIn ? <Login theme={theme} /> : <MyBlogs theme={theme} /> } />
             <Route path="/blogs/:id" element={!userLoggedIn ? <Login theme={theme} /> : <Blog theme={theme} />} />
-            <Route path="/category" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory theme={theme} />} />
+            <Route path="/category" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory theme={theme} category="Entertainment"/>} />
             <Route path="/contact" element={!userLoggedIn ? <Login theme={theme} /> : <Contact theme={theme} />} />
             <Route path="/terms-and-conditions" element={<Terms theme={theme} />} />
+
+            {/* Fetch blogs by category */}
+
+            <Route exact path="/category/science" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Science" theme={theme} />} />
+            <Route exact path="/category/entertainment" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Entertainment" theme={theme} />} />
+            <Route exact path="/category/education" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Education" theme={theme} />} />
+            <Route exact path="/category/foodndrinks" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Food & Drinks" theme={theme} />} />
+            <Route exact path="/category/coding" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Coding" theme={theme} />} />
+            <Route exact path="/category/technology" element={!userLoggedIn ? <Login theme={theme} /> : <BlogsCategory category="Technology" theme={theme} />} />
 
 
             {/* User Personal Space Routes */}
@@ -169,10 +179,10 @@ const AdminPanel = () => {
       path: "/",
       element: <Layout />,
       children: [
-        {
-          path: "/",
-          element: <AdminHome />,
-        },
+        // {
+        //   path: "/",
+        //   element: <AdminHome />,
+        // },
         {
           path: "/users",
           element: <AdminUsers showAlert={showAlert} />,
@@ -182,7 +192,7 @@ const AdminPanel = () => {
           element: <AdminUser showAlert={showAlert} />,
         },
         {
-          path: "/profile",
+          path: "/",
           element: <AdminProfile />,
         },
         {

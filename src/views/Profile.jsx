@@ -1,23 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BlogContext } from "../BlogContext.jsx";
-import pic from "../assets/random.jpeg";
 import banner from "../assets/banner.jpeg";
-import profile from "../assets/admin-person.png";
-import BlogDetails from "../components/BlogDetails.jsx"
-import { Link } from 'react-router-dom';
+import person from "../assets/person.png";
 import { MdEdit } from "react-icons/md";
 import { authUrl } from '../utils/constant.js';
+import { FaHeart } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
-import Modal from '../components/Modal.jsx';
+import { Link } from 'react-router-dom';
 
 const Profile = ({ theme }) => {
 
-    const [file, setFile] = useState(null);
     const [editDesc, setEditDesc] = useState(false);
-    const [followerModal, setFollowerModal] = useState(false);
-    const [followingModal, setFollowingModal] = useState(false);
     const [showRestDetails, setShowRestDetails] = useState(false);
-
+    const [expandedBlogs, setExpandedBlogs] = useState({});
 
     const context = useContext(BlogContext);
 
@@ -40,8 +35,6 @@ const Profile = ({ theme }) => {
     const handleDescriptionSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(otherDetails)
-
         setOtherUserDetails(otherDetails);
 
         setEditDesc(false);
@@ -51,29 +44,6 @@ const Profile = ({ theme }) => {
 
         getUser();
     }
-
-    const showFollowersModal = () => {
-        setFollowerModal(true);
-    }
-
-    const showFollowingModal = () => {
-        setFollowingModal(true)
-    }
-
-
-
-
-
-    const upload = async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        uploadProfilePic(formData)
-
-
-    };
 
     const prefillData = async () => {
         try {
@@ -97,10 +67,26 @@ const Profile = ({ theme }) => {
         }
     };
 
+
+    function capitalizeFirstLetter(str) {
+        return str.replace(/\b\w/g, (match) => match.toUpperCase());
+    }
+
+    function dateString(date) {
+        return date.toDateString();
+    }
+
+    const toggleView = (blogId) => {
+        setExpandedBlogs(prevState => ({
+            ...prevState,
+            [blogId]: !prevState[blogId]
+        }));
+    };
+
     useEffect(() => {
-      prefillData();
+        prefillData();
     }, [editDesc])
-    
+
 
 
     useEffect(() => {
@@ -117,46 +103,27 @@ const Profile = ({ theme }) => {
             />
             <img src={banner} className="lg:w-[2000px] lg:h-[400px] xl:w-[2000px] xl:h-[400px] lg:block xl:block hidden object-contain " />
 
-            <div className="bg-white h-[100px] lg:flex lg:justify-between xl:flex xl:justify-between w-full space-y-6 flex-col xl:flex-row xl:space-y-0 lg:flex-row lg:space-y-0 items-center hidden dark:bg-darkSecondary dark:text-gray-50">
-
-                {secData.map((s, index) => {
-                    return (
-
-                        <div className="flex flex-1  md:ml-80 lg:ml-80 xl:ml-80 items-center w-full " key={index}>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer" >
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Total Posts</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{s.totalPostsLength}</h2>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700" onClick={showFollowersModal}>
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Followers</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{s.totalFollowers}</h2>
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-start justify-between  h-[100px] ml- cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700" onClick={showFollowingModal}>
-                                <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                    <h1 className="text-md font-semibold">Following</h1>
-                                    <h2 className="text-xl font-bold text-blue-500">{s.totalFollowing}</h2>
-                                </div>
-                            </div>
-                        </div>
-
-                    )
-                })}
-            </div>
-
 
             {/* Main Profile Section starts here */}
 
-            <main className="flex justify-between flex-col md:flex-col lg:flex-row xl:flex-row  items-start w-full mx-auto mt-0 dark:bg-darkPrimary dark:text-gray-300 mb-32">
+            <main className="flex justify-between flex-col md:flex-col lg:flex-row xl:flex-row  items-start w-full mx-auto mt-10 dark:bg-darkPrimary dark:text-gray-300 mb-32">
 
                 {/*  Left Menu */}
-                <div className="left lg:w-2/6 xl:w-2/6 w-full mt-5 lg:h-[1000px] xl:h-[1000px]  lg:-mt-0 xl:-mt-0">
+                <div className="left lg:w-2/6 xl:w-2/6 w-full mt-5 lg:h-[500px] xl:h-[1000px]  lg:-mt-0 xl:-mt-0">
 
-                    <div className="flex items-center ml-10 ">
-                        <img src={profile} className="h-36 w-36 p-2 object-contain bg-gray-100 rounded-full " alt="" />
+                    <div className="flex flex-col space-y-4 items-start justify-center ml-10">
+                        <img src={person} className="h-36 w-36 p-2 object-contain bg-gray-100 rounded-full " alt="" />
+                        <div className="flex gap-x-4 items-center justify-center ml-2">
+                            {secData.map((e) => {
+                                return (
+                                    <div className="flex items-center gap-x-3" key={e.totalPostsLength}>
+                                        <h1 className="text-lg font-semibold">Total Posts: </h1>
+                                        <h2 className="text-xl font-bold text-blue-500">{e.totalPostsLength}</h2>
+                                    </div>
+                                )
+                            })}
+
+                        </div>
                     </div>
 
                     {data.map((d, index) => {
@@ -223,69 +190,40 @@ const Profile = ({ theme }) => {
 
                 </div>
 
-                {/*  Right Menu */}
-                <div className="right  max-w-full text-gray-900 lg:w-4/6 xl:w-4/6 mt-[6rem] dark:bg-darkSecondary dark:text-gray-50">
-
-                    <div className="flex items-center h-[70px] justify-start dark:bg-darkSecondary">
-                        <Link to="/myprofile" className="flex flex-col items-start justify-between h-[70px] hover:bg-white ml-5 dark:hover:bg-gray-600 ">
-                            <div className="flex flex-col items-center justify-center mt-5 gap-y-2 px-5">
-                                <h1 className="text-md font-semibold">Your Blogs</h1>
-                            </div>
-                            <div className="w-full h-[4px] bg-blue-500"></div>
-                        </Link>
-                    </div>
-
-                    <div className="mt-10 space-y-2 w-full">
-                        {blogs.length > 0 ? (
-                            blogs.map(blog => {
+                <div className="w-full flex justify-center items-center flex-col space-y-3 font-roboto">
+                    <h1 className="text-center w-full xl:text-2xl lg:text-2xl md:text-lg text-md font-poppins text-blue-700 font-semibold border-b-2 border-gray-500 pb-3 mt-10  mb-4 overflow-hidden px-2 dark:text-white dark:border-none">My Blogs</h1>
+                    <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:px-5 lg:px-5 w-full gap-3 px-5">
+                        {
+                            blogs
+                            .filter(b => b.active)
+                            .map((b) => {
+                                const isExpanded = expandedBlogs[b._id];
                                 return (
-                                    data.map(d => (
-                                        <BlogDetails
-                                            blog={blog}
-                                            user={d.username}
-                                            key={`${blog._id}-${d.username}`} // Ensuring key is unique
-                                        />
-                                    ))
-                                );
+
+                                    <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3">
+                                        <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title)}</h1>
+                                        <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart />  <span className="text-gray-800 dark:text-white">{b.likes}</span></p>
+                                        <p className={`w-full xl:text-lg h-[200px] ${b.description.length > 400 ? "overflow-y-scroll": null} lg:text-lg md:text-sm text-sm text-justify mb-5 `}>
+                                            {/* {capitalizeFirstLetter(b.description)} */}
+                                            {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
+                                            <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
+                                        </p>
+                                        <div className="w-full flex justify-between">
+                                            <p className="text-sm text-gray-700 font-semibold dark:text-gray-300">{capitalizeFirstLetter(b.category)}</p>
+                                            <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">Posted - {dateString(new Date(b.createdAt))}</p>
+                                        </div>
+                                    </div>
+                                )
                             })
-                        ) : (
-                            <div className="h-[520px] w-full flex items-center justify-center">
-                                <h1 className="text-3xl font-semibold text-blue-500">No Blogs Yet!</h1>
-                            </div>
-                        )}
+                        }
                     </div>
-
                 </div>
-
-
 
             </main>
 
-            {followingModal && (
-                <Modal
-                    title="Your Followings"
-                    isOpen={true}
-                    isClose={() => setFollowingModal(false)}
-                    
-                />
-            )}
-            {followerModal && (
-                <Modal
-                    title="Your Followers"
-                    isOpen={true}
-                    isClose={() => setFollowerModal(false)}
-                    
-                />
-            )}
 
         </div>
     );
 };
 
 export default Profile;
-
-
-{/* <form>
-    <input type="file" name="file" onChange={(e) => setFile(e.target.files[0])} />
-    <button type="submit" className="bg-gray-800 p-4 rounded text-lg text-white" onClick={upload}>Upload image</button>
-</form> */}

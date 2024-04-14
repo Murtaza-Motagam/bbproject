@@ -16,23 +16,8 @@ const Footer = ({ theme }) => {
           </span>
           <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-900 dark:text-gray-400 sm:mt-0">
             <li>
-              <Link to="/services" className="hover:text-gray-700 me-4 md:me-6">
-                Services
-              </Link>
-            </li>
-            <li>
               <Link to="/terms-and-conditions" className="hover:text-gray-700 me-4 md:me-6">
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-gray-700 me-4 md:me-6">
-                Licensing
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact" className="hover:text-gray-700 :">
-                Contact
+                Terms and conditions.
               </Link>
             </li>
           </ul>

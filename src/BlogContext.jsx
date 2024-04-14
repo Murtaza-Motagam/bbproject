@@ -269,10 +269,20 @@ const BlogProvider = ({ children }) => {
 
     }
 
+    const likeBlog = async (id) => {
+        const response = await fetch(`${blogUrl}/like/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
 
-
+        const json = await response.json();
+        console.log(json);
+    }
     return (
-        <BlogContext.Provider value={{ data, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser }}>
+        <BlogContext.Provider value={{ data, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser, likeBlog }}>
             {children}
         </BlogContext.Provider>
     );

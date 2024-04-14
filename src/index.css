@@ -124,3 +124,30 @@
     stroke-dasharray: 25;
     stroke-dashoffset: 25;
 }
+
+/* Hide scrollbar track */
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; /* color of the scrollbar handle */
+  border-radius: 5px; /* roundness of the scrollbar handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* color of the scrollbar handle on hover */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the scrollbar track */
+}
+
+/* Handle when dragged */
+::-webkit-scrollbar-thumb:active {
+  background: #666; /* color of the scrollbar handle when dragged */
+}
+

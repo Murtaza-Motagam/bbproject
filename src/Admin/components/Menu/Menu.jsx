@@ -12,12 +12,6 @@ export const menu = [
       listItems: [
         {
           id: 1,
-          title: "Dashboard",
-          url: "/",
-          icon: AnalyticsSvg,
-        },
-        {
-          id: 2,
           title: "Profile",
           url: "/profile",
           icon: Profile,
@@ -32,12 +26,6 @@ export const menu = [
           id: 1,
           title: "Users",
           url: "/users",
-          icon: Profile,
-        },
-        {
-          id: 2,
-          title: "Admin Users",
-          url: "/admin/users",
           icon: Profile,
         },
       ],

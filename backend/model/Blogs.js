@@ -18,10 +18,12 @@ const CollectionSchema = new Schema({
         type: String,
         required: true
     },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-    }],
+    likes: {
+        type: Number, 
+    },
+    active: {
+        type: Boolean,
+    },
     createdAt: {
         type: Date,
         default: Date.now

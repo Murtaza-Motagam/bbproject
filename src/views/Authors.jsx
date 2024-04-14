@@ -18,7 +18,9 @@ const Authors = ({ theme }) => {
             <h1 className="mt-20 max-w-[1600px] mx-auto xl:text-3xl lg:text-3xl md:text-2xl text-xl font-bold font-roboto text-blue-700 dark:text-white">Trending Authors - 2023-2024</h1>
             <hr className="w-full h-3 rounded-full bg-indigo-500 max-w-[1600px] mx-auto my-8 dark:bg-gray-200" />
             <div className="text-gray-900 my-20  max-w-[1600px] mx-auto grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4 dark:text-white">
-                {data.map((user) => {
+                {data
+                 .filter(user => user.active)
+                .map((user) => {
                     return (
                         <ProfileCard key={user._id} user={user} />
                     )

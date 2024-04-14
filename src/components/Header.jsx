@@ -55,7 +55,7 @@ const Header = ({ theme, handleTheme }) => {
     } else {
       document.getElementById("logo").classList.add("color-set");
     }
-  }, [isModalOpen]);
+  }, [theme, isModalOpen]);
 
   return (
     <nav
@@ -269,8 +269,9 @@ const Header = ({ theme, handleTheme }) => {
                   } block py-2 px-3 rounded   hover:font-semibold md:p-0 mb-2 md:mb-0 lg:mb-0 xl:mb-0`}
               >
                 <div className="flex items-center space-x-2">
-                  <i className="fa-solid fa-list fa-lg"></i>
-                  <span>Blogs</span>
+                  {/* <i className="fa-solid fa-list fa-lg"></i> */}
+                  <i className="fa-solid fa-pencil fa-lg"></i>
+                  <span>Create a post</span>
                 </div>
               </Link>
             </li>
@@ -299,6 +300,20 @@ const Header = ({ theme, handleTheme }) => {
                 <div className="flex items-center space-x-2">
                   <i className="fa-solid fa-at fa-lg"></i>
                   <span>Author</span>
+                </div>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/myblogs"
+                className={`${location.pathname === "/myblogs"
+                  ? "text-gray-900 font-semibold dark:text-white"
+                  : "text-gray-600 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white"
+                  } block py-2 px-3 rounded   hover:font-semibold md:p-0 mb-2 md:mb-0 lg:mb-0 xl:mb-0`}
+              >
+                <div className="flex items-center space-x-2">
+                <i className="fa-solid fa-pencil fa-lg"></i>
+                  <span>My Blogs</span>
                 </div>
               </Link>
             </li>

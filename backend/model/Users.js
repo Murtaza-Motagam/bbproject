@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { date } = require('yup');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
@@ -42,7 +41,9 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
-   
+    active: {
+        type: Boolean,
+    },
 });
 
 const Users = mongoose.model("users", UserSchema);

@@ -23,6 +23,7 @@ router.post('/signup', [
   let success = false;
 
   // If there are errors, return bad request and the errors 
+  
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success, errors: errors.array() })
@@ -56,7 +57,8 @@ router.post('/signup', [
         following: [],
         link: "",
         location: "",
-        desc: ""
+        desc: "",
+        active: true,
       });
 
       let data = {

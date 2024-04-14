@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = "AuthenticateAdmin";
 const multer = require('multer');
 const path = require('path');
+const Blogs = require('../model/Blogs.js');
 
 
 // Route-1: Signup the user using post request
@@ -257,6 +258,95 @@ router.delete('/deleteuser/:id', fetchAdmin, async (req, res) => {
     }
 
 })
+
+// ROUTE 9: Enable and Disable user by admin
+
+router.post('/user-active/:id', fetchAdmin, async (req, res) => {
+    let success = false;
+
+    try {
+
+
+        let mainUser = await Users.findById(req.params.id);
+        let userBlogs = await Blogs.find({ user: req.params.id });
+
+        if (!mainUser) {
+            return res.status(404).send("User Not Found");
+        }
+
+
+        if (!mainUser.active) {
+
+            mainUser.active = true;
+
+            await Promise.all(userBlogs.map(async (blog) => {
+                blog.active = mainUser.active;
+                await blog.save();
+            }));
+
+            await mainUser.save();
+            success = true;
+            res.json({ success, message: "User is Enabled Successfully" });
+
+        }
+        else {
+
+            mainUser.active = false;
+            
+            await Promise.all(userBlogs.map(async (blog) => {
+                blog.active = mainUser.active; // Set active status of blog to user's active status
+                await blog.save();
+            }));
+
+            await mainUser.save();
+            success = true;
+            res.json({ success, message: "User is Disabled Successfully" });
+
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
+
+// ROUTE 10: Enable and Disable users blog by admin
+
+router.post('/blog-active/:id', fetchAdmin, async (req, res) => {
+    let success = false;
+
+    try {
+
+
+        let mainBlog = await Blogs.findById(req.params.id);
+
+        if (!mainBlog) {
+            return res.status(404).send("Blog Not Found");
+        }
+
+
+        if (!mainBlog.active) {
+
+            mainBlog.active = true;
+            await mainBlog.save();
+            success = true;
+            res.json({ success, message: "User Blog is Enabled Successfully" });
+
+        }
+        else {
+
+
+            mainBlog.active = false;
+            await mainBlog.save();
+            success = true;
+            res.json({ success, message: "User Blog is Disabled Successfully" });
+
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
+
 
 
 

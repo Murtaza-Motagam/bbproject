@@ -16,6 +16,7 @@ const BlogProvider = ({ children }) => {
     // Define your state or any other data here
     const [blogs, setBlogs] = useState([]);
     const [data, setData] = useState([]);
+    const [info, setInfo] = useState([]);
 
     // other user states
     const [userBlogData, setUserBlogData] = useState([]);
@@ -57,7 +58,21 @@ const BlogProvider = ({ children }) => {
 
         const json = await response.json();
         setData([json.userInfo])
+        setInfo([json.userInfo])
         setGetUserId(json.userInfo._id);
+    }
+
+    const getActiveUser = async () => {
+        const response = await fetch(`${authUrl}/getuser`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
+
+        const json = await response.json();
+        setInfo([json.userInfo])
     }
 
     const getUserBlogs = async () => {
@@ -132,33 +147,6 @@ const BlogProvider = ({ children }) => {
         setBlogs(json)
     }
 
-    const getUserFollowersList = async () => {
-        const response = await fetch(`${userUrl}/listoffollowers`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setTerryData(json.followers)
-    }
-
-    const getUserFollowingList = async () => {
-        const response = await fetch(`${userUrl}/listoffollowings`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setTerryData(json.following)
-        // console.log(json)
-    }
-
     const getSearchedUserDetails = async (id) => {
         const response = await fetch(`${userUrl}/finduser/${id}`, {
             method: 'GET',
@@ -186,75 +174,6 @@ const BlogProvider = ({ children }) => {
         setNavDetails([json])
     }
 
-    const checkIfUserAlreadyFollowing = async (id) => {
-        const response = await fetch(`${userUrl}/following/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setCheck(json.isFollowing);
-    }
-
-    const getOtherUserFollowersList = async (id) => {
-        const response = await fetch(`${userUrl}/listoffollowers/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setTerryData(json.followers)
-
-    }
-
-    const getOtherUserFollowingList = async (id) => {
-        const response = await fetch(`${userUrl}/listoffollowings/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setTerryData(json.following)
-
-    }
-
-    const followUser = async (id) => {
-        const response = await fetch(`${userUrl}/following/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setFollowing(json.message);
-
-    }
-
-    const unFollowUser = async (id) => {
-        const response = await fetch(`${userUrl}/unfollow/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        setFollowing(json.message);
-
-    }
-
     const fetchAllUsers = async () => {
         const response = await fetch(`${authUrl}/getallusers`, {
             method: 'GET',
@@ -268,21 +187,8 @@ const BlogProvider = ({ children }) => {
         setData(json.getAllUsers);
 
     }
-
-    const likeBlog = async (id) => {
-        const response = await fetch(`${blogUrl}/like/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'user-token': localStorage.getItem('user-token')
-            }
-        });
-
-        const json = await response.json();
-        console.log(json);
-    }
     return (
-        <BlogContext.Provider value={{ data, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getUserFollowersList, getUserFollowingList, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, checkIfUserAlreadyFollowing, getOtherUserFollowersList, getOtherUserFollowingList, followUser, unFollowUser, likeBlog }}>
+        <BlogContext.Provider value={{ data, info, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, getActiveUser }}>
             {children}
         </BlogContext.Provider>
     );

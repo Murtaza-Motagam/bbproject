@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BlogContext } from "../../BlogContext.jsx";
 import banner from "../../assets/banner.jpeg";
-import person from "../../assets/person.png";
-import { TiTickOutline } from "react-icons/ti";
-import { Link, useParams } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import person from "../../assets/person.png"
+import { useParams } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import { FaHeart } from 'react-icons/fa';
 import { FaThumbsUp } from "react-icons/fa";
 import { FaRegThumbsUp } from "react-icons/fa6";
+import { blogUrl } from '../../utils/constant.js';
 
 const otherProfile = ({ theme }) => {
 
@@ -18,9 +18,10 @@ const otherProfile = ({ theme }) => {
 
     const {
         data,
+        info,
         navDetails,
+        getActiveUser,
         userBlogData,
-        blogs,
         getSearchedUserDetails,
         getSearchedUserNavdetails,
     } = context;
@@ -44,15 +45,32 @@ const otherProfile = ({ theme }) => {
     };
 
 
+    const likeBlog = async (blogId) => {
+        const response = await fetch(`${blogUrl}/like/${blogId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'user-token': localStorage.getItem('user-token')
+            }
+        });
 
-    const handleLike = async (blogId) => {
-        console.log("Handlelike")
-    };
+        const json = await response.json();
+
+        if (json.message === "You liked the blog") {
+            getSearchedUserDetails(id)
+            toast.success(json.message);
+        }
+        else if (json.message === "You unliked the blog") {
+            getSearchedUserDetails(id)
+            toast.success(json.message);
+        }
+    }
 
 
     useEffect(() => {
         getSearchedUserDetails(id)
         getSearchedUserNavdetails(id)
+        getActiveUser();
     }, [id]);
 
 
@@ -126,40 +144,56 @@ const otherProfile = ({ theme }) => {
                 <div className="w-full flex justify-center items-center flex-col space-y-3 font-roboto">
                     <h1 className="text-center w-full xl:text-2xl lg:text-2xl md:text-lg text-md font-poppins text-blue-700 font-semibold border-b-2 border-gray-500 pb-3 mb-4 overflow-hidden px-2 dark:text-white">Blogs</h1>
                     <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:px-5 lg:px-5 w-full gap-3 px-5">
-                        {
-                            userBlogData
-                            .filter(b => b.active)
-                            .map((b) => {
-                                const isExpanded = expandedBlogs[b._id];
-                                return (
+                    {
+                        info.map(u => (
 
-                                    <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
-                                        <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title)}</h1>
+                            userBlogData.length > 0 ? (
+                                userBlogData
+                                .filter(b => b.active)
+                                .map((b = {}) => {
+                                    const isExpanded = expandedBlogs[b._id];
+                                    const isLiked = b?.likes && b?.likes?.includes(u._id);
 
+                                    return (
 
-                                        <div className="text-md font-semibold my-3 flex items-center">
-                                            <div className="like text-gray-600 cursor-pointer hover:text-black text-2xl mr-3 dark:text-white">
-                                                <FaRegThumbsUp />
+                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
+                                            <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>
+                                                {capitalizeFirstLetter(b.title)}
+                                            </h1>
+
+                                            <div className="flex items-center gap-x-3 w-full justify-start">
+                                                <div className="hover:text-black text-gray-700 cursor-pointer dark:text-gray-300 dark:hover:text-white" onClick={() => likeBlog(b._id)}>
+                                                    {
+                                                        isLiked ? (
+                                                            <FaThumbsUp size={25} />
+                                                        ) : (
+                                                            <FaRegThumbsUp size={25} />
+                                                        )
+                                                    }
+                                                </div>
+                                                <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart size={20} />  <span className="text-gray-800 dark:text-white">{b.likes ? b.likes.length : 0}</span></p>
                                             </div>
-                                            <div className="heart flex items-center space-x-2 text-red-500 text-xl">
-                                                <FaHeart />
-                                                <span className="text-gray-800 dark:text-white">{b.likes}</span>
+
+                                            <p className={`w-full xl:text-lg h-[200px] ${isExpanded ? "overflow-y-scroll" : null} lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200`} style={{ lineHeight: "40px" }}>
+                                                {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
+                                                <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
+                                            </p>
+                                            <div className="w-full flex justify-between">
+                                                <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">
+                                                    Posted - {dateString(new Date(b.createdAt))}
+                                                </p>
+                                                <p className="text-gray-700 dark:text-gray-200 text-md font-roboto"><strong>Author: </strong> {b.username}</p>
                                             </div>
                                         </div>
-
-
-                                        <p className={`w-full xl:text-lg h-[200px] ${b.description.length > 400 ? "overflow-y-scroll" : null} lg:text-lg md:text-sm text-sm text-justify mb-5 `}>
-                                            {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
-                                            <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
-                                        </p>
-                                        <div className="w-full flex justify-between">
-                                            <p className="text-sm text-gray-700 font-semibold dark:text-gray-300">{capitalizeFirstLetter(b.category)}</p>
-                                            <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">Posted - {dateString(new Date(b.createdAt))}</p>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            ) : (
+                                <div className="w-full flex justify-center items-center ">
+                                    <h1 className="xl:text-3xl lg:text-3xl md:text-2xl text-xl text-blue-500 font-poppins font-semibold">No Blogs Available</h1>
+                                </div>
+                            )
+                        ))
+                    }
                     </div>
                 </div>
 

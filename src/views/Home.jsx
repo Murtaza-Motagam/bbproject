@@ -21,7 +21,7 @@ const Home = ({ theme }) => {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 200,
     slidesToShow: 3,
     slidesToScroll: 1,

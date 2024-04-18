@@ -44,7 +44,7 @@ router.post('/create', fetchUser, [
                 title,
                 category,
                 description,
-                likes: 0,
+                likes: [],
                 active: true,
             })
 
@@ -227,41 +227,61 @@ router.delete('/delete/:id', fetchAdmin, async (req, res) => {
 
 // ROUTE 10: Like  user blogs. 
 
-router.post('/like/:id', async (req, res) => {
+router.post('/like/:id', fetchUser, async (req, res) => {
+    let success = false;
     try {
         const mainBlog = await Blogs.findById(req.params.id);
         if (!mainBlog) {
-            return res.status(404).send("Blog Not Found");
+            return res.status(404).json({ success, message: "Blog Not Found" });
         }
+        
+        if (mainBlog.likes.includes(req.user.id)) {
+            mainBlog.likes.pull(req.user.id);
+            const updatedBlog = await mainBlog.save();
+            if (updatedBlog) {
+                success = true;
+                return res.status(200).json({ success, message: "You unliked the blog" });
+            }
+            else {
+                return res.status(422).json({ success, message: "Something went wrong" });
+            }        
+        }
+        else{
 
-        // Increment the likes count by 1
-        mainBlog.likes++;
-        await mainBlog.save();
-
-        return res.status(200).json({ message: "Blog liked successfully" });
+            mainBlog.likes.push(req.user.id);
+            const updatedBlog = await mainBlog.save();
+            success = true;
+            
+            if (updatedBlog) {
+                return res.status(200).json({ success, message: "You liked the blog" });
+            }
+            else {
+                return res.status(422).json({ success, message: "Something went wrong" });
+            }
+        }
+        
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Some error occurred");
     }
 });
 
+
 // ROUTE 11:  unlike  user blogs. 
 
-router.post('/unlike/:id', async (req, res) => {
+router.get('/likecount/:id', async (req, res) => {
     try {
-        const mainBlog = await Blogs.findById(req.params.id);
-        if (!mainBlog) {
-            return res.status(404).send("Blog Not Found");
+        const blog = await Blogs.findById(req.params.id);
+        if (!blog) {
+            return res.status(404).json({ message: "Blog not found" });
         }
-
-        // Increment the likes count by 1
-        mainBlog.likes--;
-        await mainBlog.save();
-
-        return res.status(200).json({ message: "Blog liked successfully" });
+        
+        const likesCount = blog.likes.length;
+        
+        return res.status(200).json({ likesCount });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Some error occurred");
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
 

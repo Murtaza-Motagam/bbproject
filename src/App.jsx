@@ -343,10 +343,6 @@ const AdminPanel = () => {
       path: "/",
       element: <Layout />,
       children: [
-        // {
-        //   path: "/",
-        //   element: <AdminHome />,
-        // },
         {
           path: "/users",
           element: <AdminUsers showAlert={showAlert} />,

@@ -18,9 +18,10 @@ const CollectionSchema = new Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Number, 
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
     active: {
         type: Boolean,
     },

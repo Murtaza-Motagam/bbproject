@@ -63,14 +63,6 @@ const AdminUsers = (props) => {
 
     return (
       <div className="users min-h-screen">
-        <div className="info flex items-center mb-5 gap-x-2">
-          <button className="text-md flex items-center gap-x-1 hover:rounded-full hover:bg-gray-600 hover:py-2 hover:px-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            Add New User
-          </button>
-        </div>
 
         <form className="mb-5 font-roboto" onSubmit={(e) => e.preventDefault()}>
           <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -84,7 +76,7 @@ const AdminUsers = (props) => {
               type="search"
               id="default-search"
               className="block w-full p-4 ps-10 text-md text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
-              placeholder="Search Admin Users"
+              placeholder="Search Blogin Users"
               value={searchQuery}
               onChange={handleSearchChange}
               autoComplete='off'
@@ -102,6 +94,7 @@ const AdminUsers = (props) => {
                 <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Username</th>
                 <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Email-ID</th>
                 <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">User Created</th>
+                <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Status</th>
                 <th scope="col" className="pl-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -115,6 +108,7 @@ const AdminUsers = (props) => {
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.username}</td>
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.emailId}</td>
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.datacreated.substring(0, 10)}</td>
+                      <td className={`px-3 py-4 text-center ${user.active === true ? "text-green-500" : "text-red-500"} whitespace-nowrap`}>{user.active === true ? "Active" : "Not-Active"}</td>
                       <td className="pl-3 py-4 text-center whitespace-nowrap flex gap-x-3 justify-center">
                         <Link to={`/users/${user._id}`} className="py-2 px-4 text-white bg-green-600 hover:bg-green-500 rounded font-medium">View User</Link>
                       </td>
@@ -129,6 +123,7 @@ const AdminUsers = (props) => {
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.username}</td>
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.emailId}</td>
                       <td className="px-3 py-4 text-center whitespace-nowrap">{user.datacreated.substring(0, 10)}</td>
+                      <td className={`px-3 py-4 text-center ${user.active === true ? "text-green-500" : "text-red-500"} whitespace-nowrap`}>{user.active === true ? "Active" : "Not-Active"}</td>
                       <td className="pl-3 py-4 text-center whitespace-nowrap flex gap-x-3 justify-center">
                         <Link to={`/users/${user._id}`} className="py-2 px-4 text-white bg-green-600 hover:bg-green-500 rounded font-medium">View User</Link>
                       </td>

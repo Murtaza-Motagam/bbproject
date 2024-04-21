@@ -4,7 +4,7 @@ import "../styles/global.scss";
 import { blogUrl } from "../../utils/constant"
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loader from '../components/Loader/Loader';
-import { FaUserAltSlash, FaUserCheck } from "react-icons/fa";
+import { FaHeart, FaRegThumbsUp, FaThumbsUp, FaUserAltSlash, FaUserCheck } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast"
 
 const AdminUser = (props) => {
@@ -24,12 +24,21 @@ const AdminUser = (props) => {
   const MainFunction = (props) => {
 
     const [userInfo, setUserInfo] = useState([]);
+    const [adminInfo, setAdminInfo] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDBOpen, setIsDBOpen] = useState(false);
     const [isActiveOpen, setIsActiveOpen] = useState(false);
     const [isBlogOpen, setIsBlogOpen] = useState(false);
     const [blogId, setBlogId] = useState("");
     const [blogs, setBlogs] = useState([]);
+
+    function capitalizeFirstLetter(str) {
+      return str.replace(/\b\w/g, (match) => match.toUpperCase());
+    }
+
+    function dateString(date) {
+      return date.toDateString();
+    }
 
     const openModal = (id, blogTitle) => {
       setIsModalOpen(true);
@@ -164,10 +173,53 @@ const AdminUser = (props) => {
       }
     }
 
+    const fetchAdminInfo = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/admin/getadmin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'admin-token': localStorage.getItem('admin-token')
+          },
+        });
+
+        const json = await response.json();
+        setAdminInfo(json)
+
+
+      } catch (error) {
+        // Handle network errors
+        console.error('Error fetching admin info:', error.message);
+      }
+    };
+
+
+    const likeBlog = async (blogId) => {
+      const response = await fetch(`${blogUrl}/admin-like/${blogId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'admin-token': localStorage.getItem('admin-token')
+        }
+      });
+
+      const json = await response.json();
+
+      if (json.message === "You liked the blog") {
+        toast.success(json.message);
+        fetchUserBlogs();
+      }
+      else if (json.message === "You unliked the blog") {
+        toast.success(json.message);
+        fetchUserBlogs();
+      }
+    }
+
     useEffect(() => {
       document.title = " Blogin User | Check and edit the details of a single user";
       fetchSingleUserInfo(id);
       fetchUserBlogs();
+      fetchAdminInfo();
     }, []);
 
 
@@ -178,15 +230,12 @@ const AdminUser = (props) => {
           reverseOrder="false"
         />
         <div className="w-full block font-roboto min-h-screen relative" id="displayInfo">
-          <div className=" mx-5 py-3 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ">
-            <div className="image p-2 rounded-xl mx-4 bg-gray-300 h-[150px] w-[150px] object-contain">
-              <img src={admin} alt="" />
-            </div>
+          <div className=" mx-5 py-10 px-10 mt-5 bg-gray-50 flex items-center justify-start text-gray-800 rounded-lg ">
             {userInfo.map((e, index) => {
               return (
                 <div className=" ml-3 info flex flex-col gap-y-2 items-start justify-start" key={index}>
-                  <h1 className="text-2xl uppercase bold-700">{e.username}</h1>
-                  <h1 className="text-lg text-gray-700 ">{e.emailId}</h1>
+                  <h1 className="text-2xl"><strong>Username:</strong> {e.username}</h1>
+                  <h1 className="text-lg text-gray-700 "><strong>Email:</strong> {e.emailId}</h1>
                 </div>
               )
             })}
@@ -199,7 +248,7 @@ const AdminUser = (props) => {
                 <tr>
                   <th scope="col" className="px-7 pr-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Sno.</th>
                   <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Username</th>
-                  <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Email-ID</th>
+                  <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Email ID</th>
                   <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">User Created</th>
                   <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Status</th>
                   <th scope="col" className="px-3 py-3 text-center text-sm font-semibold text-gray-300 uppercase tracking-wider">Actions</th>
@@ -360,33 +409,62 @@ const AdminUser = (props) => {
             </ul>
           </div>
 
-          <div className="w-full mt-6">
-            {blogs.map((b) => {
-              return (
-                <div className="blog mr-10 ml-5 200 py-5 flex justify-between items-center px-5 overflow-hidden border border-gray-600 rounded-xl  mb-5 hover:bg-gray-800" key={b._id}>
-                  <div className="w-full ml-5 flex items-start flex-col space-y-5">
-                    <div className="space-y-2">
-                      <h1 className="Mainheading p-0 text-xl lg:text-2xl xl:text-2xl font-bold text-white">{b.title}</h1>
-                      <h1 className="shortInfo p-0 text-md font-semibold text-blue-500">{b.category}</h1>
+          <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 grid-cols-1 xl:px-5 lg:px-5 w-full gap-3 px-5">
+            {
+              adminInfo.map(u => (
+                blogs.map((b) => {
+                  const isLiked = b?.likes && b?.likes?.includes(u._id);
+                  return (
+                    <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
+                      <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg font-semibold mt-0 mb-4 text-white" style={{ lineHeight: "35px" }}>
+                        {capitalizeFirstLetter(b.title)}
+                      </h1>
+
+                      <div className="flex items-center gap-x-3 w-full justify-start">
+                        <div className="cursor-pointer text-gray-300 hover:text-white" onClick={() => likeBlog(b._id)}>
+                          {
+                            isLiked ? (
+                              <FaThumbsUp size={25} />
+                            ) : (
+                              <FaRegThumbsUp size={25} />
+                            )
+                          }
+                        </div>
+                        <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart size={20} />  <span className="text-white">{b.likes ? b.likes.length : 0}</span></p>
+                      </div>
+
+                      <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 text-gray-200">
+                        <p
+                          dangerouslySetInnerHTML={{ __html: b.description.slice(0, 220) }}
+                          style={{ lineHeight: "40px" }}
+                        />
+                        <Link to={`/blogs/${b._id}`} className="text-sm font-medium hover:underline">View more</Link>
+                      </div>
+
+
+                      <div className="w-full flex justify-between">
+                        <p className="text-sm font-medium font-poppins text-gray-300">
+                          Posted - {dateString(new Date(b.createdAt))}
+                        </p>
+                        <div>
+                          {
+                            !b.active === true ? (
+                              <div className="p-2 hover:bg-red-500 text-white rounded-full cursor-pointer" onClick={() => { openBlogModal(b._id) }}>
+                                <FaUserAltSlash size={20} />
+                              </div>
+                            ) : (
+                              <div className="p-2 hover:bg-red-500 text-white rounded-full cursor-pointer" onClick={() => { openDBModal(b._id) }}>
+                                <FaUserCheck size={20} />
+                              </div>
+                            )
+                          }
+                        </div>
+                      </div>
                     </div>
-                    <p className="desc text-sm lg:text-md xl:text-md font-medium text-gray-300">{b.description}</p>
-                    <div className="w-full flex items-center justify-end">
-                      {
-                        !b.active === true ? (
-                          <div className="p-2 hover:bg-red-500 text-white rounded-full cursor-pointer" onClick={() => { openBlogModal(b._id) }}>
-                            <FaUserAltSlash size={20} />
-                          </div>
-                        ) : (
-                          <div className="p-2 hover:bg-red-500 text-white rounded-full cursor-pointer" onClick={() => { openDBModal(b._id) }}>
-                            <FaUserCheck size={20} />
-                          </div>
-                        )
-                      }
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+                  )
+                })
+              ))
+            }
 
           </div>
 

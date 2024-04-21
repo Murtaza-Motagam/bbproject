@@ -47,6 +47,7 @@ import AdminAlert from "./Admin/components/alert/AdminAlert.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Authors from "./views/Authors.jsx";
 import MyBlogs from "./views/MyBlogs.jsx";
+import AdminDashboard from "./Admin/pages/AdminDashboard.jsx";
 
 const queryClient = new QueryClient();
 
@@ -320,6 +321,7 @@ const AdminPanel = () => {
 
   const Layout = () => {
     return (
+      <BlogProvider>
       <div className="main relative">
         <AdminNavbar />
         <AdminAlert alert={alert} />
@@ -335,6 +337,7 @@ const AdminPanel = () => {
         </div>
         {/* <Footer /> */}
       </div>
+      </BlogProvider>
     );
   };
 
@@ -344,15 +347,19 @@ const AdminPanel = () => {
       element: <Layout />,
       children: [
         {
+          path: "/dashboard",
+          element: <AdminDashboard  />,
+        },
+        {
           path: "/users",
-          element: <AdminUsers showAlert={showAlert} />,
+          element: <AdminUsers />,
         },
         {
           path: "/users/:id",
-          element: <AdminUser showAlert={showAlert} />,
+          element: <AdminUser />,
         },
         {
-          path: "/",
+          path: "/profile",
           element: <AdminProfile />,
         },
         {

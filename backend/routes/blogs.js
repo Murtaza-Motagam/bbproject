@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Blogs = require('../model/Blogs')
 const Users = require('../model/Users')
+const moment = require('moment')
 const fetchUser = require('../middlewares/fetchUser')
 const fetchAdmin = require('../middlewares/fetchAdmin')
 const { body, validationResult } = require('express-validator');
@@ -234,7 +235,7 @@ router.post('/like/:id', fetchUser, async (req, res) => {
         if (!mainBlog) {
             return res.status(404).json({ success, message: "Blog Not Found" });
         }
-        
+
         if (mainBlog.likes.includes(req.user.id)) {
             mainBlog.likes.pull(req.user.id);
             const updatedBlog = await mainBlog.save();
@@ -244,14 +245,14 @@ router.post('/like/:id', fetchUser, async (req, res) => {
             }
             else {
                 return res.status(422).json({ success, message: "Something went wrong" });
-            }        
+            }
         }
-        else{
+        else {
 
             mainBlog.likes.push(req.user.id);
             const updatedBlog = await mainBlog.save();
             success = true;
-            
+
             if (updatedBlog) {
                 return res.status(200).json({ success, message: "You liked the blog" });
             }
@@ -259,7 +260,48 @@ router.post('/like/:id', fetchUser, async (req, res) => {
                 return res.status(422).json({ success, message: "Something went wrong" });
             }
         }
-        
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
+
+// Like for admin
+
+router.post('/admin-like/:id', fetchAdmin, async (req, res) => {
+    let success = false;
+    try {
+        const mainBlog = await Blogs.findById(req.params.id);
+        if (!mainBlog) {
+            return res.status(404).json({ success, message: "Blog Not Found" });
+        }
+
+        if (mainBlog.likes.includes(req.user.id)) {
+            mainBlog.likes.pull(req.user.id);
+            const updatedBlog = await mainBlog.save();
+            if (updatedBlog) {
+                success = true;
+                return res.status(200).json({ success, message: "You unliked the blog" });
+            }
+            else {
+                return res.status(422).json({ success, message: "Something went wrong" });
+            }
+        }
+        else {
+
+            mainBlog.likes.push(req.user.id);
+            const updatedBlog = await mainBlog.save();
+            success = true;
+
+            if (updatedBlog) {
+                return res.status(200).json({ success, message: "You liked the blog" });
+            }
+            else {
+                return res.status(422).json({ success, message: "Something went wrong" });
+            }
+        }
+
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Some error occurred");
@@ -275,9 +317,9 @@ router.get('/likecount/:id', async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: "Blog not found" });
         }
-        
+
         const likesCount = blog.likes.length;
-        
+
         return res.status(200).json({ likesCount });
     } catch (error) {
         console.error(error.message);
@@ -286,7 +328,47 @@ router.get('/likecount/:id', async (req, res) => {
 });
 
 
+// Route-12: Fetch trending blogs from db
 
+router.get('/trending', async (req, res) => {
+    try {
+        const today = moment().endOf('day');
+        const twoDaysAgo = moment().subtract(2, 'days').startOf('day');
+    
+        // Find blogs created today and in the past two days
+        const blogs = await Blogs.find({
+          createdAt: { $gte: twoDaysAgo.toDate(), $lte: today.toDate() },
+        });
+    
+        // Filter blogs with likes greater than or equal to 3
+        const filteredBlogs = blogs.filter(blog => blog.likes.length >= 3);
+    
+        // Fetch user information for each blog
+        const blogsWithUserDetails = await Promise.all(filteredBlogs.map(async blog => {
+          const user = await Users.findById(blog.user);
+          return {
+            _id: blog._id,
+            title: blog.title,
+            category: blog.category,
+            description: blog.description,
+            likes: blog.likes,
+            user: {
+              _id: user._id,
+              username: user.username,
+              email: user.emailId,
+              location: user.location,
+              link: user.link,
+            },
+            createdAt: blog.createdAt,
+          };
+        }));
+    
+        res.json(blogsWithUserDetails);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+      }
+});
 
 
 module.exports = router;

@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./menu.scss";
-import AnalyticsSvg from "../../../assets/svg/analytics.svg";
-import Profile from "../../../assets/svg/user.svg";
-// import { menu } from "../../data.ts";
+import "./menu.scss"
+import { FaUsers, FaUserAlt } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 
 export const menu = [
     {
@@ -12,9 +11,15 @@ export const menu = [
       listItems: [
         {
           id: 1,
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: MdDashboard,  
+        },
+        {
+          id: 2,
           title: "Profile",
           url: "/profile",
-          icon: Profile,
+          icon: FaUserAlt,
         },
       ],
     },
@@ -26,7 +31,7 @@ export const menu = [
           id: 1,
           title: "Users",
           url: "/users",
-          icon: Profile,
+          icon: FaUsers,
         },
       ],
     },
@@ -43,7 +48,7 @@ const Menu = () => {
                         <span className="title">{item.title}</span>
                         {item.listItems.map((listItem) => (
                             <Link to={listItem.url} className="listItem" key={listItem.id}>
-                                <img src={listItem.icon} alt="" />
+                                {listItem.icon()}
                                 <span className="listItemTitle">{listItem.title}</span>
                             </Link>
                         ))}

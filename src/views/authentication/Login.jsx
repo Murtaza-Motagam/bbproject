@@ -58,7 +58,8 @@ const Login = ({ theme }) => {
           emailId: "",
           password: "",
         }));
-        Navigate("/");
+        Navigate("/dashboard");
+        window.location.reload();
       }
     } else {
       const { emailId, password } = credentials;

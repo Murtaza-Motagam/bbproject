@@ -292,7 +292,7 @@ router.post('/user-active/:id', fetchAdmin, async (req, res) => {
         else {
 
             mainUser.active = false;
-            
+
             await Promise.all(userBlogs.map(async (blog) => {
                 blog.active = mainUser.active; // Set active status of blog to user's active status
                 await blog.save();
@@ -347,7 +347,48 @@ router.post('/blog-active/:id', fetchAdmin, async (req, res) => {
     }
 });
 
+// Route-11: Stats for admin users
 
+router.get('/stats', fetchAdmin, async (req, res) => {
+    try {
+
+        const blogs = await Blogs.find();
+        let totalLikes = 0;
+        blogs.forEach(blog => {
+            totalLikes += blog.likes.length;
+        });
+
+
+        const totalUsers = await Users.countDocuments();
+
+        const totalBlogs = await Blogs.countDocuments();
+
+        res.json([{ totalLikes, totalUsers, totalBlogs }]);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// Route-12: Most category chart 
+
+router.get('/most-category-visit', fetchAdmin, async (req, res) => {
+    try {
+        // Aggregate to get most visited categories
+        const mostVisitedCategories = await Blogs.aggregate([
+            { $group: { _id: '$category', totalLikes: { $sum: { $size: '$likes' } }, users: { $addToSet: '$user' } } },
+            { $sort: { totalLikes: -1 } },
+            { $project: { _id: 0, category: '$_id', likesOnPost: '$totalLikes', usersPostedOnCategory: { $size: '$users' } } }
+        ]);
+
+        res.json(mostVisitedCategories);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+    
 
 
 module.exports = router;

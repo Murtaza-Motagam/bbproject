@@ -1,5 +1,4 @@
-import React from "react";
-import sideImg from "../assets/experience-img.png"
+import React, { useRef } from "react";
 import Input from "../components/Input";
 import { useFormik } from 'formik';
 import { CreateBlogSchema } from '../YSchema/schema';
@@ -17,8 +16,9 @@ const initialValues = {
 const Blogs = ({ theme }) => {
 
 
-  const submitForm = async (values, action) => {
-    console.log("hello")
+  const quillRef = useRef(null);
+
+  const submitForm = async (values, { resetForm }) => {
     const response = await fetch(`${blogUrl}/create`, {
       method: 'POST',
       headers: {
@@ -31,12 +31,15 @@ const Blogs = ({ theme }) => {
     const json = await response.json();
 
     if (json.success) {
-      toast.success("Blog is successfully created.")
+      toast.success("Blog is successfully created.");
+      quill.setText('');
+      resetForm();
     }
     else {
       toast.error("Oops! Something went wrong.")
+      quill.setText('');
+      resetForm();
     }
-    action.resetForm()
   }
 
 
@@ -47,10 +50,6 @@ const Blogs = ({ theme }) => {
   })
 
 
-
-
-
-
   return (
     <div className={`${theme === 'dark' ? 'dark' : 'light'}`}>
       <div className="text-lg font-poppins font-medium">
@@ -58,19 +57,30 @@ const Blogs = ({ theme }) => {
           position="top-right"
         />
       </div>
+
+
       <div className="max-w-[1500px] flex items-center lg:flex-row xl:flex-row flex-col justify-center mx-auto py-20 roboto">
-        <div className="w-1/2 lg:flex xl:flex hidden items-center justify-center my-20 mx-auto">
-          <img src={sideImg} alt="" className="w-2/3 h-auto object-contain" />
-        </div>
-        <div className="xl:w-1/2 lg:w-1/2 w-full font-poppins">
+        <div className="w-full font-poppins">
           <form className="flex flex-col pb-10 items-start justify-start px-10 space-y-5" onSubmit={handleSubmit}>
-            <Input labelName="Blog Title" name="title" value={values} onChange={handleChange} placeholder="Enter Blog Title" errors={errors} touched={touched} />
+            <Input labelName="Blog Title" name="title" value={values} onChange={handleChange} placeholder="Title here" errors={errors} touched={touched} />
             <SelectInput labelName="Choose category" name="category" value={values} onChange={handleChange} errors={errors} />
-            <TextArea name="description" value={values} onChange={handleChange} errors={errors} touched={touched} placeholder="Note:- Should must be atleast 200 characters long"/>
-            <button type="submit" className="py-4 px-3 my-5 w-full text-md rounded-md border-none focus:outline-none hover:bg-indigo-400 font-semibold bg-indigo-500 text-white">Create Post</button>
+            <TextArea
+              name="description"
+              value={values}
+              onChange={handleChange}
+              errors={errors}
+              touched={touched}
+              placeholder="Note:- Content should must be atleast 200 characters long"
+              theme={theme}
+              ref={quillRef}
+            />
+            <button type="submit" className="py-3 px-5 my-5 text-sm rounded-md border-none focus:outline-none hover:bg-indigo-400 font-semibold bg-indigo-500 text-white">Create Post</button>
           </form>
         </div>
       </div>
+
+
+
     </div>
   );
 };

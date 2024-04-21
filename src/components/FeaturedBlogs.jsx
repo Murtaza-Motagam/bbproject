@@ -3,10 +3,10 @@ import { FaHeart, FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa';
 import { blogUrl } from '../utils/constant';
 import toast, { Toaster } from 'react-hot-toast';
 import { BlogContext } from '../BlogContext';
+import { Link } from 'react-router-dom';
 
 const FeaturedBlogs = ({ theme, category }) => {
 
-    const [expandedBlogs, setExpandedBlogs] = useState({});
     const [info, setInfo] = useState([]);
     const context = useContext(BlogContext);
     const { data, getUser } = context;
@@ -19,12 +19,6 @@ const FeaturedBlogs = ({ theme, category }) => {
         return date.toDateString();
     }
 
-    const toggleView = (blogId) => {
-        setExpandedBlogs(prevState => ({
-            ...prevState,
-            [blogId]: !prevState[blogId]
-        }));
-    };
 
 
     //  Function to fetch by category
@@ -81,14 +75,13 @@ const FeaturedBlogs = ({ theme, category }) => {
                             info.length > 0 ? (info
                                 .filter(b => b.active)
                                 .map((b = {}) => {
-                                    const isExpanded = expandedBlogs[b._id];
                                     const isLiked = b?.likes && b?.likes?.includes(u._id);
 
                                     return (
 
                                         <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
                                             <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>
-                                                {capitalizeFirstLetter(b.title)}
+                                                {capitalizeFirstLetter(b.title.slice(0, 70))}...
                                             </h1>
 
                                             <div className="flex items-center gap-x-3 w-full justify-start">
@@ -104,10 +97,15 @@ const FeaturedBlogs = ({ theme, category }) => {
                                                 <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart size={20} />  <span className="text-gray-800 dark:text-white">{b.likes ? b.likes.length : 0}</span></p>
                                             </div>
 
-                                            <p className={`w-full xl:text-lg h-[200px] ${isExpanded ? "overflow-y-scroll" : null} lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200`} style={{ lineHeight: "40px" }}>
-                                                {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
-                                                <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
-                                            </p>
+                                            <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
+                                                <p
+                                                    dangerouslySetInnerHTML={{ __html: b.description.slice(0, 220) }}
+                                                    style={{ lineHeight: "40px" }}
+                                                />
+                                                <Link to={`/blogs/${b._id}`} className="text-sm font-medium hover:underline">View more</Link>
+                                            </div>
+
+
                                             <div className="w-full flex justify-between">
                                                 <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">
                                                     Posted - {dateString(new Date(b.createdAt))}

@@ -40,11 +40,11 @@ const MyBlogs = ({ theme }) => {
 
         const json = await response.json();
 
-        if(json.message === "You liked the blog"){
+        if (json.message === "You liked the blog") {
             getUserBlogs()
             toast.success(json.message);
         }
-        else if(json.message === "You unliked the blog"){
+        else if (json.message === "You unliked the blog") {
             getUserBlogs()
             toast.success(json.message);
         }
@@ -57,7 +57,7 @@ const MyBlogs = ({ theme }) => {
 
     return (
         <div className={`${theme === 'dark' ? 'dark' : 'light'}  font-poppins max-w-[2000px]  dark:bg-darkPrimary mx-auto`}>
-            <Toaster position="top-right"/>
+            <Toaster position="top-right" />
             <h1 className="xl:text-4xl lg:text-4xl mx-auto xl:ml-10 lg:ml-10 ml-0 mt-10 pb-5 md:text-4xl text-2xl  lg:text-left xl:text-left text-center font-extrabold py-5 text-gray-800 dark:text-white">My Blogs</h1>
             <hr className="hidden xl:block lg:block h-1  w-full bg-gray-900" />
 
@@ -68,28 +68,30 @@ const MyBlogs = ({ theme }) => {
                         blogs
                             .filter(b => b.active)
                             .map((b) => {
-                                const isExpanded = expandedBlogs[b._id];
                                 const isLiked = b.likes && b.likes.includes(b.user);
                                 return (
 
                                     <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
-                                        <Link to={`/myprofile`} className="cursor-pointer hover:text-blue-600  xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title)}</Link>
+                                        <Link to={`/myprofile`} className="cursor-pointer hover:text-blue-600  xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title.slice(0, 70))}...</Link>
                                         <div className="flex items-center gap-x-3 w-full justify-start">
                                             <div className="hover:text-black text-gray-700 cursor-pointer dark:text-gray-300 dark:hover:text-white" onClick={() => likeBlog(b._id)}>
                                                 {
                                                     isLiked ? (
-                                                        <FaThumbsUp size={25}/>
+                                                        <FaThumbsUp size={25} />
                                                     ) : (
-                                                        <FaRegThumbsUp size={25}/>
+                                                        <FaRegThumbsUp size={25} />
                                                     )
                                                 }
                                             </div>
-                                            <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart size={20}/>  <span className="text-gray-800 dark:text-white">{b.likes ? b.likes.length : 0}</span></p>
+                                            <p className="text-md text-red-500 font-semibold my-3 flex items-center gap-x-1"><FaHeart size={20} />  <span className="text-gray-800 dark:text-white">{b.likes ? b.likes.length : 0}</span></p>
                                         </div>
-                                        <p className={`w-full xl:text-lg h-[200px] ${isExpanded ? "overflow-y-scroll" : null} lg:text-lg md:text-sm pr-6 text-sm text-justify mb-5 dark:text-gray-300`} style={{lineHeight: "40px"}}>
-                                            {!isExpanded ? (b.description.slice(0, 220)) : (b.description)}...
-                                            <button onClick={() => toggleView(b._id)} className="text-sm font-medium hover:underline ml-2">{!isExpanded ? "View more" : "View less"}</button>
-                                        </p>
+                                        <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
+                                            <p
+                                                dangerouslySetInnerHTML={{ __html: b.description.slice(0, 220) }}
+                                                style={{ lineHeight: "40px" }}
+                                            />
+                                            <Link to={`/blogs/${b._id}`} className="text-sm font-medium hover:underline">View more</Link>
+                                        </div>
                                         <div className="w-full flex justify-between">
                                             <p className="text-sm text-gray-700 font-semibold dark:text-gray-300">{capitalizeFirstLetter(b.category)}</p>
                                             <p className="text-sm text-gray-700 font-medium font-poppins dark:text-gray-300">Posted - {dateString(new Date(b.createdAt))}</p>

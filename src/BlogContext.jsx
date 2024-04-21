@@ -187,8 +187,21 @@ const BlogProvider = ({ children }) => {
         setData(json.getAllUsers);
 
     }
+
+    const trendingBlogs = async () => {
+        const response = await fetch(`${blogUrl}/trending`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const json = await response.json();
+        setData(json);
+
+    }
     return (
-        <BlogContext.Provider value={{ data, info, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, getActiveUser }}>
+        <BlogContext.Provider value={{ data, info, userBlogData, getUserId, secData, navDetails, blogs, terryData, check, following, uploadProfilePic, getUser, getUserBlogs, setOtherUserDetails, getNavDetail, fetchSingleBlog, fetchAllBlog, getSearchedUserDetails, getSearchedUserNavdetails, fetchAllUsers, getActiveUser, trendingBlogs }}>
             {children}
         </BlogContext.Provider>
     );

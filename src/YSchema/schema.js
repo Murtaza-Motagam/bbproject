@@ -8,7 +8,7 @@ export const CreateBlogSchema = Yup.object().shape({
         .min(5, 'Category should must be at least 5 character long'),
 
     description: Yup.string().required('Description is required!!')
-        .min(100, 'Description should must be at least 200 character long'),
+        .min(10, 'Description should must be at least 200 character long'),
     
     
 });

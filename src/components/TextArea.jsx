@@ -3,7 +3,7 @@ import { MdFormatBold, MdFormatItalic } from "react-icons/md"
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const TextArea = ({ name, placeholder, value, onChange, errors, touched, theme, ref }) => {
+const TextArea = ({ name, placeholder, value, onChange, errors, touched, theme, reference }) => {
 
     const [richTextValue, setRichTextValue] = useState(value[name]);
 
@@ -44,7 +44,7 @@ const TextArea = ({ name, placeholder, value, onChange, errors, touched, theme, 
                     modules={modules}
                     formats={formats}
                     className={containerClasses}
-                    ref={ref}
+                    ref={reference}
                 />
             </div>
             {errors[name] && touched[name] ? <p className="text-md text-white px-5 bg-red-500  rounded-b-lg py-4">{errors[name]}</p> : null}

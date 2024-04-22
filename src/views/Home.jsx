@@ -81,12 +81,14 @@ const Home = ({ theme }) => {
       <div className="relative overflow-hidden bg-white mt-10 dark:bg-darkPrimary mb-20 xl:mb-0 lg:mb-0">
         <div className="pt-16 sm:pb-40 lg:pb-48 lg:pt-40">
           <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
-            <div className="sm:max-w-full mx-auto xl:mx-0 lg:mx-0">
+            <div className="sm:max-w-full xl:max-w-xl lg:max-w-xl mx-auto xl:mx-0 lg:mx-0">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
                 Welcome to Blogin
               </h1>
               <p className="mt-4 text-xl text-gray-500 dark:text-gray-200">
-                Discover the vibrant world of BLOGIN, where words come alive and stories unfold. Dive into a realm of endless possibilities, where every page holds the promise of inspiration, knowledge, and boundless creativity.
+                Discover the vibrant world of BLOGIN, where words come alive and stories unfold.
+                Dive into a realm of endless possibilities, where every page holds the promise of inspiration,
+                knowledge, and boundless creativity.
               </p>
             </div>
             <div>
@@ -219,7 +221,7 @@ const Home = ({ theme }) => {
               return (
                 <div
                   className="flex flex-col lg:flex-row xl:flex-row items-center xl:justify-start lg:justify-start justify-center text-center gap-x-10 px-5 w-full"
-                  key={index}
+                  key={e.img}
                 >
                   <img
                     src={imageMap[e.img]}
@@ -267,10 +269,10 @@ const Home = ({ theme }) => {
                   {data.map((d = {}) => {
                     return (
                       <div className="w-full px-5 py-2 dark:border-2 dark:border-gray-700 rounded-lg xl:h-[500px] lg:h-[500px] h-[600px]" key={d._id}>
-                        <h1 className="xl:text-xl lg:text-xl md:text-lg font-bold text-md text-center text-gray-900 my-5 dark:text-white " style={{ lineHeight: "40px" }}>{d.title.slice(0, 30)}...</h1>
+                        <h1 className="xl:text-xl lg:text-xl md:text-lg font-bold text-md text-center text-gray-900 my-5 dark:text-white " style={{ lineHeight: "40px" }}>{d.title.substring(0, 30)}...</h1>
                         <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
                           <p
-                            dangerouslySetInnerHTML={{ __html: d?.description && d?.description?.slice(0, 200) }}
+                            dangerouslySetInnerHTML={{ __html: d?.description && d?.description?.substring(0, 200) }}
                             style={{ lineHeight: "40px" }}
                           />
                           <Link to={`/blogs/${d._id}`} className="text-sm font-medium hover:underline">View more</Link>

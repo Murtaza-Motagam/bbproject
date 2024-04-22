@@ -143,14 +143,14 @@ const otherProfile = ({ theme }) => {
                             userBlogData.length > 0 ? (
                                 userBlogData
                                 .filter(b => b.active)
-                                .map((b = {}) => {
+                                .map((b = {}, index) => {
                                     const isLiked = b?.likes && b?.likes?.includes(u._id);
 
                                     return (
 
-                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
+                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={index}>
                                             <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>
-                                                {capitalizeFirstLetter(b.title.slice(0, 70))}...
+                                                {capitalizeFirstLetter(b.title.substring(0, 70))}...
                                             </h1>
 
                                             <div className="flex items-center gap-x-3 w-full justify-start">
@@ -168,7 +168,7 @@ const otherProfile = ({ theme }) => {
 
                                             <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
                                                 <p
-                                                    dangerouslySetInnerHTML={{ __html: b.description.slice(0, 220) }}
+                                                    dangerouslySetInnerHTML={{ __html: b.description.substring(0, 220) }}
                                                     style={{ lineHeight: "40px" }}
                                                 />
                                                 <Link to={`/blogs/${b._id}`} className="text-sm font-medium hover:underline">View more</Link>

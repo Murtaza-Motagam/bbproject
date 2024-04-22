@@ -74,12 +74,12 @@ const FeaturedBlogs = ({ theme, category }) => {
 
                             info.length > 0 ? (info
                                 .filter(b => b.active)
-                                .map((b = {}) => {
+                                .map((b = {}, index) => {
                                     const isLiked = b?.likes && b?.likes?.includes(u._id);
 
                                     return (
 
-                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={b._id}>
+                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={index}>
                                             <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>
                                                 {capitalizeFirstLetter(b.title.slice(0, 70))}...
                                             </h1>
@@ -127,5 +127,6 @@ const FeaturedBlogs = ({ theme, category }) => {
         </div>
     )
 }
+
 
 export default FeaturedBlogs

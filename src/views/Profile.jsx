@@ -211,12 +211,12 @@ const Profile = ({ theme }) => {
                         {
                             blogs
                                 .filter(b => b.active)
-                                .map((b) => {
+                                .map((b = {}, index) => {
                                     const isLiked = b.likes && b.likes.includes(b.user);
                                     return (
 
-                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3">
-                                            <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title.slice(0, 70))}...</h1>
+                                        <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={index}>
+                                            <h1 className="xl:text-xl lg:text-xl md:text-lg md:text-lg text-lg text-blue-500 font-semibold mt-0 mb-4 dark:text-white" style={{ lineHeight: "35px" }}>{capitalizeFirstLetter(b.title.substring(0, 30))}...</h1>
                                             <div className="flex items-center gap-x-3 w-full justify-start">
                                                 <div className="hover:text-black text-gray-700 cursor-pointer dark:text-gray-300 dark:hover:text-white" onClick={() => likeBlog(b._id)}>
                                                     {
@@ -232,7 +232,7 @@ const Profile = ({ theme }) => {
 
                                             <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
                                                 <p
-                                                    dangerouslySetInnerHTML={{ __html: b.description.slice(0, 220) }}
+                                                    dangerouslySetInnerHTML={{ __html: b.description.substring(0, 220) }}
                                                     style={{ lineHeight: "40px" }}
                                                 />
                                                 <Link to={`/blogs/${b._id}`} className="text-sm font-medium hover:underline">View more</Link>

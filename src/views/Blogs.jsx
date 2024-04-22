@@ -18,7 +18,7 @@ const Blogs = ({ theme }) => {
 
   const quillRef = useRef(null);
 
-  const submitForm = async (values, { resetForm }) => {
+  const submitForm = async (values, action) => {
     const response = await fetch(`${blogUrl}/create`, {
       method: 'POST',
       headers: {
@@ -33,12 +33,12 @@ const Blogs = ({ theme }) => {
     if (json.success) {
       toast.success("Blog is successfully created.");
       quill.setText('');
-      resetForm();
+      action.resetForm();
     }
     else {
       toast.error("Oops! Something went wrong.")
       quill.setText('');
-      resetForm();
+      action.resetForm();
     }
   }
 
@@ -72,7 +72,7 @@ const Blogs = ({ theme }) => {
               touched={touched}
               placeholder="Note:- Content should must be atleast 200 characters long"
               theme={theme}
-              ref={quillRef}
+              reference={quillRef}
             />
             <button type="submit" className="py-3 px-5 my-5 text-sm rounded-md border-none focus:outline-none hover:bg-indigo-400 font-semibold bg-indigo-500 text-white">Create Post</button>
           </form>

@@ -322,7 +322,7 @@ const AdminPanel = () => {
   const Layout = () => {
     return (
       <BlogProvider>
-      <div className="main relative">
+      <div className="main relative min-h-screen">
         <AdminNavbar />
         <AdminAlert alert={alert} />
         <div className="container">

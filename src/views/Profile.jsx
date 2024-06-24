@@ -129,11 +129,11 @@ const Profile = ({ theme }) => {
                     <div className="flex flex-col space-y-4 items-start justify-center ml-10">
                         <img src={person} className="h-36 w-36 p-2 object-contain bg-gray-100 rounded-full " alt="" />
                         <div className="flex gap-x-4 items-center justify-center ml-2">
-                            {secData.map((e) => {
+                            {secData.map((e={}) => {
                                 return (
-                                    <div className="flex items-center gap-x-3" key={e.totalPostsLength}>
+                                    <div className="flex items-center gap-x-3" key={e?.totalPostsLength}>
                                         <h1 className="text-lg font-semibold">Total Posts: </h1>
-                                        <h2 className="text-xl font-bold text-blue-500">{e.totalPostsLength}</h2>
+                                        <h2 className="text-xl font-bold text-blue-500">{e?.totalPostsLength}</h2>
                                     </div>
                                 )
                             })}
@@ -141,19 +141,19 @@ const Profile = ({ theme }) => {
                         </div>
                     </div>
 
-                    {data.map((d, index) => {
+                    {data.map((d={}, index) => {
                         return (
 
                             <div className="username flex justify-between items-start ml-10 mr-3 space-x-2 mt-10" key={index}>
                                 {!editDesc ? (
                                     <div className="flex justify-center flex-col w-full items-start space-y-2">
-                                        <h1 className="text-gray-700 dark:text-gray-50 text-2xl font-extrabold">{d.username}</h1>
-                                        <h1 className="text-gray-500 dark:text-gray-200 text-md font-roboto">{d.emailId}</h1>
+                                        <h1 className="text-gray-700 dark:text-gray-50 text-2xl font-extrabold">{d?.username}</h1>
+                                        <h1 className="text-gray-500 dark:text-gray-200 text-md font-roboto">{d?.emailId}</h1>
                                         <p className="mt-3">{d.desc ? d.desc : <span className='text-gray-500 cursor-not-allowed'>Add Description</span>}</p>
                                     </div>) : (
                                     <form onSubmit={handleDescriptionSubmit} className="flex justify-center flex-col w-full items-start space-y-2">
-                                        <h1 className="text-gray-700 dark:text-gray-50 text-2xl font-extrabold">{d.username}</h1>
-                                        <h1 className="text-gray-500 dark:text-gray-200 text-md font-roboto">{d.emailId}</h1>
+                                        <h1 className="text-gray-700 dark:text-gray-50 text-2xl font-extrabold">{d?.username}</h1>
+                                        <h1 className="text-gray-500 dark:text-gray-200 text-md font-roboto">{d?.emailId}</h1>
                                         <textarea onChange={handleChange} value={otherDetails.desc} name="desc" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your description here"></textarea>
                                         <button type="submit" className="rounded-md bg-blue-500 hover:bg-blue-600 text-white py-2 px-5">Submit</button>
                                     </form>
@@ -166,22 +166,22 @@ const Profile = ({ theme }) => {
                     })}
 
 
-                    {data.map((d, index) => {
+                    {data.map((d={}, index) => {
                         return (
                             <div className="flex justify-between text-gray-700 space-x-3 items-start mt-10 mr-3 dark:text-gray-300" key={index}>
                                 {!showRestDetails ? (
                                     <div className="flex flex-col justify-center text-gray-700 space-y-5 items-start ml-10 mt-10 dark:text-gray-300">
                                         <h1 className="flex items-center gap-x-3 font-semibold">
                                             <i className="fa-solid fa-location-dot fa-lg"></i>
-                                            <span>{d.location ? d.location : "Add Location"}</span>
+                                            <span>{d?.location ? d?.location : "Add Location"}</span>
                                         </h1>
                                         <h1 className="flex items-center gap-x-3 font-semibold">
                                             <i className="fa-solid fa-link fa-lg"></i>
-                                            <span>{d.link ? d.link : "Add website link"}</span>
+                                            <span>{d?.link ? d?.link : "Add website link"}</span>
                                         </h1>
                                         <h1 className="flex items-center gap-x-3 font-semibold">
                                             <i className="fa-solid fa-calendar-days fa-lg"></i>
-                                            <span>Joined: {new Date(d.datacreated.slice(0, 10)).toDateString()}</span>
+                                            <span>Joined: {new Date(d?.datacreated?.slice(0, 10)).toDateString()}</span>
                                         </h1>
                                     </div>
                                 ) : (
@@ -212,7 +212,7 @@ const Profile = ({ theme }) => {
                             blogs
                                 .filter(b => b.active)
                                 .map((b = {}, index) => {
-                                    const isLiked = b.likes && b.likes.includes(b.user);
+                                    const isLiked = b?.likes && b?.likes?.includes(b?.user);
                                     return (
 
                                         <div className="mainBlog py-5 px-5 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3" key={index}>

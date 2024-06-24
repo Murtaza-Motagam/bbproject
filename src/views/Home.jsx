@@ -224,17 +224,17 @@ const Home = ({ theme }) => {
                   key={e.img}
                 >
                   <img
-                    src={imageMap[e.img]}
+                    src={imageMap[e?.img]}
                     className={`${theme === "dark" ? "invert" : ""
                       } w-12 mb-10 xl:mb-0 lg:mb-0`}
                     alt=""
                   />
                   <div className="flex flex-col xl:items-start lg:items-start space-y-2 w-full items-center justify-center">
                     <h1 className="lg:text-2xl text-center xl:text-left lg:text-left xl:text-2xl md:text-lg text-md font-extrabold text-orange-500">
-                      {e.subheading}
+                      {e?.subheading}
                     </h1>
                     <p className="font-medium w-full text-center xl:text-left lg:text-left lg:text-2xl xl:text-2xl md:text-lg text-md text-gray-900 dark:text-gray-50">
-                      {e.heading}
+                      {e?.heading}
                     </p>
                   </div>
                 </div>
@@ -263,13 +263,13 @@ const Home = ({ theme }) => {
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mt-10 ">
             <div className=" w-full">
-              <div className="mainBlog bg-white py-10 px-10 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3 dark:bg-darkPrimary dark:shadow-none" >
+              <div className="mainBlog bg-white border border-gray-700 py-10 px-10 w-full flex-col justify-start  items-start rounded-lg shadow-md shadow-gray-400 mb-3 dark:bg-darkPrimary dark:shadow-none" >
                 <Slider {...settings}>
 
                   {data.map((d = {}) => {
                     return (
-                      <div className="w-full px-5 py-2 dark:border-2 dark:border-gray-700 rounded-lg xl:h-[500px] lg:h-[500px] h-[600px]" key={d._id}>
-                        <h1 className="xl:text-xl lg:text-xl md:text-lg font-bold text-md text-center text-gray-900 my-5 dark:text-white " style={{ lineHeight: "40px" }}>{d.title.substring(0, 30)}...</h1>
+                      <div className="w-full px-5 py-2 border border-gray-400 dark:border-2 dark:border-gray-700 rounded-lg xl:h-[500px] lg:h-[500px] h-[600px]" key={d._id}>
+                        <h1 className="xl:text-xl lg:text-xl md:text-lg font-bold text-md text-center text-gray-900 my-5 dark:text-white " style={{ lineHeight: "40px" }}>{d.title}...</h1>
                         <div className="w-full xl:text-lg  lg:text-lg md:text-sm text-sm text-justify mb-5 dark:text-gray-200">
                           <p
                             dangerouslySetInnerHTML={{ __html: d?.description && d?.description?.substring(0, 200) }}
@@ -280,8 +280,8 @@ const Home = ({ theme }) => {
 
 
                         <div className="flex justify-between w-full my-10 items-center">
-                          <p className="text-md text-gray-900 font-roboto dark:text-gray-200"><strong>Category:-</strong> <span>{d.category}</span></p>
-                          <p className="text-md text-gray-900 dark:text-gray-200 font-roboto"><span className="text-blue-500 font-bold">Author:</span> {d.user.username}</p>
+                          <p className="text-md text-gray-900 font-roboto dark:text-gray-200"><strong>Category:-</strong> <span>{d?.category}</span></p>
+                          <p className="text-md text-gray-900 dark:text-gray-200 font-roboto"><span className="text-blue-500 font-bold">Author:</span> {d.username}</p>
                         </div>
                         <div className="flex justify-between w-full my-10 items-center">
                           <p className="text-md dark:text-gray-200"><strong>Posted on:</strong> {dateString(new Date(d.createdAt))}</p>

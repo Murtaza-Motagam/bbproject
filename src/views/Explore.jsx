@@ -96,7 +96,7 @@ const ExplorePage = () => {
                           </div>
 
                           <div className="w-full flex justify-between">
-                            <p className="text-md text-gray-700 dark:text-gray-300">{capitalizeFirstLetter("Entertainment")}</p>
+                            <p className="text-md text-gray-700 dark:text-gray-300">{capitalizeFirstLetter(b.category)}</p>
                             <p className="text-md text-gray-700 font-medium font-poppins dark:text-gray-300">
                               Posted - {dateString(new Date(b.createdAt))}
                             </p>

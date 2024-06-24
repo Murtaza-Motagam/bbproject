@@ -130,12 +130,12 @@ const Header = ({ theme, handleTheme }) => {
                   <div id="authentication-modal" className="md:flex lg:flex xl:flex hidden absolute top-[4rem] w-[20vw] right-[1rem] z-50 items-center justify-center">
                     <div className="bg-white rounded-lg shadow-md dark:bg-gray-700 w-[15vw]">
                       <div className="flex items-center space-x-2 justify-start m-4 rounded-t dark:border-gray-600">
-                        {profile.map((e) => {
+                        {profile.map((e={}) => {
                           return (
-                            <div key={e._id}>
+                            <div key={e?._id}>
                               <h3 className="flex justify-between w-full items-center text-xl font-semibold text-gray-900 dark:text-white">
                                 <i className="fa-solid fa-user-plus text-center mr-3"></i>
-                                <span>{e.username}</span>
+                                <span>{e?.username}</span>
                               </h3>
                             </div>
                           )
